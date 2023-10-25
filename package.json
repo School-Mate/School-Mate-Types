@@ -1,0 +1,8 @@
+{
+  "name": "school-mate-types",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "types": "src/index.d.ts"
+}
