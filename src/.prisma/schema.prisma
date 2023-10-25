@@ -1,0 +1,332 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String                @id @default(uuid())
+  email              String?
+  password           String?
+  name               String
+  profile            String?
+  isVerified         Boolean               @default(false)
+  phone              String?               @unique
+  createdAt          DateTime              @default(now())
+  provider           UserLoginProviderType
+  userSchoolId       String?
+  Agreement          Agreement?
+  Article            Article[]
+  Asked              Asked[]
+  AskedUser          AskedUser?
+  BoardOrganizations BoardManager[]
+  Comment            Comment[]
+  Image              Image[]
+  Like               Like[]
+  ReComment          ReComment[]
+  SocialLogin        SocialLogin?
+  UserSchool         UserSchool?
+  UserSchoolVerify   UserSchoolVerify[]
+}
+
+model School {
+  schoolId    String       @id @unique
+  org         String
+  x           Float
+  y           Float
+  atptCode    String
+  defaultName String
+  name        String?
+  type        String
+  UserSchool  UserSchool[]
+  Article     Article[]
+}
+
+model Image {
+  id               String             @id @default(uuid())
+  key              String
+  userId           String
+  createdAt        DateTime           @default(now())
+  user             User               @relation(fields: [userId], references: [id])
+  UserSchoolVerify UserSchoolVerify[]
+}
+
+model PhoneVerifyRequest {
+  id    String @id @default(uuid())
+  phone String
+  code  String
+}
+
+model SocialLogin {
+  accessToken  String
+  refreshToken String?
+  userId       String                  @id @default(uuid())
+  socialId     String                  @unique
+  provider     SocialLoginProviderType
+  user         User                    @relation(fields: [userId], references: [id])
+}
+
+model Agreement {
+  updatedAt DateTime @updatedAt
+  userId    String   @id @default(uuid())
+  receive   Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model UserSchoolVerify {
+  id         String   @id @default(uuid())
+  userId     String
+  imageId    String
+  schoolId   String
+  grade      String
+  class      String
+  message    String?
+  process    Process  @default(pending)
+  createdAt  DateTime @default(now())
+  schoolName String
+  userName   String
+  dept       String
+  image      Image    @relation(fields: [imageId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model UserSchool {
+  userId   String @id
+  schoolId String
+  dept     String
+  grade    String
+  class    String
+  school   School @relation(fields: [schoolId], references: [schoolId])
+  user     User   @relation(fields: [userId], references: [id])
+}
+
+model BusStation {
+  busStationId   String @id
+  busStationName String
+  address        String
+  x              Float
+  y              Float
+}
+
+model BusRoute {
+  busRouteId       String @id
+  busRouteNum      String
+  busRouteTp       String
+  endNodeName      String
+  startNodeName    String
+  endVehicleTime   String
+  startVehicleTime String
+  intervalTime     String
+  intervalSatTime  String
+  intervalSunTime  String
+}
+
+model BusArrival {
+  busStationId      String   @id
+  busStationName    String
+  busRouteNum       String
+  busRouteTp        String
+  arrprevStationCnt String
+  arrTime           String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model AskedUser {
+  userId             String    @id
+  customId           String?
+  statusMessage      String?
+  receiveAnonymous   Boolean   @default(true)
+  receiveOtherSchool Boolean   @default(false)
+  lastUpdateCustomId DateTime?
+  Asked              Asked[]
+  user               User      @relation(fields: [userId], references: [id])
+}
+
+model Asked {
+  id           String    @id @default(uuid())
+  userId       String
+  askedUserId  String
+  process      Process   @default(pending)
+  question     String
+  answer       String?
+  createdAt    DateTime  @default(now())
+  answerTimeAt DateTime?
+  isAnonymous  Boolean
+  AskedUser    AskedUser @relation(fields: [askedUserId], references: [userId])
+  QuestionUser User      @relation(fields: [userId], references: [id])
+}
+
+model Admin {
+  id       String @id @default(uuid())
+  loginId  String @unique
+  password String
+  flags    Int
+}
+
+model Board {
+  id          Int            @id @default(autoincrement())
+  schoolId    String
+  name        String
+  description String
+  default     Boolean        @default(false)
+  noticeId    Int[]
+  Article     Article[]
+  managers    BoardManager[]
+}
+
+model BoardManager {
+  id      String @id @default(uuid())
+  boardId Int
+  name    String
+  userId  String
+  board   Board  @relation(fields: [boardId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
+}
+
+model Article {
+  id          Int         @id @default(autoincrement())
+  schoolId    String
+  title       String
+  content     String
+  images      String[]
+  isAnonymous Boolean
+  userId      String
+  createdAt   DateTime    @default(now())
+  boardId     Int
+  Board       Board       @relation(fields: [boardId], references: [id])
+  User        User        @relation(fields: [userId], references: [id])
+  school      School      @relation(fields: [schoolId], references: [schoolId])
+  Comment     Comment[]
+  ReComment   ReComment[]
+}
+
+model DeletedArticle {
+  id          Int      @id
+  schoolId    String
+  title       String
+  content     String
+  images      String[]
+  isAnonymous Boolean
+  userId      String
+  createdAt   DateTime
+  DeletedAt   DateTime @default(now())
+  boardId     Int
+}
+
+model BoardRequest {
+  id          String              @id @default(uuid())
+  name        String
+  description String
+  userId      String
+  schoolId    String
+  schoolName  String
+  process     BoardRequestProcess @default(pending)
+  message     String?
+}
+
+model Comment {
+  userId      String
+  content     String
+  isAnonymous Boolean
+  isDeleted   Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  id          Int         @id @default(autoincrement())
+  articleId   Int
+  Article     Article     @relation(fields: [articleId], references: [id])
+  User        User        @relation(fields: [userId], references: [id])
+  recomments  ReComment[]
+}
+
+model ReComment {
+  id          Int      @id @default(autoincrement())
+  articleId   Int
+  userId      String
+  content     String
+  isAnonymous Boolean
+  isDeleted   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  commentId   Int?
+  Article     Article  @relation(fields: [articleId], references: [id])
+  Comment     Comment? @relation(fields: [commentId], references: [id])
+  User        User     @relation(fields: [userId], references: [id])
+}
+
+model Report {
+  id             String           @id @default(uuid())
+  reportUserId   String
+  targetType     ReportTargetType
+  message        String
+  targetId       String
+  reportUserName String
+  process        ReportProcess    @default(pending)
+}
+
+model Like {
+  id         String         @id @default(uuid())
+  userId     String
+  targetId   Int
+  targetType LikeTargetType
+  likeType   LikeType
+  user       User           @relation(fields: [userId], references: [id])
+}
+
+enum Process {
+  pending
+  denied
+  success
+}
+
+enum SocialLoginProviderType {
+  google
+  kakao
+}
+
+enum UserLoginProviderType {
+  id
+  social
+}
+
+enum BoardRequestProcess {
+  pending
+  denied
+  success
+}
+
+enum ReportTargetType {
+  user
+  article
+  comment
+  asked
+  recomment
+}
+
+enum ReportProcess {
+  pending
+  success
+}
+
+enum LikeType {
+  like
+  dislike
+}
+
+enum LikeTargetType {
+  article
+  comment
+  recomment
+}
+
+model Meal {
+  id         String @id @unique
+  MLSV_FGR   Int
+  DDISH_NM   String
+  ORPLC_INFO String
+  CAL_INFO   String
+  NTR_INFO   String
+}
