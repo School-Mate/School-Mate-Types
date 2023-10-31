@@ -267,6 +267,12 @@ exports.Prisma.ArticleScalarFieldEnum = {
   boardId: 'boardId'
 };
 
+exports.Prisma.DefaultBoardScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description'
+};
+
 exports.Prisma.DeletedArticleScalarFieldEnum = {
   id: 'id',
   schoolId: 'schoolId',
@@ -276,7 +282,7 @@ exports.Prisma.DeletedArticleScalarFieldEnum = {
   isAnonymous: 'isAnonymous',
   userId: 'userId',
   createdAt: 'createdAt',
-  DeletedAt: 'DeletedAt',
+  deletedAt: 'deletedAt',
   boardId: 'boardId'
 };
 
@@ -324,11 +330,24 @@ exports.Prisma.ReportScalarFieldEnum = {
   process: 'process'
 };
 
-exports.Prisma.LikeScalarFieldEnum = {
+exports.Prisma.ArticleLikeScalarFieldEnum = {
   id: 'id',
+  articleId: 'articleId',
   userId: 'userId',
-  targetId: 'targetId',
-  targetType: 'targetType',
+  likeType: 'likeType'
+};
+
+exports.Prisma.CommentLikeScalarFieldEnum = {
+  id: 'id',
+  commentId: 'commentId',
+  userId: 'userId',
+  likeType: 'likeType'
+};
+
+exports.Prisma.ReCommentLikeScalarFieldEnum = {
+  id: 'id',
+  recommentId: 'recommentId',
+  userId: 'userId',
   likeType: 'likeType'
 };
 
@@ -390,12 +409,6 @@ exports.ReportProcess = {
   success: 'success'
 };
 
-exports.LikeTargetType = {
-  article: 'article',
-  comment: 'comment',
-  recomment: 'recomment'
-};
-
 exports.LikeType = {
   like: 'like',
   dislike: 'dislike'
@@ -419,12 +432,15 @@ exports.Prisma.ModelName = {
   Board: 'Board',
   BoardManager: 'BoardManager',
   Article: 'Article',
+  DefaultBoard: 'DefaultBoard',
   DeletedArticle: 'DeletedArticle',
   BoardRequest: 'BoardRequest',
   Comment: 'Comment',
   ReComment: 'ReComment',
   Report: 'Report',
-  Like: 'Like',
+  ArticleLike: 'ArticleLike',
+  CommentLike: 'CommentLike',
+  ReCommentLike: 'ReCommentLike',
   Meal: 'Meal'
 };
 
