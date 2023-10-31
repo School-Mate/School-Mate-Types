@@ -13,7 +13,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "19"
-      - run: version=$(npm version patch)
+      - run: |
+          git config --global user.email "schoolmate@schoolmate.kr"
+          git config --global user.name "Schoolmate"
+          npm version patch
       - uses: JS-DevTools/npm-publish@v3
         with:
           token: ${{ secrets.NPM_TOKEN }}
