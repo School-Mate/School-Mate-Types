@@ -215,6 +215,8 @@ exports.Prisma.AskedUserScalarFieldEnum = {
   userId: 'userId',
   customId: 'customId',
   statusMessage: 'statusMessage',
+  image: 'image',
+  tags: 'tags',
   receiveAnonymous: 'receiveAnonymous',
   receiveOtherSchool: 'receiveOtherSchool',
   lastUpdateCustomId: 'lastUpdateCustomId'
@@ -244,6 +246,7 @@ exports.Prisma.BoardScalarFieldEnum = {
   schoolId: 'schoolId',
   name: 'name',
   description: 'description',
+  icon: 'icon',
   default: 'default',
   noticeId: 'noticeId'
 };
@@ -261,6 +264,7 @@ exports.Prisma.ArticleScalarFieldEnum = {
   title: 'title',
   content: 'content',
   images: 'images',
+  views: 'views',
   isAnonymous: 'isAnonymous',
   userId: 'userId',
   createdAt: 'createdAt',
@@ -349,6 +353,21 @@ exports.Prisma.ReCommentLikeScalarFieldEnum = {
   recommentId: 'recommentId',
   userId: 'userId',
   likeType: 'likeType'
+};
+
+exports.Prisma.HotArticleScalarFieldEnum = {
+  id: 'id',
+  articleId: 'articleId',
+  schoolId: 'schoolId'
+};
+
+exports.Prisma.AdvertiseScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  image: 'image',
+  link: 'link',
+  startDate: 'startDate',
+  endDate: 'endDate'
 };
 
 exports.Prisma.MealScalarFieldEnum = {
@@ -441,6 +460,8 @@ exports.Prisma.ModelName = {
   ArticleLike: 'ArticleLike',
   CommentLike: 'CommentLike',
   ReCommentLike: 'ReCommentLike',
+  HotArticle: 'HotArticle',
+  Advertise: 'Advertise',
   Meal: 'Meal'
 };
 
