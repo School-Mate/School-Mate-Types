@@ -25,3 +25,7 @@ jobs:
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GIT_TOKEN }}
+          message: 'release: bump up'
+          author_email: 'schoolmate@schoolmate.kr'
+          author_name: 'Schoolmate'
+          branch: 'main'
