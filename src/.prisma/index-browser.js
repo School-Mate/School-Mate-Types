@@ -284,6 +284,7 @@ exports.Prisma.DeletedArticleScalarFieldEnum = {
   content: 'content',
   images: 'images',
   isAnonymous: 'isAnonymous',
+  views: 'views',
   userId: 'userId',
   createdAt: 'createdAt',
   deletedAt: 'deletedAt',

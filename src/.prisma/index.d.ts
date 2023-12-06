@@ -406,6 +406,7 @@ export type DeletedArticlePayload<ExtArgs extends $Extensions.Args = $Extensions
     content: string
     images: string[]
     isAnonymous: boolean
+    views: number
     userId: string
     createdAt: Date
     deletedAt: Date
@@ -21944,11 +21945,13 @@ export namespace Prisma {
 
   export type DeletedArticleAvgAggregateOutputType = {
     id: number | null
+    views: number | null
     boardId: number | null
   }
 
   export type DeletedArticleSumAggregateOutputType = {
     id: number | null
+    views: number | null
     boardId: number | null
   }
 
@@ -21958,6 +21961,7 @@ export namespace Prisma {
     title: string | null
     content: string | null
     isAnonymous: boolean | null
+    views: number | null
     userId: string | null
     createdAt: Date | null
     deletedAt: Date | null
@@ -21970,6 +21974,7 @@ export namespace Prisma {
     title: string | null
     content: string | null
     isAnonymous: boolean | null
+    views: number | null
     userId: string | null
     createdAt: Date | null
     deletedAt: Date | null
@@ -21983,6 +21988,7 @@ export namespace Prisma {
     content: number
     images: number
     isAnonymous: number
+    views: number
     userId: number
     createdAt: number
     deletedAt: number
@@ -21993,11 +21999,13 @@ export namespace Prisma {
 
   export type DeletedArticleAvgAggregateInputType = {
     id?: true
+    views?: true
     boardId?: true
   }
 
   export type DeletedArticleSumAggregateInputType = {
     id?: true
+    views?: true
     boardId?: true
   }
 
@@ -22007,6 +22015,7 @@ export namespace Prisma {
     title?: true
     content?: true
     isAnonymous?: true
+    views?: true
     userId?: true
     createdAt?: true
     deletedAt?: true
@@ -22019,6 +22028,7 @@ export namespace Prisma {
     title?: true
     content?: true
     isAnonymous?: true
+    views?: true
     userId?: true
     createdAt?: true
     deletedAt?: true
@@ -22032,6 +22042,7 @@ export namespace Prisma {
     content?: true
     images?: true
     isAnonymous?: true
+    views?: true
     userId?: true
     createdAt?: true
     deletedAt?: true
@@ -22133,6 +22144,7 @@ export namespace Prisma {
     content: string
     images: string[]
     isAnonymous: boolean
+    views: number
     userId: string
     createdAt: Date
     deletedAt: Date
@@ -22165,6 +22177,7 @@ export namespace Prisma {
     content?: boolean
     images?: boolean
     isAnonymous?: boolean
+    views?: boolean
     userId?: boolean
     createdAt?: boolean
     deletedAt?: boolean
@@ -22178,6 +22191,7 @@ export namespace Prisma {
     content?: boolean
     images?: boolean
     isAnonymous?: boolean
+    views?: boolean
     userId?: boolean
     createdAt?: boolean
     deletedAt?: boolean
@@ -32661,6 +32675,7 @@ export namespace Prisma {
     content: 'content',
     images: 'images',
     isAnonymous: 'isAnonymous',
+    views: 'views',
     userId: 'userId',
     createdAt: 'createdAt',
     deletedAt: 'deletedAt',
@@ -33845,6 +33860,7 @@ export namespace Prisma {
     content?: StringFilter | string
     images?: StringNullableListFilter
     isAnonymous?: BoolFilter | boolean
+    views?: IntFilter | number
     userId?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
     deletedAt?: DateTimeFilter | Date | string
@@ -33858,6 +33874,7 @@ export namespace Prisma {
     content?: SortOrder
     images?: SortOrder
     isAnonymous?: SortOrder
+    views?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     deletedAt?: SortOrder
@@ -33875,6 +33892,7 @@ export namespace Prisma {
     content?: SortOrder
     images?: SortOrder
     isAnonymous?: SortOrder
+    views?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     deletedAt?: SortOrder
@@ -33896,6 +33914,7 @@ export namespace Prisma {
     content?: StringWithAggregatesFilter | string
     images?: StringNullableListFilter
     isAnonymous?: BoolWithAggregatesFilter | boolean
+    views?: IntWithAggregatesFilter | number
     userId?: StringWithAggregatesFilter | string
     createdAt?: DateTimeWithAggregatesFilter | Date | string
     deletedAt?: DateTimeWithAggregatesFilter | Date | string
@@ -35718,6 +35737,7 @@ export namespace Prisma {
     content: string
     images?: DeletedArticleCreateimagesInput | Enumerable<string>
     isAnonymous: boolean
+    views: number
     userId: string
     createdAt: Date | string
     deletedAt?: Date | string
@@ -35731,6 +35751,7 @@ export namespace Prisma {
     content: string
     images?: DeletedArticleCreateimagesInput | Enumerable<string>
     isAnonymous: boolean
+    views: number
     userId: string
     createdAt: Date | string
     deletedAt?: Date | string
@@ -35744,6 +35765,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     images?: DeletedArticleUpdateimagesInput | Enumerable<string>
     isAnonymous?: BoolFieldUpdateOperationsInput | boolean
+    views?: IntFieldUpdateOperationsInput | number
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35757,6 +35779,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     images?: DeletedArticleUpdateimagesInput | Enumerable<string>
     isAnonymous?: BoolFieldUpdateOperationsInput | boolean
+    views?: IntFieldUpdateOperationsInput | number
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35770,6 +35793,7 @@ export namespace Prisma {
     content: string
     images?: DeletedArticleCreateimagesInput | Enumerable<string>
     isAnonymous: boolean
+    views: number
     userId: string
     createdAt: Date | string
     deletedAt?: Date | string
@@ -35783,6 +35807,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     images?: DeletedArticleUpdateimagesInput | Enumerable<string>
     isAnonymous?: BoolFieldUpdateOperationsInput | boolean
+    views?: IntFieldUpdateOperationsInput | number
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35796,6 +35821,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     images?: DeletedArticleUpdateimagesInput | Enumerable<string>
     isAnonymous?: BoolFieldUpdateOperationsInput | boolean
+    views?: IntFieldUpdateOperationsInput | number
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37411,6 +37437,7 @@ export namespace Prisma {
     content?: SortOrder
     images?: SortOrder
     isAnonymous?: SortOrder
+    views?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     deletedAt?: SortOrder
@@ -37419,6 +37446,7 @@ export namespace Prisma {
 
   export type DeletedArticleAvgOrderByAggregateInput = {
     id?: SortOrder
+    views?: SortOrder
     boardId?: SortOrder
   }
 
@@ -37428,6 +37456,7 @@ export namespace Prisma {
     title?: SortOrder
     content?: SortOrder
     isAnonymous?: SortOrder
+    views?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     deletedAt?: SortOrder
@@ -37440,6 +37469,7 @@ export namespace Prisma {
     title?: SortOrder
     content?: SortOrder
     isAnonymous?: SortOrder
+    views?: SortOrder
     userId?: SortOrder
     createdAt?: SortOrder
     deletedAt?: SortOrder
@@ -37448,6 +37478,7 @@ export namespace Prisma {
 
   export type DeletedArticleSumOrderByAggregateInput = {
     id?: SortOrder
+    views?: SortOrder
     boardId?: SortOrder
   }
 
