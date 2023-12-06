@@ -22,6 +22,4 @@ jobs:
           token: ${{ secrets.NPM_TOKEN }}
           tag: latest
       - run: |
-          git add .
-          git commit -m "chore: release"
-          git push origin main
+          git push
