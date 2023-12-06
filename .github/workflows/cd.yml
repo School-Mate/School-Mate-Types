@@ -21,5 +21,7 @@ jobs:
         with:
           token: ${{ secrets.NPM_TOKEN }}
           tag: latest
-      - run: |
-          git push
+      - name: Commit & Push changes
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GIT_TOKEN }}
