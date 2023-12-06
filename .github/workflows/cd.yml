@@ -22,7 +22,5 @@ jobs:
           token: ${{ secrets.NPM_TOKEN }}
           tag: latest
       - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GIT_TOKEN }}
-          branch: main
+        run: |
+          git push https://${{secrets.GIT_TOKEN}}@github.com/School-Mate/School-Mate-Types.git
