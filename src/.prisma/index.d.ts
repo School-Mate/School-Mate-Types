@@ -28,6 +28,7 @@ export type UserPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultAr
     socialLogin: SocialLoginPayload<ExtArgs> | null
     userSchool: UserSchoolPayload<ExtArgs> | null
     userSchoolVerify: UserSchoolVerifyPayload<ExtArgs>[]
+    pushDevice: PushDevicePayload<ExtArgs>[]
   }
   scalars: $Extensions.GetResult<{
     id: string
@@ -602,6 +603,24 @@ export type AdvertisePayload<ExtArgs extends $Extensions.Args = $Extensions.Defa
  * 
  */
 export type Advertise = runtime.Types.DefaultSelection<AdvertisePayload>
+export type PushDevicePayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+  objects: {
+    user: UserPayload<ExtArgs>
+  }
+  scalars: $Extensions.GetResult<{
+    id: string
+    userId: string
+    token: string
+    createdAt: Date
+  }, ExtArgs["result"]["pushDevice"]>
+  composites: {}
+}
+
+/**
+ * Model PushDevice
+ * 
+ */
+export type PushDevice = runtime.Types.DefaultSelection<PushDevicePayload>
 export type MealPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
   objects: {}
   scalars: $Extensions.GetResult<{
@@ -1090,6 +1109,16 @@ export class PrismaClient<
     * ```
     */
   get advertise(): Prisma.AdvertiseDelegate<GlobalReject, ExtArgs>;
+
+  /**
+   * `prisma.pushDevice`: Exposes CRUD operations for the **PushDevice** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PushDevices
+    * const pushDevices = await prisma.pushDevice.findMany()
+    * ```
+    */
+  get pushDevice(): Prisma.PushDeviceDelegate<GlobalReject, ExtArgs>;
 
   /**
    * `prisma.meal`: Exposes CRUD operations for the **Meal** model.
@@ -1611,6 +1640,7 @@ export namespace Prisma {
     ReCommentLike: 'ReCommentLike',
     HotArticle: 'HotArticle',
     Advertise: 'Advertise',
+    PushDevice: 'PushDevice',
     Meal: 'Meal'
   };
 
@@ -1628,7 +1658,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     meta: {
-      modelProps: 'user' | 'school' | 'image' | 'phoneVerifyRequest' | 'socialLogin' | 'agreement' | 'userSchoolVerify' | 'userSchool' | 'busStation' | 'busRoute' | 'busArrival' | 'askedUser' | 'asked' | 'admin' | 'board' | 'boardManager' | 'article' | 'defaultBoard' | 'deletedArticle' | 'boardRequest' | 'comment' | 'reComment' | 'report' | 'articleLike' | 'commentLike' | 'reCommentLike' | 'hotArticle' | 'advertise' | 'meal'
+      modelProps: 'user' | 'school' | 'image' | 'phoneVerifyRequest' | 'socialLogin' | 'agreement' | 'userSchoolVerify' | 'userSchool' | 'busStation' | 'busRoute' | 'busArrival' | 'askedUser' | 'asked' | 'admin' | 'board' | 'boardManager' | 'article' | 'defaultBoard' | 'deletedArticle' | 'boardRequest' | 'comment' | 'reComment' | 'report' | 'articleLike' | 'commentLike' | 'reCommentLike' | 'hotArticle' | 'advertise' | 'pushDevice' | 'meal'
       txIsolationLevel: Prisma.TransactionIsolationLevel
     },
     model: {
@@ -3844,6 +3874,85 @@ export namespace Prisma {
           }
         }
       }
+      PushDevice: {
+        operations: {
+          findUnique: {
+            args: Prisma.PushDeviceFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<PushDevicePayload> | null
+            payload: PushDevicePayload<ExtArgs>
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PushDeviceFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<PushDevicePayload>
+            payload: PushDevicePayload<ExtArgs>
+          }
+          findFirst: {
+            args: Prisma.PushDeviceFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<PushDevicePayload> | null
+            payload: PushDevicePayload<ExtArgs>
+          }
+          findFirstOrThrow: {
+            args: Prisma.PushDeviceFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<PushDevicePayload>
+            payload: PushDevicePayload<ExtArgs>
+          }
+          findMany: {
+            args: Prisma.PushDeviceFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<PushDevicePayload>[]
+            payload: PushDevicePayload<ExtArgs>
+          }
+          create: {
+            args: Prisma.PushDeviceCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<PushDevicePayload>
+            payload: PushDevicePayload<ExtArgs>
+          }
+          createMany: {
+            args: Prisma.PushDeviceCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: PushDevicePayload<ExtArgs>
+          }
+          delete: {
+            args: Prisma.PushDeviceDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<PushDevicePayload>
+            payload: PushDevicePayload<ExtArgs>
+          }
+          update: {
+            args: Prisma.PushDeviceUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<PushDevicePayload>
+            payload: PushDevicePayload<ExtArgs>
+          }
+          deleteMany: {
+            args: Prisma.PushDeviceDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: PushDevicePayload<ExtArgs>
+          }
+          updateMany: {
+            args: Prisma.PushDeviceUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: PushDevicePayload<ExtArgs>
+          }
+          upsert: {
+            args: Prisma.PushDeviceUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<PushDevicePayload>
+            payload: PushDevicePayload<ExtArgs>
+          }
+          aggregate: {
+            args: Prisma.PushDeviceAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregatePushDevice>
+            payload: PushDevicePayload<ExtArgs>
+          }
+          groupBy: {
+            args: Prisma.PushDeviceGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<PushDeviceGroupByOutputType>[]
+            payload: PushDevicePayload<ExtArgs>
+          }
+          count: {
+            args: Prisma.PushDeviceCountArgs<ExtArgs>,
+            result: $Utils.Optional<PushDeviceCountAggregateOutputType> | number
+            payload: PushDevicePayload<ExtArgs>
+          }
+        }
+      }
       Meal: {
         operations: {
           findUnique: {
@@ -4118,6 +4227,7 @@ export namespace Prisma {
     reCommentLike: number
     reComment: number
     userSchoolVerify: number
+    pushDevice: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
@@ -4131,6 +4241,7 @@ export namespace Prisma {
     reCommentLike?: boolean | UserCountOutputTypeCountReCommentLikeArgs
     reComment?: boolean | UserCountOutputTypeCountReCommentArgs
     userSchoolVerify?: boolean | UserCountOutputTypeCountUserSchoolVerifyArgs
+    pushDevice?: boolean | UserCountOutputTypeCountPushDeviceArgs
   }
 
   // Custom InputTypes
@@ -4223,6 +4334,14 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountUserSchoolVerifyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: UserSchoolVerifyWhereInput
+  }
+
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPushDeviceArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: PushDeviceWhereInput
   }
 
 
@@ -4756,6 +4875,7 @@ export namespace Prisma {
     socialLogin?: boolean | SocialLoginArgs<ExtArgs>
     userSchool?: boolean | UserSchoolArgs<ExtArgs>
     userSchoolVerify?: boolean | User$userSchoolVerifyArgs<ExtArgs>
+    pushDevice?: boolean | User$pushDeviceArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4787,6 +4907,7 @@ export namespace Prisma {
     socialLogin?: boolean | SocialLoginArgs<ExtArgs>
     userSchool?: boolean | UserSchoolArgs<ExtArgs>
     userSchoolVerify?: boolean | User$userSchoolVerifyArgs<ExtArgs>
+    pushDevice?: boolean | User$pushDeviceArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeArgs<ExtArgs>
   }
 
@@ -5187,6 +5308,8 @@ export namespace Prisma {
     userSchool<T extends UserSchoolArgs<ExtArgs> = {}>(args?: Subset<T, UserSchoolArgs<ExtArgs>>): Prisma__UserSchoolClient<$Types.GetResult<UserSchoolPayload<ExtArgs>, T, 'findUnique', never> | Null, never, ExtArgs>;
 
     userSchoolVerify<T extends User$userSchoolVerifyArgs<ExtArgs> = {}>(args?: Subset<T, User$userSchoolVerifyArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<UserSchoolVerifyPayload<ExtArgs>, T, 'findMany', never>| Null>;
+
+    pushDevice<T extends User$pushDeviceArgs<ExtArgs> = {}>(args?: Subset<T, User$pushDeviceArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<PushDevicePayload<ExtArgs>, T, 'findMany', never>| Null>;
 
     private get _document();
     /**
@@ -5750,6 +5873,27 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: Enumerable<UserSchoolVerifyScalarFieldEnum>
+  }
+
+
+  /**
+   * User.pushDevice
+   */
+  export type User$pushDeviceArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDevice
+     */
+    select?: PushDeviceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PushDeviceInclude<ExtArgs> | null
+    where?: PushDeviceWhereInput
+    orderBy?: Enumerable<PushDeviceOrderByWithRelationInput>
+    cursor?: PushDeviceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<PushDeviceScalarFieldEnum>
   }
 
 
@@ -31508,6 +31652,921 @@ export namespace Prisma {
 
 
   /**
+   * Model PushDevice
+   */
+
+
+  export type AggregatePushDevice = {
+    _count: PushDeviceCountAggregateOutputType | null
+    _min: PushDeviceMinAggregateOutputType | null
+    _max: PushDeviceMaxAggregateOutputType | null
+  }
+
+  export type PushDeviceMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    token: string | null
+    createdAt: Date | null
+  }
+
+  export type PushDeviceMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    token: string | null
+    createdAt: Date | null
+  }
+
+  export type PushDeviceCountAggregateOutputType = {
+    id: number
+    userId: number
+    token: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PushDeviceMinAggregateInputType = {
+    id?: true
+    userId?: true
+    token?: true
+    createdAt?: true
+  }
+
+  export type PushDeviceMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    token?: true
+    createdAt?: true
+  }
+
+  export type PushDeviceCountAggregateInputType = {
+    id?: true
+    userId?: true
+    token?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PushDeviceAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PushDevice to aggregate.
+     */
+    where?: PushDeviceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PushDevices to fetch.
+     */
+    orderBy?: Enumerable<PushDeviceOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PushDeviceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PushDevices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PushDevices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PushDevices
+    **/
+    _count?: true | PushDeviceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PushDeviceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PushDeviceMaxAggregateInputType
+  }
+
+  export type GetPushDeviceAggregateType<T extends PushDeviceAggregateArgs> = {
+        [P in keyof T & keyof AggregatePushDevice]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePushDevice[P]>
+      : GetScalarType<T[P], AggregatePushDevice[P]>
+  }
+
+
+
+
+  export type PushDeviceGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: PushDeviceWhereInput
+    orderBy?: Enumerable<PushDeviceOrderByWithAggregationInput>
+    by: PushDeviceScalarFieldEnum[]
+    having?: PushDeviceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PushDeviceCountAggregateInputType | true
+    _min?: PushDeviceMinAggregateInputType
+    _max?: PushDeviceMaxAggregateInputType
+  }
+
+
+  export type PushDeviceGroupByOutputType = {
+    id: string
+    userId: string
+    token: string
+    createdAt: Date
+    _count: PushDeviceCountAggregateOutputType | null
+    _min: PushDeviceMinAggregateOutputType | null
+    _max: PushDeviceMaxAggregateOutputType | null
+  }
+
+  type GetPushDeviceGroupByPayload<T extends PushDeviceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<PushDeviceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PushDeviceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PushDeviceGroupByOutputType[P]>
+            : GetScalarType<T[P], PushDeviceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PushDeviceSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    token?: boolean
+    createdAt?: boolean
+    user?: boolean | UserArgs<ExtArgs>
+  }, ExtArgs["result"]["pushDevice"]>
+
+  export type PushDeviceSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    token?: boolean
+    createdAt?: boolean
+  }
+
+  export type PushDeviceInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    user?: boolean | UserArgs<ExtArgs>
+  }
+
+
+  type PushDeviceGetPayload<S extends boolean | null | undefined | PushDeviceArgs> = $Types.GetResult<PushDevicePayload, S>
+
+  type PushDeviceCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
+    Omit<PushDeviceFindManyArgs, 'select' | 'include'> & {
+      select?: PushDeviceCountAggregateInputType | true
+    }
+
+  export interface PushDeviceDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PushDevice'], meta: { name: 'PushDevice' } }
+    /**
+     * Find zero or one PushDevice that matches the filter.
+     * @param {PushDeviceFindUniqueArgs} args - Arguments to find a PushDevice
+     * @example
+     * // Get one PushDevice
+     * const pushDevice = await prisma.pushDevice.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends PushDeviceFindUniqueArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, PushDeviceFindUniqueArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'PushDevice'> extends True ? Prisma__PushDeviceClient<$Types.GetResult<PushDevicePayload<ExtArgs>, T, 'findUnique', never>, never, ExtArgs> : Prisma__PushDeviceClient<$Types.GetResult<PushDevicePayload<ExtArgs>, T, 'findUnique', never> | null, null, ExtArgs>
+
+    /**
+     * Find one PushDevice that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {PushDeviceFindUniqueOrThrowArgs} args - Arguments to find a PushDevice
+     * @example
+     * // Get one PushDevice
+     * const pushDevice = await prisma.pushDevice.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends PushDeviceFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, PushDeviceFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__PushDeviceClient<$Types.GetResult<PushDevicePayload<ExtArgs>, T, 'findUniqueOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find the first PushDevice that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushDeviceFindFirstArgs} args - Arguments to find a PushDevice
+     * @example
+     * // Get one PushDevice
+     * const pushDevice = await prisma.pushDevice.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends PushDeviceFindFirstArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, PushDeviceFindFirstArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'PushDevice'> extends True ? Prisma__PushDeviceClient<$Types.GetResult<PushDevicePayload<ExtArgs>, T, 'findFirst', never>, never, ExtArgs> : Prisma__PushDeviceClient<$Types.GetResult<PushDevicePayload<ExtArgs>, T, 'findFirst', never> | null, null, ExtArgs>
+
+    /**
+     * Find the first PushDevice that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushDeviceFindFirstOrThrowArgs} args - Arguments to find a PushDevice
+     * @example
+     * // Get one PushDevice
+     * const pushDevice = await prisma.pushDevice.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends PushDeviceFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, PushDeviceFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__PushDeviceClient<$Types.GetResult<PushDevicePayload<ExtArgs>, T, 'findFirstOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find zero or more PushDevices that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushDeviceFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PushDevices
+     * const pushDevices = await prisma.pushDevice.findMany()
+     * 
+     * // Get first 10 PushDevices
+     * const pushDevices = await prisma.pushDevice.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const pushDeviceWithIdOnly = await prisma.pushDevice.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends PushDeviceFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, PushDeviceFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Types.GetResult<PushDevicePayload<ExtArgs>, T, 'findMany', never>>
+
+    /**
+     * Create a PushDevice.
+     * @param {PushDeviceCreateArgs} args - Arguments to create a PushDevice.
+     * @example
+     * // Create one PushDevice
+     * const PushDevice = await prisma.pushDevice.create({
+     *   data: {
+     *     // ... data to create a PushDevice
+     *   }
+     * })
+     * 
+    **/
+    create<T extends PushDeviceCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, PushDeviceCreateArgs<ExtArgs>>
+    ): Prisma__PushDeviceClient<$Types.GetResult<PushDevicePayload<ExtArgs>, T, 'create', never>, never, ExtArgs>
+
+    /**
+     * Create many PushDevices.
+     *     @param {PushDeviceCreateManyArgs} args - Arguments to create many PushDevices.
+     *     @example
+     *     // Create many PushDevices
+     *     const pushDevice = await prisma.pushDevice.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends PushDeviceCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, PushDeviceCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a PushDevice.
+     * @param {PushDeviceDeleteArgs} args - Arguments to delete one PushDevice.
+     * @example
+     * // Delete one PushDevice
+     * const PushDevice = await prisma.pushDevice.delete({
+     *   where: {
+     *     // ... filter to delete one PushDevice
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends PushDeviceDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, PushDeviceDeleteArgs<ExtArgs>>
+    ): Prisma__PushDeviceClient<$Types.GetResult<PushDevicePayload<ExtArgs>, T, 'delete', never>, never, ExtArgs>
+
+    /**
+     * Update one PushDevice.
+     * @param {PushDeviceUpdateArgs} args - Arguments to update one PushDevice.
+     * @example
+     * // Update one PushDevice
+     * const pushDevice = await prisma.pushDevice.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends PushDeviceUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, PushDeviceUpdateArgs<ExtArgs>>
+    ): Prisma__PushDeviceClient<$Types.GetResult<PushDevicePayload<ExtArgs>, T, 'update', never>, never, ExtArgs>
+
+    /**
+     * Delete zero or more PushDevices.
+     * @param {PushDeviceDeleteManyArgs} args - Arguments to filter PushDevices to delete.
+     * @example
+     * // Delete a few PushDevices
+     * const { count } = await prisma.pushDevice.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends PushDeviceDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, PushDeviceDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PushDevices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushDeviceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PushDevices
+     * const pushDevice = await prisma.pushDevice.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends PushDeviceUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, PushDeviceUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PushDevice.
+     * @param {PushDeviceUpsertArgs} args - Arguments to update or create a PushDevice.
+     * @example
+     * // Update or create a PushDevice
+     * const pushDevice = await prisma.pushDevice.upsert({
+     *   create: {
+     *     // ... data to create a PushDevice
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PushDevice we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends PushDeviceUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, PushDeviceUpsertArgs<ExtArgs>>
+    ): Prisma__PushDeviceClient<$Types.GetResult<PushDevicePayload<ExtArgs>, T, 'upsert', never>, never, ExtArgs>
+
+    /**
+     * Count the number of PushDevices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushDeviceCountArgs} args - Arguments to filter PushDevices to count.
+     * @example
+     * // Count the number of PushDevices
+     * const count = await prisma.pushDevice.count({
+     *   where: {
+     *     // ... the filter for the PushDevices we want to count
+     *   }
+     * })
+    **/
+    count<T extends PushDeviceCountArgs>(
+      args?: Subset<T, PushDeviceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PushDeviceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PushDevice.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushDeviceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PushDeviceAggregateArgs>(args: Subset<T, PushDeviceAggregateArgs>): Prisma.PrismaPromise<GetPushDeviceAggregateType<T>>
+
+    /**
+     * Group by PushDevice.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PushDeviceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PushDeviceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PushDeviceGroupByArgs['orderBy'] }
+        : { orderBy?: PushDeviceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PushDeviceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPushDeviceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PushDevice.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__PushDeviceClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    user<T extends UserArgs<ExtArgs> = {}>(args?: Subset<T, UserArgs<ExtArgs>>): Prisma__UserClient<$Types.GetResult<UserPayload<ExtArgs>, T, 'findUnique', never> | Null, never, ExtArgs>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * PushDevice base type for findUnique actions
+   */
+  export type PushDeviceFindUniqueArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDevice
+     */
+    select?: PushDeviceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PushDeviceInclude<ExtArgs> | null
+    /**
+     * Filter, which PushDevice to fetch.
+     */
+    where: PushDeviceWhereUniqueInput
+  }
+
+  /**
+   * PushDevice findUnique
+   */
+  export interface PushDeviceFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends PushDeviceFindUniqueArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * PushDevice findUniqueOrThrow
+   */
+  export type PushDeviceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDevice
+     */
+    select?: PushDeviceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PushDeviceInclude<ExtArgs> | null
+    /**
+     * Filter, which PushDevice to fetch.
+     */
+    where: PushDeviceWhereUniqueInput
+  }
+
+
+  /**
+   * PushDevice base type for findFirst actions
+   */
+  export type PushDeviceFindFirstArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDevice
+     */
+    select?: PushDeviceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PushDeviceInclude<ExtArgs> | null
+    /**
+     * Filter, which PushDevice to fetch.
+     */
+    where?: PushDeviceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PushDevices to fetch.
+     */
+    orderBy?: Enumerable<PushDeviceOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PushDevices.
+     */
+    cursor?: PushDeviceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PushDevices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PushDevices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PushDevices.
+     */
+    distinct?: Enumerable<PushDeviceScalarFieldEnum>
+  }
+
+  /**
+   * PushDevice findFirst
+   */
+  export interface PushDeviceFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends PushDeviceFindFirstArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * PushDevice findFirstOrThrow
+   */
+  export type PushDeviceFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDevice
+     */
+    select?: PushDeviceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PushDeviceInclude<ExtArgs> | null
+    /**
+     * Filter, which PushDevice to fetch.
+     */
+    where?: PushDeviceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PushDevices to fetch.
+     */
+    orderBy?: Enumerable<PushDeviceOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PushDevices.
+     */
+    cursor?: PushDeviceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PushDevices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PushDevices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PushDevices.
+     */
+    distinct?: Enumerable<PushDeviceScalarFieldEnum>
+  }
+
+
+  /**
+   * PushDevice findMany
+   */
+  export type PushDeviceFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDevice
+     */
+    select?: PushDeviceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PushDeviceInclude<ExtArgs> | null
+    /**
+     * Filter, which PushDevices to fetch.
+     */
+    where?: PushDeviceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PushDevices to fetch.
+     */
+    orderBy?: Enumerable<PushDeviceOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PushDevices.
+     */
+    cursor?: PushDeviceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PushDevices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PushDevices.
+     */
+    skip?: number
+    distinct?: Enumerable<PushDeviceScalarFieldEnum>
+  }
+
+
+  /**
+   * PushDevice create
+   */
+  export type PushDeviceCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDevice
+     */
+    select?: PushDeviceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PushDeviceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PushDevice.
+     */
+    data: XOR<PushDeviceCreateInput, PushDeviceUncheckedCreateInput>
+  }
+
+
+  /**
+   * PushDevice createMany
+   */
+  export type PushDeviceCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PushDevices.
+     */
+    data: Enumerable<PushDeviceCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * PushDevice update
+   */
+  export type PushDeviceUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDevice
+     */
+    select?: PushDeviceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PushDeviceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PushDevice.
+     */
+    data: XOR<PushDeviceUpdateInput, PushDeviceUncheckedUpdateInput>
+    /**
+     * Choose, which PushDevice to update.
+     */
+    where: PushDeviceWhereUniqueInput
+  }
+
+
+  /**
+   * PushDevice updateMany
+   */
+  export type PushDeviceUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PushDevices.
+     */
+    data: XOR<PushDeviceUpdateManyMutationInput, PushDeviceUncheckedUpdateManyInput>
+    /**
+     * Filter which PushDevices to update
+     */
+    where?: PushDeviceWhereInput
+  }
+
+
+  /**
+   * PushDevice upsert
+   */
+  export type PushDeviceUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDevice
+     */
+    select?: PushDeviceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PushDeviceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PushDevice to update in case it exists.
+     */
+    where: PushDeviceWhereUniqueInput
+    /**
+     * In case the PushDevice found by the `where` argument doesn't exist, create a new PushDevice with this data.
+     */
+    create: XOR<PushDeviceCreateInput, PushDeviceUncheckedCreateInput>
+    /**
+     * In case the PushDevice was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PushDeviceUpdateInput, PushDeviceUncheckedUpdateInput>
+  }
+
+
+  /**
+   * PushDevice delete
+   */
+  export type PushDeviceDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDevice
+     */
+    select?: PushDeviceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PushDeviceInclude<ExtArgs> | null
+    /**
+     * Filter which PushDevice to delete.
+     */
+    where: PushDeviceWhereUniqueInput
+  }
+
+
+  /**
+   * PushDevice deleteMany
+   */
+  export type PushDeviceDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PushDevices to delete
+     */
+    where?: PushDeviceWhereInput
+  }
+
+
+  /**
+   * PushDevice without action
+   */
+  export type PushDeviceArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PushDevice
+     */
+    select?: PushDeviceSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: PushDeviceInclude<ExtArgs> | null
+  }
+
+
+
+  /**
    * Model Meal
    */
 
@@ -32792,6 +33851,16 @@ export namespace Prisma {
   export type AdvertiseScalarFieldEnum = (typeof AdvertiseScalarFieldEnum)[keyof typeof AdvertiseScalarFieldEnum]
 
 
+  export const PushDeviceScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    token: 'token',
+    createdAt: 'createdAt'
+  };
+
+  export type PushDeviceScalarFieldEnum = (typeof PushDeviceScalarFieldEnum)[keyof typeof PushDeviceScalarFieldEnum]
+
+
   export const MealScalarFieldEnum: {
     id: 'id',
     MLSV_FGR: 'MLSV_FGR',
@@ -32861,6 +33930,7 @@ export namespace Prisma {
     socialLogin?: XOR<SocialLoginRelationFilter, SocialLoginWhereInput> | null
     userSchool?: XOR<UserSchoolRelationFilter, UserSchoolWhereInput> | null
     userSchoolVerify?: UserSchoolVerifyListRelationFilter
+    pushDevice?: PushDeviceListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -32888,6 +33958,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginOrderByWithRelationInput
     userSchool?: UserSchoolOrderByWithRelationInput
     userSchoolVerify?: UserSchoolVerifyOrderByRelationAggregateInput
+    pushDevice?: PushDeviceOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = {
@@ -34403,6 +35474,49 @@ export namespace Prisma {
     endDate?: DateTimeWithAggregatesFilter | Date | string
   }
 
+  export type PushDeviceWhereInput = {
+    AND?: Enumerable<PushDeviceWhereInput>
+    OR?: Enumerable<PushDeviceWhereInput>
+    NOT?: Enumerable<PushDeviceWhereInput>
+    id?: StringFilter | string
+    userId?: StringFilter | string
+    token?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type PushDeviceOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type PushDeviceWhereUniqueInput = {
+    id?: string
+  }
+
+  export type PushDeviceOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    createdAt?: SortOrder
+    _count?: PushDeviceCountOrderByAggregateInput
+    _max?: PushDeviceMaxOrderByAggregateInput
+    _min?: PushDeviceMinOrderByAggregateInput
+  }
+
+  export type PushDeviceScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<PushDeviceScalarWhereWithAggregatesInput>
+    OR?: Enumerable<PushDeviceScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<PushDeviceScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    userId?: StringWithAggregatesFilter | string
+    token?: StringWithAggregatesFilter | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+  }
+
   export type MealWhereInput = {
     AND?: Enumerable<MealWhereInput>
     OR?: Enumerable<MealWhereInput>
@@ -34479,6 +35593,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -34506,6 +35621,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -34533,6 +35649,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -34560,6 +35677,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -36376,6 +37494,54 @@ export namespace Prisma {
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PushDeviceCreateInput = {
+    id?: string
+    token: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutPushDeviceInput
+  }
+
+  export type PushDeviceUncheckedCreateInput = {
+    id?: string
+    userId: string
+    token: string
+    createdAt?: Date | string
+  }
+
+  export type PushDeviceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPushDeviceNestedInput
+  }
+
+  export type PushDeviceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PushDeviceCreateManyInput = {
+    id?: string
+    userId: string
+    token: string
+    createdAt?: Date | string
+  }
+
+  export type PushDeviceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PushDeviceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type MealCreateInput = {
     id: string
     MLSV_FGR: number
@@ -36572,6 +37738,12 @@ export namespace Prisma {
     none?: UserSchoolVerifyWhereInput
   }
 
+  export type PushDeviceListRelationFilter = {
+    every?: PushDeviceWhereInput
+    some?: PushDeviceWhereInput
+    none?: PushDeviceWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -36614,6 +37786,10 @@ export namespace Prisma {
   }
 
   export type UserSchoolVerifyOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PushDeviceOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -37896,6 +39072,27 @@ export namespace Prisma {
     id?: SortOrder
   }
 
+  export type PushDeviceCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PushDeviceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PushDeviceMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    token?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type MealCountOrderByAggregateInput = {
     id?: SortOrder
     MLSV_FGR?: SortOrder
@@ -38025,6 +39222,13 @@ export namespace Prisma {
     connect?: Enumerable<UserSchoolVerifyWhereUniqueInput>
   }
 
+  export type PushDeviceCreateNestedManyWithoutUserInput = {
+    create?: XOR<Enumerable<PushDeviceCreateWithoutUserInput>, Enumerable<PushDeviceUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<PushDeviceCreateOrConnectWithoutUserInput>
+    createMany?: PushDeviceCreateManyUserInputEnvelope
+    connect?: Enumerable<PushDeviceWhereUniqueInput>
+  }
+
   export type AgreementUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<AgreementCreateWithoutUserInput, AgreementUncheckedCreateWithoutUserInput>
     connectOrCreate?: AgreementCreateOrConnectWithoutUserInput
@@ -38117,6 +39321,13 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<UserSchoolVerifyCreateOrConnectWithoutUserInput>
     createMany?: UserSchoolVerifyCreateManyUserInputEnvelope
     connect?: Enumerable<UserSchoolVerifyWhereUniqueInput>
+  }
+
+  export type PushDeviceUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<Enumerable<PushDeviceCreateWithoutUserInput>, Enumerable<PushDeviceUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<PushDeviceCreateOrConnectWithoutUserInput>
+    createMany?: PushDeviceCreateManyUserInputEnvelope
+    connect?: Enumerable<PushDeviceWhereUniqueInput>
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -38319,6 +39530,20 @@ export namespace Prisma {
     deleteMany?: Enumerable<UserSchoolVerifyScalarWhereInput>
   }
 
+  export type PushDeviceUpdateManyWithoutUserNestedInput = {
+    create?: XOR<Enumerable<PushDeviceCreateWithoutUserInput>, Enumerable<PushDeviceUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<PushDeviceCreateOrConnectWithoutUserInput>
+    upsert?: Enumerable<PushDeviceUpsertWithWhereUniqueWithoutUserInput>
+    createMany?: PushDeviceCreateManyUserInputEnvelope
+    set?: Enumerable<PushDeviceWhereUniqueInput>
+    disconnect?: Enumerable<PushDeviceWhereUniqueInput>
+    delete?: Enumerable<PushDeviceWhereUniqueInput>
+    connect?: Enumerable<PushDeviceWhereUniqueInput>
+    update?: Enumerable<PushDeviceUpdateWithWhereUniqueWithoutUserInput>
+    updateMany?: Enumerable<PushDeviceUpdateManyWithWhereWithoutUserInput>
+    deleteMany?: Enumerable<PushDeviceScalarWhereInput>
+  }
+
   export type AgreementUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<AgreementCreateWithoutUserInput, AgreementUncheckedCreateWithoutUserInput>
     connectOrCreate?: AgreementCreateOrConnectWithoutUserInput
@@ -38497,6 +39722,20 @@ export namespace Prisma {
     update?: Enumerable<UserSchoolVerifyUpdateWithWhereUniqueWithoutUserInput>
     updateMany?: Enumerable<UserSchoolVerifyUpdateManyWithWhereWithoutUserInput>
     deleteMany?: Enumerable<UserSchoolVerifyScalarWhereInput>
+  }
+
+  export type PushDeviceUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<Enumerable<PushDeviceCreateWithoutUserInput>, Enumerable<PushDeviceUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<PushDeviceCreateOrConnectWithoutUserInput>
+    upsert?: Enumerable<PushDeviceUpsertWithWhereUniqueWithoutUserInput>
+    createMany?: PushDeviceCreateManyUserInputEnvelope
+    set?: Enumerable<PushDeviceWhereUniqueInput>
+    disconnect?: Enumerable<PushDeviceWhereUniqueInput>
+    delete?: Enumerable<PushDeviceWhereUniqueInput>
+    connect?: Enumerable<PushDeviceWhereUniqueInput>
+    update?: Enumerable<PushDeviceUpdateWithWhereUniqueWithoutUserInput>
+    updateMany?: Enumerable<PushDeviceUpdateManyWithWhereWithoutUserInput>
+    deleteMany?: Enumerable<PushDeviceScalarWhereInput>
   }
 
   export type UserSchoolCreateNestedManyWithoutSchoolInput = {
@@ -39513,6 +40752,20 @@ export namespace Prisma {
     update?: XOR<ArticleUpdateWithoutHotArticleInput, ArticleUncheckedUpdateWithoutHotArticleInput>
   }
 
+  export type UserCreateNestedOneWithoutPushDeviceInput = {
+    create?: XOR<UserCreateWithoutPushDeviceInput, UserUncheckedCreateWithoutPushDeviceInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPushDeviceInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutPushDeviceNestedInput = {
+    create?: XOR<UserCreateWithoutPushDeviceInput, UserUncheckedCreateWithoutPushDeviceInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPushDeviceInput
+    upsert?: UserUpsertWithoutPushDeviceInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<UserUpdateWithoutPushDeviceInput, UserUncheckedUpdateWithoutPushDeviceInput>
+  }
+
   export type NestedStringFilter = {
     equals?: string
     in?: Enumerable<string> | string
@@ -40218,6 +41471,28 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PushDeviceCreateWithoutUserInput = {
+    id?: string
+    token: string
+    createdAt?: Date | string
+  }
+
+  export type PushDeviceUncheckedCreateWithoutUserInput = {
+    id?: string
+    token: string
+    createdAt?: Date | string
+  }
+
+  export type PushDeviceCreateOrConnectWithoutUserInput = {
+    where: PushDeviceWhereUniqueInput
+    create: XOR<PushDeviceCreateWithoutUserInput, PushDeviceUncheckedCreateWithoutUserInput>
+  }
+
+  export type PushDeviceCreateManyUserInputEnvelope = {
+    data: Enumerable<PushDeviceCreateManyUserInput>
+    skipDuplicates?: boolean
+  }
+
   export type AgreementUpsertWithoutUserInput = {
     update: XOR<AgreementUpdateWithoutUserInput, AgreementUncheckedUpdateWithoutUserInput>
     create: XOR<AgreementCreateWithoutUserInput, AgreementUncheckedCreateWithoutUserInput>
@@ -40586,6 +41861,32 @@ export namespace Prisma {
     dept?: StringFilter | string
   }
 
+  export type PushDeviceUpsertWithWhereUniqueWithoutUserInput = {
+    where: PushDeviceWhereUniqueInput
+    update: XOR<PushDeviceUpdateWithoutUserInput, PushDeviceUncheckedUpdateWithoutUserInput>
+    create: XOR<PushDeviceCreateWithoutUserInput, PushDeviceUncheckedCreateWithoutUserInput>
+  }
+
+  export type PushDeviceUpdateWithWhereUniqueWithoutUserInput = {
+    where: PushDeviceWhereUniqueInput
+    data: XOR<PushDeviceUpdateWithoutUserInput, PushDeviceUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PushDeviceUpdateManyWithWhereWithoutUserInput = {
+    where: PushDeviceScalarWhereInput
+    data: XOR<PushDeviceUpdateManyMutationInput, PushDeviceUncheckedUpdateManyWithoutPushDeviceInput>
+  }
+
+  export type PushDeviceScalarWhereInput = {
+    AND?: Enumerable<PushDeviceScalarWhereInput>
+    OR?: Enumerable<PushDeviceScalarWhereInput>
+    NOT?: Enumerable<PushDeviceScalarWhereInput>
+    id?: StringFilter | string
+    userId?: StringFilter | string
+    token?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+  }
+
   export type UserSchoolCreateWithoutSchoolInput = {
     dept: string
     grade: string
@@ -40718,6 +42019,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutImageInput = {
@@ -40744,6 +42046,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutImageInput = {
@@ -40818,6 +42121,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutImageInput = {
@@ -40844,6 +42148,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserSchoolVerifyUpsertWithWhereUniqueWithoutImageInput = {
@@ -40886,6 +42191,7 @@ export namespace Prisma {
     reComment?: ReCommentCreateNestedManyWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSocialLoginInput = {
@@ -40912,6 +42218,7 @@ export namespace Prisma {
     reComment?: ReCommentUncheckedCreateNestedManyWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSocialLoginInput = {
@@ -40948,6 +42255,7 @@ export namespace Prisma {
     reComment?: ReCommentUpdateManyWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSocialLoginInput = {
@@ -40974,6 +42282,7 @@ export namespace Prisma {
     reComment?: ReCommentUncheckedUpdateManyWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAgreementInput = {
@@ -41000,6 +42309,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAgreementInput = {
@@ -41026,6 +42336,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAgreementInput = {
@@ -41062,6 +42373,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAgreementInput = {
@@ -41088,6 +42400,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ImageCreateWithoutUserSchoolVerifyInput = {
@@ -41133,6 +42446,7 @@ export namespace Prisma {
     reComment?: ReCommentCreateNestedManyWithoutUserInput
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserSchoolVerifyInput = {
@@ -41159,6 +42473,7 @@ export namespace Prisma {
     reComment?: ReCommentUncheckedCreateNestedManyWithoutUserInput
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserSchoolVerifyInput = {
@@ -41214,6 +42529,7 @@ export namespace Prisma {
     reComment?: ReCommentUpdateManyWithoutUserNestedInput
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserSchoolVerifyInput = {
@@ -41240,6 +42556,7 @@ export namespace Prisma {
     reComment?: ReCommentUncheckedUpdateManyWithoutUserNestedInput
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SchoolCreateWithoutUserSchoolInput = {
@@ -41295,6 +42612,7 @@ export namespace Prisma {
     reComment?: ReCommentCreateNestedManyWithoutUserInput
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserSchoolInput = {
@@ -41321,6 +42639,7 @@ export namespace Prisma {
     reComment?: ReCommentUncheckedCreateNestedManyWithoutUserInput
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserSchoolInput = {
@@ -41386,6 +42705,7 @@ export namespace Prisma {
     reComment?: ReCommentUpdateManyWithoutUserNestedInput
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserSchoolInput = {
@@ -41412,6 +42732,7 @@ export namespace Prisma {
     reComment?: ReCommentUncheckedUpdateManyWithoutUserNestedInput
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AskedCreateWithoutAskedUserInput = {
@@ -41470,6 +42791,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAskedUserInput = {
@@ -41496,6 +42818,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAskedUserInput = {
@@ -41548,6 +42871,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAskedUserInput = {
@@ -41574,6 +42898,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AskedUserCreateWithoutAskedInput = {
@@ -41627,6 +42952,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAskedInput = {
@@ -41653,6 +42979,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAskedInput = {
@@ -41716,6 +43043,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAskedInput = {
@@ -41742,6 +43070,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleCreateWithoutBoardInput = {
@@ -41889,6 +43218,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBoardOrganizationsInput = {
@@ -41915,6 +43245,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBoardOrganizationsInput = {
@@ -41977,6 +43308,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBoardOrganizationsInput = {
@@ -42003,6 +43335,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BoardCreateWithoutArticleInput = {
@@ -42055,6 +43388,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutArticleInput = {
@@ -42081,6 +43415,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutArticleInput = {
@@ -42279,6 +43614,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticleInput = {
@@ -42305,6 +43641,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SchoolUpsertWithoutArticleInput = {
@@ -42469,6 +43806,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentInput = {
@@ -42495,6 +43833,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentInput = {
@@ -42622,6 +43961,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentInput = {
@@ -42648,6 +43988,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CommentLikeUpsertWithWhereUniqueWithoutCommentInput = {
@@ -42770,6 +44111,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReCommentInput = {
@@ -42796,6 +44138,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReCommentInput = {
@@ -42918,6 +44261,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReCommentInput = {
@@ -42944,6 +44288,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ReCommentLikeUpsertWithWhereUniqueWithoutRecommentInput = {
@@ -42986,6 +44331,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutArticleLikeInput = {
@@ -43012,6 +44358,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutArticleLikeInput = {
@@ -43084,6 +44431,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticleLikeInput = {
@@ -43110,6 +44458,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleUpsertWithoutArticleLikeInput = {
@@ -43172,6 +44521,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentLikeInput = {
@@ -43198,6 +44548,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentLikeInput = {
@@ -43262,6 +44613,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentLikeInput = {
@@ -43288,6 +44640,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CommentUpsertWithoutCommentLikeInput = {
@@ -43342,6 +44695,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReCommentLikeInput = {
@@ -43368,6 +44722,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReCommentLikeInput = {
@@ -43432,6 +44787,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReCommentLikeInput = {
@@ -43458,6 +44814,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ReCommentUpsertWithoutReCommentLikeInput = {
@@ -43560,6 +44917,124 @@ export namespace Prisma {
     articleLike?: ArticleLikeUncheckedUpdateManyWithoutArticleNestedInput
   }
 
+  export type UserCreateWithoutPushDeviceInput = {
+    id?: string
+    email?: string | null
+    password?: string | null
+    name: string
+    profile?: string | null
+    isVerified?: boolean
+    phone?: string | null
+    createdAt?: Date | string
+    provider: UserLoginProviderType
+    userSchoolId?: string | null
+    agreement?: AgreementCreateNestedOneWithoutUserInput
+    article?: ArticleCreateNestedManyWithoutUserInput
+    asked?: AskedCreateNestedManyWithoutQuestionUserInput
+    askedUser?: AskedUserCreateNestedOneWithoutUserInput
+    boardOrganizations?: BoardManagerCreateNestedManyWithoutUserInput
+    comment?: CommentCreateNestedManyWithoutUserInput
+    image?: ImageCreateNestedManyWithoutUserInput
+    articleLike?: ArticleLikeCreateNestedManyWithoutUserInput
+    commentLike?: CommentLikeCreateNestedManyWithoutUserInput
+    reCommentLike?: ReCommentLikeCreateNestedManyWithoutUserInput
+    reComment?: ReCommentCreateNestedManyWithoutUserInput
+    socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
+    userSchool?: UserSchoolCreateNestedOneWithoutUserInput
+    userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutPushDeviceInput = {
+    id?: string
+    email?: string | null
+    password?: string | null
+    name: string
+    profile?: string | null
+    isVerified?: boolean
+    phone?: string | null
+    createdAt?: Date | string
+    provider: UserLoginProviderType
+    userSchoolId?: string | null
+    agreement?: AgreementUncheckedCreateNestedOneWithoutUserInput
+    article?: ArticleUncheckedCreateNestedManyWithoutUserInput
+    asked?: AskedUncheckedCreateNestedManyWithoutQuestionUserInput
+    askedUser?: AskedUserUncheckedCreateNestedOneWithoutUserInput
+    boardOrganizations?: BoardManagerUncheckedCreateNestedManyWithoutUserInput
+    comment?: CommentUncheckedCreateNestedManyWithoutUserInput
+    image?: ImageUncheckedCreateNestedManyWithoutUserInput
+    articleLike?: ArticleLikeUncheckedCreateNestedManyWithoutUserInput
+    commentLike?: CommentLikeUncheckedCreateNestedManyWithoutUserInput
+    reCommentLike?: ReCommentLikeUncheckedCreateNestedManyWithoutUserInput
+    reComment?: ReCommentUncheckedCreateNestedManyWithoutUserInput
+    socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
+    userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
+    userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutPushDeviceInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPushDeviceInput, UserUncheckedCreateWithoutPushDeviceInput>
+  }
+
+  export type UserUpsertWithoutPushDeviceInput = {
+    update: XOR<UserUpdateWithoutPushDeviceInput, UserUncheckedUpdateWithoutPushDeviceInput>
+    create: XOR<UserCreateWithoutPushDeviceInput, UserUncheckedCreateWithoutPushDeviceInput>
+  }
+
+  export type UserUpdateWithoutPushDeviceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    provider?: EnumUserLoginProviderTypeFieldUpdateOperationsInput | UserLoginProviderType
+    userSchoolId?: NullableStringFieldUpdateOperationsInput | string | null
+    agreement?: AgreementUpdateOneWithoutUserNestedInput
+    article?: ArticleUpdateManyWithoutUserNestedInput
+    asked?: AskedUpdateManyWithoutQuestionUserNestedInput
+    askedUser?: AskedUserUpdateOneWithoutUserNestedInput
+    boardOrganizations?: BoardManagerUpdateManyWithoutUserNestedInput
+    comment?: CommentUpdateManyWithoutUserNestedInput
+    image?: ImageUpdateManyWithoutUserNestedInput
+    articleLike?: ArticleLikeUpdateManyWithoutUserNestedInput
+    commentLike?: CommentLikeUpdateManyWithoutUserNestedInput
+    reCommentLike?: ReCommentLikeUpdateManyWithoutUserNestedInput
+    reComment?: ReCommentUpdateManyWithoutUserNestedInput
+    socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
+    userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
+    userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPushDeviceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    provider?: EnumUserLoginProviderTypeFieldUpdateOperationsInput | UserLoginProviderType
+    userSchoolId?: NullableStringFieldUpdateOperationsInput | string | null
+    agreement?: AgreementUncheckedUpdateOneWithoutUserNestedInput
+    article?: ArticleUncheckedUpdateManyWithoutUserNestedInput
+    asked?: AskedUncheckedUpdateManyWithoutQuestionUserNestedInput
+    askedUser?: AskedUserUncheckedUpdateOneWithoutUserNestedInput
+    boardOrganizations?: BoardManagerUncheckedUpdateManyWithoutUserNestedInput
+    comment?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    image?: ImageUncheckedUpdateManyWithoutUserNestedInput
+    articleLike?: ArticleLikeUncheckedUpdateManyWithoutUserNestedInput
+    commentLike?: CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+    reCommentLike?: ReCommentLikeUncheckedUpdateManyWithoutUserNestedInput
+    reComment?: ReCommentUncheckedUpdateManyWithoutUserNestedInput
+    socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
+    userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
+    userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type ArticleCreateManyUserInput = {
     id?: number
     schoolId: string
@@ -43646,6 +45121,12 @@ export namespace Prisma {
     schoolName: string
     userName: string
     dept: string
+  }
+
+  export type PushDeviceCreateManyUserInput = {
+    id?: string
+    token: string
+    createdAt?: Date | string
   }
 
   export type ArticleUpdateWithoutUserInput = {
@@ -43923,6 +45404,24 @@ export namespace Prisma {
     schoolName?: StringFieldUpdateOperationsInput | string
     userName?: StringFieldUpdateOperationsInput | string
     dept?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PushDeviceUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PushDeviceUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PushDeviceUncheckedUpdateManyWithoutPushDeviceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserSchoolCreateManySchoolInput = {
