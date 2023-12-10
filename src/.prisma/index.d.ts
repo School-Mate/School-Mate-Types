@@ -496,6 +496,7 @@ export type ReportPayload<ExtArgs extends $Extensions.Args = $Extensions.Default
   objects: {}
   scalars: $Extensions.GetResult<{
     id: string
+    createdAt: Date
     reportUserId: string
     targetType: ReportTargetType
     message: string
@@ -26044,6 +26045,7 @@ export namespace Prisma {
 
   export type ReportMinAggregateOutputType = {
     id: string | null
+    createdAt: Date | null
     reportUserId: string | null
     targetType: ReportTargetType | null
     message: string | null
@@ -26054,6 +26056,7 @@ export namespace Prisma {
 
   export type ReportMaxAggregateOutputType = {
     id: string | null
+    createdAt: Date | null
     reportUserId: string | null
     targetType: ReportTargetType | null
     message: string | null
@@ -26064,6 +26067,7 @@ export namespace Prisma {
 
   export type ReportCountAggregateOutputType = {
     id: number
+    createdAt: number
     reportUserId: number
     targetType: number
     message: number
@@ -26076,6 +26080,7 @@ export namespace Prisma {
 
   export type ReportMinAggregateInputType = {
     id?: true
+    createdAt?: true
     reportUserId?: true
     targetType?: true
     message?: true
@@ -26086,6 +26091,7 @@ export namespace Prisma {
 
   export type ReportMaxAggregateInputType = {
     id?: true
+    createdAt?: true
     reportUserId?: true
     targetType?: true
     message?: true
@@ -26096,6 +26102,7 @@ export namespace Prisma {
 
   export type ReportCountAggregateInputType = {
     id?: true
+    createdAt?: true
     reportUserId?: true
     targetType?: true
     message?: true
@@ -26180,6 +26187,7 @@ export namespace Prisma {
 
   export type ReportGroupByOutputType = {
     id: string
+    createdAt: Date
     reportUserId: string
     targetType: ReportTargetType
     message: string
@@ -26207,6 +26215,7 @@ export namespace Prisma {
 
   export type ReportSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    createdAt?: boolean
     reportUserId?: boolean
     targetType?: boolean
     message?: boolean
@@ -26217,6 +26226,7 @@ export namespace Prisma {
 
   export type ReportSelectScalar = {
     id?: boolean
+    createdAt?: boolean
     reportUserId?: boolean
     targetType?: boolean
     message?: boolean
@@ -33789,6 +33799,7 @@ export namespace Prisma {
 
   export const ReportScalarFieldEnum: {
     id: 'id',
+    createdAt: 'createdAt',
     reportUserId: 'reportUserId',
     targetType: 'targetType',
     message: 'message',
@@ -35192,6 +35203,7 @@ export namespace Prisma {
     OR?: Enumerable<ReportWhereInput>
     NOT?: Enumerable<ReportWhereInput>
     id?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
     reportUserId?: StringFilter | string
     targetType?: EnumReportTargetTypeFilter | ReportTargetType
     message?: StringFilter | string
@@ -35202,6 +35214,7 @@ export namespace Prisma {
 
   export type ReportOrderByWithRelationInput = {
     id?: SortOrder
+    createdAt?: SortOrder
     reportUserId?: SortOrder
     targetType?: SortOrder
     message?: SortOrder
@@ -35216,6 +35229,7 @@ export namespace Prisma {
 
   export type ReportOrderByWithAggregationInput = {
     id?: SortOrder
+    createdAt?: SortOrder
     reportUserId?: SortOrder
     targetType?: SortOrder
     message?: SortOrder
@@ -35232,6 +35246,7 @@ export namespace Prisma {
     OR?: Enumerable<ReportScalarWhereWithAggregatesInput>
     NOT?: Enumerable<ReportScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
     reportUserId?: StringWithAggregatesFilter | string
     targetType?: EnumReportTargetTypeWithAggregatesFilter | ReportTargetType
     message?: StringWithAggregatesFilter | string
@@ -37187,6 +37202,7 @@ export namespace Prisma {
 
   export type ReportCreateInput = {
     id?: string
+    createdAt?: Date | string
     reportUserId: string
     targetType: ReportTargetType
     message: string
@@ -37197,6 +37213,7 @@ export namespace Prisma {
 
   export type ReportUncheckedCreateInput = {
     id?: string
+    createdAt?: Date | string
     reportUserId: string
     targetType: ReportTargetType
     message: string
@@ -37207,6 +37224,7 @@ export namespace Prisma {
 
   export type ReportUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportUserId?: StringFieldUpdateOperationsInput | string
     targetType?: EnumReportTargetTypeFieldUpdateOperationsInput | ReportTargetType
     message?: StringFieldUpdateOperationsInput | string
@@ -37217,6 +37235,7 @@ export namespace Prisma {
 
   export type ReportUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportUserId?: StringFieldUpdateOperationsInput | string
     targetType?: EnumReportTargetTypeFieldUpdateOperationsInput | ReportTargetType
     message?: StringFieldUpdateOperationsInput | string
@@ -37227,6 +37246,7 @@ export namespace Prisma {
 
   export type ReportCreateManyInput = {
     id?: string
+    createdAt?: Date | string
     reportUserId: string
     targetType: ReportTargetType
     message: string
@@ -37237,6 +37257,7 @@ export namespace Prisma {
 
   export type ReportUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportUserId?: StringFieldUpdateOperationsInput | string
     targetType?: EnumReportTargetTypeFieldUpdateOperationsInput | ReportTargetType
     message?: StringFieldUpdateOperationsInput | string
@@ -37247,6 +37268,7 @@ export namespace Prisma {
 
   export type ReportUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     reportUserId?: StringFieldUpdateOperationsInput | string
     targetType?: EnumReportTargetTypeFieldUpdateOperationsInput | ReportTargetType
     message?: StringFieldUpdateOperationsInput | string
@@ -38852,6 +38874,7 @@ export namespace Prisma {
 
   export type ReportCountOrderByAggregateInput = {
     id?: SortOrder
+    createdAt?: SortOrder
     reportUserId?: SortOrder
     targetType?: SortOrder
     message?: SortOrder
@@ -38862,6 +38885,7 @@ export namespace Prisma {
 
   export type ReportMaxOrderByAggregateInput = {
     id?: SortOrder
+    createdAt?: SortOrder
     reportUserId?: SortOrder
     targetType?: SortOrder
     message?: SortOrder
@@ -38872,6 +38896,7 @@ export namespace Prisma {
 
   export type ReportMinOrderByAggregateInput = {
     id?: SortOrder
+    createdAt?: SortOrder
     reportUserId?: SortOrder
     targetType?: SortOrder
     message?: SortOrder

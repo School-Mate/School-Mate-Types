@@ -327,6 +327,7 @@ exports.Prisma.ReCommentScalarFieldEnum = {
 
 exports.Prisma.ReportScalarFieldEnum = {
   id: 'id',
+  createdAt: 'createdAt',
   reportUserId: 'reportUserId',
   targetType: 'targetType',
   message: 'message',
