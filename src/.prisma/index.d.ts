@@ -29,6 +29,7 @@ export type UserPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultAr
     userSchool: UserSchoolPayload<ExtArgs> | null
     userSchoolVerify: UserSchoolVerifyPayload<ExtArgs>[]
     pushDevice: PushDevicePayload<ExtArgs>[]
+    ReportBlindArticle: ReportBlindArticlePayload<ExtArgs>[]
   }
   scalars: $Extensions.GetResult<{
     id: string
@@ -362,6 +363,7 @@ export type ArticlePayload<ExtArgs extends $Extensions.Args = $Extensions.Defaul
     reComment: ReCommentPayload<ExtArgs>[]
     articleLike: ArticleLikePayload<ExtArgs>[]
     hotArticle: HotArticlePayload<ExtArgs>[]
+    ReportBlindArticle: ReportBlindArticlePayload<ExtArgs>[]
   }
   scalars: $Extensions.GetResult<{
     id: number
@@ -622,6 +624,25 @@ export type PushDevicePayload<ExtArgs extends $Extensions.Args = $Extensions.Def
  * 
  */
 export type PushDevice = runtime.Types.DefaultSelection<PushDevicePayload>
+export type ReportBlindArticlePayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+  objects: {
+    article: ArticlePayload<ExtArgs>
+    user: UserPayload<ExtArgs>
+  }
+  scalars: $Extensions.GetResult<{
+    id: number
+    articleId: number
+    userId: string
+    createdAt: Date
+  }, ExtArgs["result"]["reportBlindArticle"]>
+  composites: {}
+}
+
+/**
+ * Model ReportBlindArticle
+ * 
+ */
+export type ReportBlindArticle = runtime.Types.DefaultSelection<ReportBlindArticlePayload>
 export type MealPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
   objects: {}
   scalars: $Extensions.GetResult<{
@@ -1120,6 +1141,16 @@ export class PrismaClient<
     * ```
     */
   get pushDevice(): Prisma.PushDeviceDelegate<GlobalReject, ExtArgs>;
+
+  /**
+   * `prisma.reportBlindArticle`: Exposes CRUD operations for the **ReportBlindArticle** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ReportBlindArticles
+    * const reportBlindArticles = await prisma.reportBlindArticle.findMany()
+    * ```
+    */
+  get reportBlindArticle(): Prisma.ReportBlindArticleDelegate<GlobalReject, ExtArgs>;
 
   /**
    * `prisma.meal`: Exposes CRUD operations for the **Meal** model.
@@ -1642,6 +1673,7 @@ export namespace Prisma {
     HotArticle: 'HotArticle',
     Advertise: 'Advertise',
     PushDevice: 'PushDevice',
+    ReportBlindArticle: 'ReportBlindArticle',
     Meal: 'Meal'
   };
 
@@ -1659,7 +1691,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     meta: {
-      modelProps: 'user' | 'school' | 'image' | 'phoneVerifyRequest' | 'socialLogin' | 'agreement' | 'userSchoolVerify' | 'userSchool' | 'busStation' | 'busRoute' | 'busArrival' | 'askedUser' | 'asked' | 'admin' | 'board' | 'boardManager' | 'article' | 'defaultBoard' | 'deletedArticle' | 'boardRequest' | 'comment' | 'reComment' | 'report' | 'articleLike' | 'commentLike' | 'reCommentLike' | 'hotArticle' | 'advertise' | 'pushDevice' | 'meal'
+      modelProps: 'user' | 'school' | 'image' | 'phoneVerifyRequest' | 'socialLogin' | 'agreement' | 'userSchoolVerify' | 'userSchool' | 'busStation' | 'busRoute' | 'busArrival' | 'askedUser' | 'asked' | 'admin' | 'board' | 'boardManager' | 'article' | 'defaultBoard' | 'deletedArticle' | 'boardRequest' | 'comment' | 'reComment' | 'report' | 'articleLike' | 'commentLike' | 'reCommentLike' | 'hotArticle' | 'advertise' | 'pushDevice' | 'reportBlindArticle' | 'meal'
       txIsolationLevel: Prisma.TransactionIsolationLevel
     },
     model: {
@@ -3954,6 +3986,85 @@ export namespace Prisma {
           }
         }
       }
+      ReportBlindArticle: {
+        operations: {
+          findUnique: {
+            args: Prisma.ReportBlindArticleFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ReportBlindArticlePayload> | null
+            payload: ReportBlindArticlePayload<ExtArgs>
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ReportBlindArticleFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ReportBlindArticlePayload>
+            payload: ReportBlindArticlePayload<ExtArgs>
+          }
+          findFirst: {
+            args: Prisma.ReportBlindArticleFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ReportBlindArticlePayload> | null
+            payload: ReportBlindArticlePayload<ExtArgs>
+          }
+          findFirstOrThrow: {
+            args: Prisma.ReportBlindArticleFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ReportBlindArticlePayload>
+            payload: ReportBlindArticlePayload<ExtArgs>
+          }
+          findMany: {
+            args: Prisma.ReportBlindArticleFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ReportBlindArticlePayload>[]
+            payload: ReportBlindArticlePayload<ExtArgs>
+          }
+          create: {
+            args: Prisma.ReportBlindArticleCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ReportBlindArticlePayload>
+            payload: ReportBlindArticlePayload<ExtArgs>
+          }
+          createMany: {
+            args: Prisma.ReportBlindArticleCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: ReportBlindArticlePayload<ExtArgs>
+          }
+          delete: {
+            args: Prisma.ReportBlindArticleDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ReportBlindArticlePayload>
+            payload: ReportBlindArticlePayload<ExtArgs>
+          }
+          update: {
+            args: Prisma.ReportBlindArticleUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ReportBlindArticlePayload>
+            payload: ReportBlindArticlePayload<ExtArgs>
+          }
+          deleteMany: {
+            args: Prisma.ReportBlindArticleDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: ReportBlindArticlePayload<ExtArgs>
+          }
+          updateMany: {
+            args: Prisma.ReportBlindArticleUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: ReportBlindArticlePayload<ExtArgs>
+          }
+          upsert: {
+            args: Prisma.ReportBlindArticleUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ReportBlindArticlePayload>
+            payload: ReportBlindArticlePayload<ExtArgs>
+          }
+          aggregate: {
+            args: Prisma.ReportBlindArticleAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateReportBlindArticle>
+            payload: ReportBlindArticlePayload<ExtArgs>
+          }
+          groupBy: {
+            args: Prisma.ReportBlindArticleGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<ReportBlindArticleGroupByOutputType>[]
+            payload: ReportBlindArticlePayload<ExtArgs>
+          }
+          count: {
+            args: Prisma.ReportBlindArticleCountArgs<ExtArgs>,
+            result: $Utils.Optional<ReportBlindArticleCountAggregateOutputType> | number
+            payload: ReportBlindArticlePayload<ExtArgs>
+          }
+        }
+      }
       Meal: {
         operations: {
           findUnique: {
@@ -4229,6 +4340,7 @@ export namespace Prisma {
     reComment: number
     userSchoolVerify: number
     pushDevice: number
+    ReportBlindArticle: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
@@ -4243,6 +4355,7 @@ export namespace Prisma {
     reComment?: boolean | UserCountOutputTypeCountReCommentArgs
     userSchoolVerify?: boolean | UserCountOutputTypeCountUserSchoolVerifyArgs
     pushDevice?: boolean | UserCountOutputTypeCountPushDeviceArgs
+    ReportBlindArticle?: boolean | UserCountOutputTypeCountReportBlindArticleArgs
   }
 
   // Custom InputTypes
@@ -4343,6 +4456,14 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountPushDeviceArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: PushDeviceWhereInput
+  }
+
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountReportBlindArticleArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: ReportBlindArticleWhereInput
   }
 
 
@@ -4517,6 +4638,7 @@ export namespace Prisma {
     reComment: number
     articleLike: number
     hotArticle: number
+    ReportBlindArticle: number
   }
 
   export type ArticleCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
@@ -4524,6 +4646,7 @@ export namespace Prisma {
     reComment?: boolean | ArticleCountOutputTypeCountReCommentArgs
     articleLike?: boolean | ArticleCountOutputTypeCountArticleLikeArgs
     hotArticle?: boolean | ArticleCountOutputTypeCountHotArticleArgs
+    ReportBlindArticle?: boolean | ArticleCountOutputTypeCountReportBlindArticleArgs
   }
 
   // Custom InputTypes
@@ -4568,6 +4691,14 @@ export namespace Prisma {
    */
   export type ArticleCountOutputTypeCountHotArticleArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: HotArticleWhereInput
+  }
+
+
+  /**
+   * ArticleCountOutputType without action
+   */
+  export type ArticleCountOutputTypeCountReportBlindArticleArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: ReportBlindArticleWhereInput
   }
 
 
@@ -4877,6 +5008,7 @@ export namespace Prisma {
     userSchool?: boolean | UserSchoolArgs<ExtArgs>
     userSchoolVerify?: boolean | User$userSchoolVerifyArgs<ExtArgs>
     pushDevice?: boolean | User$pushDeviceArgs<ExtArgs>
+    ReportBlindArticle?: boolean | User$ReportBlindArticleArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4909,6 +5041,7 @@ export namespace Prisma {
     userSchool?: boolean | UserSchoolArgs<ExtArgs>
     userSchoolVerify?: boolean | User$userSchoolVerifyArgs<ExtArgs>
     pushDevice?: boolean | User$pushDeviceArgs<ExtArgs>
+    ReportBlindArticle?: boolean | User$ReportBlindArticleArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeArgs<ExtArgs>
   }
 
@@ -5311,6 +5444,8 @@ export namespace Prisma {
     userSchoolVerify<T extends User$userSchoolVerifyArgs<ExtArgs> = {}>(args?: Subset<T, User$userSchoolVerifyArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<UserSchoolVerifyPayload<ExtArgs>, T, 'findMany', never>| Null>;
 
     pushDevice<T extends User$pushDeviceArgs<ExtArgs> = {}>(args?: Subset<T, User$pushDeviceArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<PushDevicePayload<ExtArgs>, T, 'findMany', never>| Null>;
+
+    ReportBlindArticle<T extends User$ReportBlindArticleArgs<ExtArgs> = {}>(args?: Subset<T, User$ReportBlindArticleArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<ReportBlindArticlePayload<ExtArgs>, T, 'findMany', never>| Null>;
 
     private get _document();
     /**
@@ -5895,6 +6030,27 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: Enumerable<PushDeviceScalarFieldEnum>
+  }
+
+
+  /**
+   * User.ReportBlindArticle
+   */
+  export type User$ReportBlindArticleArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportBlindArticle
+     */
+    select?: ReportBlindArticleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ReportBlindArticleInclude<ExtArgs> | null
+    where?: ReportBlindArticleWhereInput
+    orderBy?: Enumerable<ReportBlindArticleOrderByWithRelationInput>
+    cursor?: ReportBlindArticleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<ReportBlindArticleScalarFieldEnum>
   }
 
 
@@ -20315,6 +20471,7 @@ export namespace Prisma {
     reComment?: boolean | Article$reCommentArgs<ExtArgs>
     articleLike?: boolean | Article$articleLikeArgs<ExtArgs>
     hotArticle?: boolean | Article$hotArticleArgs<ExtArgs>
+    ReportBlindArticle?: boolean | Article$ReportBlindArticleArgs<ExtArgs>
     _count?: boolean | ArticleCountOutputTypeArgs<ExtArgs>
   }, ExtArgs["result"]["article"]>
 
@@ -20339,6 +20496,7 @@ export namespace Prisma {
     reComment?: boolean | Article$reCommentArgs<ExtArgs>
     articleLike?: boolean | Article$articleLikeArgs<ExtArgs>
     hotArticle?: boolean | Article$hotArticleArgs<ExtArgs>
+    ReportBlindArticle?: boolean | Article$ReportBlindArticleArgs<ExtArgs>
     _count?: boolean | ArticleCountOutputTypeArgs<ExtArgs>
   }
 
@@ -20725,6 +20883,8 @@ export namespace Prisma {
     articleLike<T extends Article$articleLikeArgs<ExtArgs> = {}>(args?: Subset<T, Article$articleLikeArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<ArticleLikePayload<ExtArgs>, T, 'findMany', never>| Null>;
 
     hotArticle<T extends Article$hotArticleArgs<ExtArgs> = {}>(args?: Subset<T, Article$hotArticleArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<HotArticlePayload<ExtArgs>, T, 'findMany', never>| Null>;
+
+    ReportBlindArticle<T extends Article$ReportBlindArticleArgs<ExtArgs> = {}>(args?: Subset<T, Article$ReportBlindArticleArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<ReportBlindArticlePayload<ExtArgs>, T, 'findMany', never>| Null>;
 
     private get _document();
     /**
@@ -21162,6 +21322,27 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: Enumerable<HotArticleScalarFieldEnum>
+  }
+
+
+  /**
+   * Article.ReportBlindArticle
+   */
+  export type Article$ReportBlindArticleArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportBlindArticle
+     */
+    select?: ReportBlindArticleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ReportBlindArticleInclude<ExtArgs> | null
+    where?: ReportBlindArticleWhereInput
+    orderBy?: Enumerable<ReportBlindArticleOrderByWithRelationInput>
+    cursor?: ReportBlindArticleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<ReportBlindArticleScalarFieldEnum>
   }
 
 
@@ -32577,6 +32758,963 @@ export namespace Prisma {
 
 
   /**
+   * Model ReportBlindArticle
+   */
+
+
+  export type AggregateReportBlindArticle = {
+    _count: ReportBlindArticleCountAggregateOutputType | null
+    _avg: ReportBlindArticleAvgAggregateOutputType | null
+    _sum: ReportBlindArticleSumAggregateOutputType | null
+    _min: ReportBlindArticleMinAggregateOutputType | null
+    _max: ReportBlindArticleMaxAggregateOutputType | null
+  }
+
+  export type ReportBlindArticleAvgAggregateOutputType = {
+    id: number | null
+    articleId: number | null
+  }
+
+  export type ReportBlindArticleSumAggregateOutputType = {
+    id: number | null
+    articleId: number | null
+  }
+
+  export type ReportBlindArticleMinAggregateOutputType = {
+    id: number | null
+    articleId: number | null
+    userId: string | null
+    createdAt: Date | null
+  }
+
+  export type ReportBlindArticleMaxAggregateOutputType = {
+    id: number | null
+    articleId: number | null
+    userId: string | null
+    createdAt: Date | null
+  }
+
+  export type ReportBlindArticleCountAggregateOutputType = {
+    id: number
+    articleId: number
+    userId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ReportBlindArticleAvgAggregateInputType = {
+    id?: true
+    articleId?: true
+  }
+
+  export type ReportBlindArticleSumAggregateInputType = {
+    id?: true
+    articleId?: true
+  }
+
+  export type ReportBlindArticleMinAggregateInputType = {
+    id?: true
+    articleId?: true
+    userId?: true
+    createdAt?: true
+  }
+
+  export type ReportBlindArticleMaxAggregateInputType = {
+    id?: true
+    articleId?: true
+    userId?: true
+    createdAt?: true
+  }
+
+  export type ReportBlindArticleCountAggregateInputType = {
+    id?: true
+    articleId?: true
+    userId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ReportBlindArticleAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ReportBlindArticle to aggregate.
+     */
+    where?: ReportBlindArticleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReportBlindArticles to fetch.
+     */
+    orderBy?: Enumerable<ReportBlindArticleOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ReportBlindArticleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReportBlindArticles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReportBlindArticles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ReportBlindArticles
+    **/
+    _count?: true | ReportBlindArticleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ReportBlindArticleAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ReportBlindArticleSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ReportBlindArticleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ReportBlindArticleMaxAggregateInputType
+  }
+
+  export type GetReportBlindArticleAggregateType<T extends ReportBlindArticleAggregateArgs> = {
+        [P in keyof T & keyof AggregateReportBlindArticle]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateReportBlindArticle[P]>
+      : GetScalarType<T[P], AggregateReportBlindArticle[P]>
+  }
+
+
+
+
+  export type ReportBlindArticleGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: ReportBlindArticleWhereInput
+    orderBy?: Enumerable<ReportBlindArticleOrderByWithAggregationInput>
+    by: ReportBlindArticleScalarFieldEnum[]
+    having?: ReportBlindArticleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ReportBlindArticleCountAggregateInputType | true
+    _avg?: ReportBlindArticleAvgAggregateInputType
+    _sum?: ReportBlindArticleSumAggregateInputType
+    _min?: ReportBlindArticleMinAggregateInputType
+    _max?: ReportBlindArticleMaxAggregateInputType
+  }
+
+
+  export type ReportBlindArticleGroupByOutputType = {
+    id: number
+    articleId: number
+    userId: string
+    createdAt: Date
+    _count: ReportBlindArticleCountAggregateOutputType | null
+    _avg: ReportBlindArticleAvgAggregateOutputType | null
+    _sum: ReportBlindArticleSumAggregateOutputType | null
+    _min: ReportBlindArticleMinAggregateOutputType | null
+    _max: ReportBlindArticleMaxAggregateOutputType | null
+  }
+
+  type GetReportBlindArticleGroupByPayload<T extends ReportBlindArticleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<ReportBlindArticleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ReportBlindArticleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ReportBlindArticleGroupByOutputType[P]>
+            : GetScalarType<T[P], ReportBlindArticleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ReportBlindArticleSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    articleId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    article?: boolean | ArticleArgs<ExtArgs>
+    user?: boolean | UserArgs<ExtArgs>
+  }, ExtArgs["result"]["reportBlindArticle"]>
+
+  export type ReportBlindArticleSelectScalar = {
+    id?: boolean
+    articleId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+  }
+
+  export type ReportBlindArticleInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    article?: boolean | ArticleArgs<ExtArgs>
+    user?: boolean | UserArgs<ExtArgs>
+  }
+
+
+  type ReportBlindArticleGetPayload<S extends boolean | null | undefined | ReportBlindArticleArgs> = $Types.GetResult<ReportBlindArticlePayload, S>
+
+  type ReportBlindArticleCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
+    Omit<ReportBlindArticleFindManyArgs, 'select' | 'include'> & {
+      select?: ReportBlindArticleCountAggregateInputType | true
+    }
+
+  export interface ReportBlindArticleDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ReportBlindArticle'], meta: { name: 'ReportBlindArticle' } }
+    /**
+     * Find zero or one ReportBlindArticle that matches the filter.
+     * @param {ReportBlindArticleFindUniqueArgs} args - Arguments to find a ReportBlindArticle
+     * @example
+     * // Get one ReportBlindArticle
+     * const reportBlindArticle = await prisma.reportBlindArticle.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends ReportBlindArticleFindUniqueArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, ReportBlindArticleFindUniqueArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'ReportBlindArticle'> extends True ? Prisma__ReportBlindArticleClient<$Types.GetResult<ReportBlindArticlePayload<ExtArgs>, T, 'findUnique', never>, never, ExtArgs> : Prisma__ReportBlindArticleClient<$Types.GetResult<ReportBlindArticlePayload<ExtArgs>, T, 'findUnique', never> | null, null, ExtArgs>
+
+    /**
+     * Find one ReportBlindArticle that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {ReportBlindArticleFindUniqueOrThrowArgs} args - Arguments to find a ReportBlindArticle
+     * @example
+     * // Get one ReportBlindArticle
+     * const reportBlindArticle = await prisma.reportBlindArticle.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends ReportBlindArticleFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, ReportBlindArticleFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__ReportBlindArticleClient<$Types.GetResult<ReportBlindArticlePayload<ExtArgs>, T, 'findUniqueOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find the first ReportBlindArticle that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReportBlindArticleFindFirstArgs} args - Arguments to find a ReportBlindArticle
+     * @example
+     * // Get one ReportBlindArticle
+     * const reportBlindArticle = await prisma.reportBlindArticle.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends ReportBlindArticleFindFirstArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, ReportBlindArticleFindFirstArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'ReportBlindArticle'> extends True ? Prisma__ReportBlindArticleClient<$Types.GetResult<ReportBlindArticlePayload<ExtArgs>, T, 'findFirst', never>, never, ExtArgs> : Prisma__ReportBlindArticleClient<$Types.GetResult<ReportBlindArticlePayload<ExtArgs>, T, 'findFirst', never> | null, null, ExtArgs>
+
+    /**
+     * Find the first ReportBlindArticle that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReportBlindArticleFindFirstOrThrowArgs} args - Arguments to find a ReportBlindArticle
+     * @example
+     * // Get one ReportBlindArticle
+     * const reportBlindArticle = await prisma.reportBlindArticle.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends ReportBlindArticleFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, ReportBlindArticleFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__ReportBlindArticleClient<$Types.GetResult<ReportBlindArticlePayload<ExtArgs>, T, 'findFirstOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find zero or more ReportBlindArticles that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReportBlindArticleFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ReportBlindArticles
+     * const reportBlindArticles = await prisma.reportBlindArticle.findMany()
+     * 
+     * // Get first 10 ReportBlindArticles
+     * const reportBlindArticles = await prisma.reportBlindArticle.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const reportBlindArticleWithIdOnly = await prisma.reportBlindArticle.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends ReportBlindArticleFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, ReportBlindArticleFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Types.GetResult<ReportBlindArticlePayload<ExtArgs>, T, 'findMany', never>>
+
+    /**
+     * Create a ReportBlindArticle.
+     * @param {ReportBlindArticleCreateArgs} args - Arguments to create a ReportBlindArticle.
+     * @example
+     * // Create one ReportBlindArticle
+     * const ReportBlindArticle = await prisma.reportBlindArticle.create({
+     *   data: {
+     *     // ... data to create a ReportBlindArticle
+     *   }
+     * })
+     * 
+    **/
+    create<T extends ReportBlindArticleCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, ReportBlindArticleCreateArgs<ExtArgs>>
+    ): Prisma__ReportBlindArticleClient<$Types.GetResult<ReportBlindArticlePayload<ExtArgs>, T, 'create', never>, never, ExtArgs>
+
+    /**
+     * Create many ReportBlindArticles.
+     *     @param {ReportBlindArticleCreateManyArgs} args - Arguments to create many ReportBlindArticles.
+     *     @example
+     *     // Create many ReportBlindArticles
+     *     const reportBlindArticle = await prisma.reportBlindArticle.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends ReportBlindArticleCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, ReportBlindArticleCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a ReportBlindArticle.
+     * @param {ReportBlindArticleDeleteArgs} args - Arguments to delete one ReportBlindArticle.
+     * @example
+     * // Delete one ReportBlindArticle
+     * const ReportBlindArticle = await prisma.reportBlindArticle.delete({
+     *   where: {
+     *     // ... filter to delete one ReportBlindArticle
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends ReportBlindArticleDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, ReportBlindArticleDeleteArgs<ExtArgs>>
+    ): Prisma__ReportBlindArticleClient<$Types.GetResult<ReportBlindArticlePayload<ExtArgs>, T, 'delete', never>, never, ExtArgs>
+
+    /**
+     * Update one ReportBlindArticle.
+     * @param {ReportBlindArticleUpdateArgs} args - Arguments to update one ReportBlindArticle.
+     * @example
+     * // Update one ReportBlindArticle
+     * const reportBlindArticle = await prisma.reportBlindArticle.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends ReportBlindArticleUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, ReportBlindArticleUpdateArgs<ExtArgs>>
+    ): Prisma__ReportBlindArticleClient<$Types.GetResult<ReportBlindArticlePayload<ExtArgs>, T, 'update', never>, never, ExtArgs>
+
+    /**
+     * Delete zero or more ReportBlindArticles.
+     * @param {ReportBlindArticleDeleteManyArgs} args - Arguments to filter ReportBlindArticles to delete.
+     * @example
+     * // Delete a few ReportBlindArticles
+     * const { count } = await prisma.reportBlindArticle.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends ReportBlindArticleDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, ReportBlindArticleDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ReportBlindArticles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReportBlindArticleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ReportBlindArticles
+     * const reportBlindArticle = await prisma.reportBlindArticle.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends ReportBlindArticleUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, ReportBlindArticleUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ReportBlindArticle.
+     * @param {ReportBlindArticleUpsertArgs} args - Arguments to update or create a ReportBlindArticle.
+     * @example
+     * // Update or create a ReportBlindArticle
+     * const reportBlindArticle = await prisma.reportBlindArticle.upsert({
+     *   create: {
+     *     // ... data to create a ReportBlindArticle
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ReportBlindArticle we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends ReportBlindArticleUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, ReportBlindArticleUpsertArgs<ExtArgs>>
+    ): Prisma__ReportBlindArticleClient<$Types.GetResult<ReportBlindArticlePayload<ExtArgs>, T, 'upsert', never>, never, ExtArgs>
+
+    /**
+     * Count the number of ReportBlindArticles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReportBlindArticleCountArgs} args - Arguments to filter ReportBlindArticles to count.
+     * @example
+     * // Count the number of ReportBlindArticles
+     * const count = await prisma.reportBlindArticle.count({
+     *   where: {
+     *     // ... the filter for the ReportBlindArticles we want to count
+     *   }
+     * })
+    **/
+    count<T extends ReportBlindArticleCountArgs>(
+      args?: Subset<T, ReportBlindArticleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ReportBlindArticleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ReportBlindArticle.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReportBlindArticleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ReportBlindArticleAggregateArgs>(args: Subset<T, ReportBlindArticleAggregateArgs>): Prisma.PrismaPromise<GetReportBlindArticleAggregateType<T>>
+
+    /**
+     * Group by ReportBlindArticle.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReportBlindArticleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ReportBlindArticleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ReportBlindArticleGroupByArgs['orderBy'] }
+        : { orderBy?: ReportBlindArticleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ReportBlindArticleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetReportBlindArticleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ReportBlindArticle.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__ReportBlindArticleClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    article<T extends ArticleArgs<ExtArgs> = {}>(args?: Subset<T, ArticleArgs<ExtArgs>>): Prisma__ArticleClient<$Types.GetResult<ArticlePayload<ExtArgs>, T, 'findUnique', never> | Null, never, ExtArgs>;
+
+    user<T extends UserArgs<ExtArgs> = {}>(args?: Subset<T, UserArgs<ExtArgs>>): Prisma__UserClient<$Types.GetResult<UserPayload<ExtArgs>, T, 'findUnique', never> | Null, never, ExtArgs>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * ReportBlindArticle base type for findUnique actions
+   */
+  export type ReportBlindArticleFindUniqueArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportBlindArticle
+     */
+    select?: ReportBlindArticleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ReportBlindArticleInclude<ExtArgs> | null
+    /**
+     * Filter, which ReportBlindArticle to fetch.
+     */
+    where: ReportBlindArticleWhereUniqueInput
+  }
+
+  /**
+   * ReportBlindArticle findUnique
+   */
+  export interface ReportBlindArticleFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends ReportBlindArticleFindUniqueArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * ReportBlindArticle findUniqueOrThrow
+   */
+  export type ReportBlindArticleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportBlindArticle
+     */
+    select?: ReportBlindArticleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ReportBlindArticleInclude<ExtArgs> | null
+    /**
+     * Filter, which ReportBlindArticle to fetch.
+     */
+    where: ReportBlindArticleWhereUniqueInput
+  }
+
+
+  /**
+   * ReportBlindArticle base type for findFirst actions
+   */
+  export type ReportBlindArticleFindFirstArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportBlindArticle
+     */
+    select?: ReportBlindArticleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ReportBlindArticleInclude<ExtArgs> | null
+    /**
+     * Filter, which ReportBlindArticle to fetch.
+     */
+    where?: ReportBlindArticleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReportBlindArticles to fetch.
+     */
+    orderBy?: Enumerable<ReportBlindArticleOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ReportBlindArticles.
+     */
+    cursor?: ReportBlindArticleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReportBlindArticles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReportBlindArticles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReportBlindArticles.
+     */
+    distinct?: Enumerable<ReportBlindArticleScalarFieldEnum>
+  }
+
+  /**
+   * ReportBlindArticle findFirst
+   */
+  export interface ReportBlindArticleFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends ReportBlindArticleFindFirstArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * ReportBlindArticle findFirstOrThrow
+   */
+  export type ReportBlindArticleFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportBlindArticle
+     */
+    select?: ReportBlindArticleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ReportBlindArticleInclude<ExtArgs> | null
+    /**
+     * Filter, which ReportBlindArticle to fetch.
+     */
+    where?: ReportBlindArticleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReportBlindArticles to fetch.
+     */
+    orderBy?: Enumerable<ReportBlindArticleOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ReportBlindArticles.
+     */
+    cursor?: ReportBlindArticleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReportBlindArticles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReportBlindArticles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReportBlindArticles.
+     */
+    distinct?: Enumerable<ReportBlindArticleScalarFieldEnum>
+  }
+
+
+  /**
+   * ReportBlindArticle findMany
+   */
+  export type ReportBlindArticleFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportBlindArticle
+     */
+    select?: ReportBlindArticleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ReportBlindArticleInclude<ExtArgs> | null
+    /**
+     * Filter, which ReportBlindArticles to fetch.
+     */
+    where?: ReportBlindArticleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReportBlindArticles to fetch.
+     */
+    orderBy?: Enumerable<ReportBlindArticleOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ReportBlindArticles.
+     */
+    cursor?: ReportBlindArticleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReportBlindArticles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReportBlindArticles.
+     */
+    skip?: number
+    distinct?: Enumerable<ReportBlindArticleScalarFieldEnum>
+  }
+
+
+  /**
+   * ReportBlindArticle create
+   */
+  export type ReportBlindArticleCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportBlindArticle
+     */
+    select?: ReportBlindArticleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ReportBlindArticleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ReportBlindArticle.
+     */
+    data: XOR<ReportBlindArticleCreateInput, ReportBlindArticleUncheckedCreateInput>
+  }
+
+
+  /**
+   * ReportBlindArticle createMany
+   */
+  export type ReportBlindArticleCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ReportBlindArticles.
+     */
+    data: Enumerable<ReportBlindArticleCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * ReportBlindArticle update
+   */
+  export type ReportBlindArticleUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportBlindArticle
+     */
+    select?: ReportBlindArticleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ReportBlindArticleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ReportBlindArticle.
+     */
+    data: XOR<ReportBlindArticleUpdateInput, ReportBlindArticleUncheckedUpdateInput>
+    /**
+     * Choose, which ReportBlindArticle to update.
+     */
+    where: ReportBlindArticleWhereUniqueInput
+  }
+
+
+  /**
+   * ReportBlindArticle updateMany
+   */
+  export type ReportBlindArticleUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ReportBlindArticles.
+     */
+    data: XOR<ReportBlindArticleUpdateManyMutationInput, ReportBlindArticleUncheckedUpdateManyInput>
+    /**
+     * Filter which ReportBlindArticles to update
+     */
+    where?: ReportBlindArticleWhereInput
+  }
+
+
+  /**
+   * ReportBlindArticle upsert
+   */
+  export type ReportBlindArticleUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportBlindArticle
+     */
+    select?: ReportBlindArticleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ReportBlindArticleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ReportBlindArticle to update in case it exists.
+     */
+    where: ReportBlindArticleWhereUniqueInput
+    /**
+     * In case the ReportBlindArticle found by the `where` argument doesn't exist, create a new ReportBlindArticle with this data.
+     */
+    create: XOR<ReportBlindArticleCreateInput, ReportBlindArticleUncheckedCreateInput>
+    /**
+     * In case the ReportBlindArticle was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ReportBlindArticleUpdateInput, ReportBlindArticleUncheckedUpdateInput>
+  }
+
+
+  /**
+   * ReportBlindArticle delete
+   */
+  export type ReportBlindArticleDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportBlindArticle
+     */
+    select?: ReportBlindArticleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ReportBlindArticleInclude<ExtArgs> | null
+    /**
+     * Filter which ReportBlindArticle to delete.
+     */
+    where: ReportBlindArticleWhereUniqueInput
+  }
+
+
+  /**
+   * ReportBlindArticle deleteMany
+   */
+  export type ReportBlindArticleDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ReportBlindArticles to delete
+     */
+    where?: ReportBlindArticleWhereInput
+  }
+
+
+  /**
+   * ReportBlindArticle without action
+   */
+  export type ReportBlindArticleArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportBlindArticle
+     */
+    select?: ReportBlindArticleSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ReportBlindArticleInclude<ExtArgs> | null
+  }
+
+
+
+  /**
    * Model Meal
    */
 
@@ -33872,6 +35010,16 @@ export namespace Prisma {
   export type PushDeviceScalarFieldEnum = (typeof PushDeviceScalarFieldEnum)[keyof typeof PushDeviceScalarFieldEnum]
 
 
+  export const ReportBlindArticleScalarFieldEnum: {
+    id: 'id',
+    articleId: 'articleId',
+    userId: 'userId',
+    createdAt: 'createdAt'
+  };
+
+  export type ReportBlindArticleScalarFieldEnum = (typeof ReportBlindArticleScalarFieldEnum)[keyof typeof ReportBlindArticleScalarFieldEnum]
+
+
   export const MealScalarFieldEnum: {
     id: 'id',
     MLSV_FGR: 'MLSV_FGR',
@@ -33942,6 +35090,7 @@ export namespace Prisma {
     userSchool?: XOR<UserSchoolRelationFilter, UserSchoolWhereInput> | null
     userSchoolVerify?: UserSchoolVerifyListRelationFilter
     pushDevice?: PushDeviceListRelationFilter
+    ReportBlindArticle?: ReportBlindArticleListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -33970,6 +35119,7 @@ export namespace Prisma {
     userSchool?: UserSchoolOrderByWithRelationInput
     userSchoolVerify?: UserSchoolVerifyOrderByRelationAggregateInput
     pushDevice?: PushDeviceOrderByRelationAggregateInput
+    ReportBlindArticle?: ReportBlindArticleOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = {
@@ -34833,6 +35983,7 @@ export namespace Prisma {
     reComment?: ReCommentListRelationFilter
     articleLike?: ArticleLikeListRelationFilter
     hotArticle?: HotArticleListRelationFilter
+    ReportBlindArticle?: ReportBlindArticleListRelationFilter
   }
 
   export type ArticleOrderByWithRelationInput = {
@@ -34853,6 +36004,7 @@ export namespace Prisma {
     reComment?: ReCommentOrderByRelationAggregateInput
     articleLike?: ArticleLikeOrderByRelationAggregateInput
     hotArticle?: HotArticleOrderByRelationAggregateInput
+    ReportBlindArticle?: ReportBlindArticleOrderByRelationAggregateInput
   }
 
   export type ArticleWhereUniqueInput = {
@@ -35532,6 +36684,53 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter | Date | string
   }
 
+  export type ReportBlindArticleWhereInput = {
+    AND?: Enumerable<ReportBlindArticleWhereInput>
+    OR?: Enumerable<ReportBlindArticleWhereInput>
+    NOT?: Enumerable<ReportBlindArticleWhereInput>
+    id?: IntFilter | number
+    articleId?: IntFilter | number
+    userId?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    article?: XOR<ArticleRelationFilter, ArticleWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type ReportBlindArticleOrderByWithRelationInput = {
+    id?: SortOrder
+    articleId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    article?: ArticleOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type ReportBlindArticleWhereUniqueInput = {
+    id?: number
+  }
+
+  export type ReportBlindArticleOrderByWithAggregationInput = {
+    id?: SortOrder
+    articleId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    _count?: ReportBlindArticleCountOrderByAggregateInput
+    _avg?: ReportBlindArticleAvgOrderByAggregateInput
+    _max?: ReportBlindArticleMaxOrderByAggregateInput
+    _min?: ReportBlindArticleMinOrderByAggregateInput
+    _sum?: ReportBlindArticleSumOrderByAggregateInput
+  }
+
+  export type ReportBlindArticleScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<ReportBlindArticleScalarWhereWithAggregatesInput>
+    OR?: Enumerable<ReportBlindArticleScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<ReportBlindArticleScalarWhereWithAggregatesInput>
+    id?: IntWithAggregatesFilter | number
+    articleId?: IntWithAggregatesFilter | number
+    userId?: StringWithAggregatesFilter | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+  }
+
   export type MealWhereInput = {
     AND?: Enumerable<MealWhereInput>
     OR?: Enumerable<MealWhereInput>
@@ -35609,6 +36808,7 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -35637,6 +36837,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -35665,6 +36866,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -35693,6 +36895,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -36737,6 +37940,7 @@ export namespace Prisma {
     reComment?: ReCommentCreateNestedManyWithoutArticleInput
     articleLike?: ArticleLikeCreateNestedManyWithoutArticleInput
     hotArticle?: HotArticleCreateNestedManyWithoutArticleInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleUncheckedCreateInput = {
@@ -36754,6 +37958,7 @@ export namespace Prisma {
     reComment?: ReCommentUncheckedCreateNestedManyWithoutArticleInput
     articleLike?: ArticleLikeUncheckedCreateNestedManyWithoutArticleInput
     hotArticle?: HotArticleUncheckedCreateNestedManyWithoutArticleInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleUpdateInput = {
@@ -36770,6 +37975,7 @@ export namespace Prisma {
     reComment?: ReCommentUpdateManyWithoutArticleNestedInput
     articleLike?: ArticleLikeUpdateManyWithoutArticleNestedInput
     hotArticle?: HotArticleUpdateManyWithoutArticleNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutArticleNestedInput
   }
 
   export type ArticleUncheckedUpdateInput = {
@@ -36787,6 +37993,7 @@ export namespace Prisma {
     reComment?: ReCommentUncheckedUpdateManyWithoutArticleNestedInput
     articleLike?: ArticleLikeUncheckedUpdateManyWithoutArticleNestedInput
     hotArticle?: HotArticleUncheckedUpdateManyWithoutArticleNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutArticleNestedInput
   }
 
   export type ArticleCreateManyInput = {
@@ -37564,6 +38771,50 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ReportBlindArticleCreateInput = {
+    createdAt?: Date | string
+    article: ArticleCreateNestedOneWithoutReportBlindArticleInput
+    user: UserCreateNestedOneWithoutReportBlindArticleInput
+  }
+
+  export type ReportBlindArticleUncheckedCreateInput = {
+    id?: number
+    articleId: number
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type ReportBlindArticleUpdateInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    article?: ArticleUpdateOneRequiredWithoutReportBlindArticleNestedInput
+    user?: UserUpdateOneRequiredWithoutReportBlindArticleNestedInput
+  }
+
+  export type ReportBlindArticleUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    articleId?: IntFieldUpdateOperationsInput | number
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReportBlindArticleCreateManyInput = {
+    id?: number
+    articleId: number
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type ReportBlindArticleUpdateManyMutationInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReportBlindArticleUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    articleId?: IntFieldUpdateOperationsInput | number
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type MealCreateInput = {
     id: string
     MLSV_FGR: number
@@ -37766,6 +39017,12 @@ export namespace Prisma {
     none?: PushDeviceWhereInput
   }
 
+  export type ReportBlindArticleListRelationFilter = {
+    every?: ReportBlindArticleWhereInput
+    some?: ReportBlindArticleWhereInput
+    none?: ReportBlindArticleWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -37812,6 +39069,10 @@ export namespace Prisma {
   }
 
   export type PushDeviceOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ReportBlindArticleOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -39118,6 +40379,37 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type ReportBlindArticleCountOrderByAggregateInput = {
+    id?: SortOrder
+    articleId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ReportBlindArticleAvgOrderByAggregateInput = {
+    id?: SortOrder
+    articleId?: SortOrder
+  }
+
+  export type ReportBlindArticleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    articleId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ReportBlindArticleMinOrderByAggregateInput = {
+    id?: SortOrder
+    articleId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ReportBlindArticleSumOrderByAggregateInput = {
+    id?: SortOrder
+    articleId?: SortOrder
+  }
+
   export type MealCountOrderByAggregateInput = {
     id?: SortOrder
     MLSV_FGR?: SortOrder
@@ -39254,6 +40546,13 @@ export namespace Prisma {
     connect?: Enumerable<PushDeviceWhereUniqueInput>
   }
 
+  export type ReportBlindArticleCreateNestedManyWithoutUserInput = {
+    create?: XOR<Enumerable<ReportBlindArticleCreateWithoutUserInput>, Enumerable<ReportBlindArticleUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<ReportBlindArticleCreateOrConnectWithoutUserInput>
+    createMany?: ReportBlindArticleCreateManyUserInputEnvelope
+    connect?: Enumerable<ReportBlindArticleWhereUniqueInput>
+  }
+
   export type AgreementUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<AgreementCreateWithoutUserInput, AgreementUncheckedCreateWithoutUserInput>
     connectOrCreate?: AgreementCreateOrConnectWithoutUserInput
@@ -39353,6 +40652,13 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<PushDeviceCreateOrConnectWithoutUserInput>
     createMany?: PushDeviceCreateManyUserInputEnvelope
     connect?: Enumerable<PushDeviceWhereUniqueInput>
+  }
+
+  export type ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<Enumerable<ReportBlindArticleCreateWithoutUserInput>, Enumerable<ReportBlindArticleUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<ReportBlindArticleCreateOrConnectWithoutUserInput>
+    createMany?: ReportBlindArticleCreateManyUserInputEnvelope
+    connect?: Enumerable<ReportBlindArticleWhereUniqueInput>
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -39569,6 +40875,20 @@ export namespace Prisma {
     deleteMany?: Enumerable<PushDeviceScalarWhereInput>
   }
 
+  export type ReportBlindArticleUpdateManyWithoutUserNestedInput = {
+    create?: XOR<Enumerable<ReportBlindArticleCreateWithoutUserInput>, Enumerable<ReportBlindArticleUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<ReportBlindArticleCreateOrConnectWithoutUserInput>
+    upsert?: Enumerable<ReportBlindArticleUpsertWithWhereUniqueWithoutUserInput>
+    createMany?: ReportBlindArticleCreateManyUserInputEnvelope
+    set?: Enumerable<ReportBlindArticleWhereUniqueInput>
+    disconnect?: Enumerable<ReportBlindArticleWhereUniqueInput>
+    delete?: Enumerable<ReportBlindArticleWhereUniqueInput>
+    connect?: Enumerable<ReportBlindArticleWhereUniqueInput>
+    update?: Enumerable<ReportBlindArticleUpdateWithWhereUniqueWithoutUserInput>
+    updateMany?: Enumerable<ReportBlindArticleUpdateManyWithWhereWithoutUserInput>
+    deleteMany?: Enumerable<ReportBlindArticleScalarWhereInput>
+  }
+
   export type AgreementUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<AgreementCreateWithoutUserInput, AgreementUncheckedCreateWithoutUserInput>
     connectOrCreate?: AgreementCreateOrConnectWithoutUserInput
@@ -39761,6 +41081,20 @@ export namespace Prisma {
     update?: Enumerable<PushDeviceUpdateWithWhereUniqueWithoutUserInput>
     updateMany?: Enumerable<PushDeviceUpdateManyWithWhereWithoutUserInput>
     deleteMany?: Enumerable<PushDeviceScalarWhereInput>
+  }
+
+  export type ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<Enumerable<ReportBlindArticleCreateWithoutUserInput>, Enumerable<ReportBlindArticleUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<ReportBlindArticleCreateOrConnectWithoutUserInput>
+    upsert?: Enumerable<ReportBlindArticleUpsertWithWhereUniqueWithoutUserInput>
+    createMany?: ReportBlindArticleCreateManyUserInputEnvelope
+    set?: Enumerable<ReportBlindArticleWhereUniqueInput>
+    disconnect?: Enumerable<ReportBlindArticleWhereUniqueInput>
+    delete?: Enumerable<ReportBlindArticleWhereUniqueInput>
+    connect?: Enumerable<ReportBlindArticleWhereUniqueInput>
+    update?: Enumerable<ReportBlindArticleUpdateWithWhereUniqueWithoutUserInput>
+    updateMany?: Enumerable<ReportBlindArticleUpdateManyWithWhereWithoutUserInput>
+    deleteMany?: Enumerable<ReportBlindArticleScalarWhereInput>
   }
 
   export type UserSchoolCreateNestedManyWithoutSchoolInput = {
@@ -40279,6 +41613,13 @@ export namespace Prisma {
     connect?: Enumerable<HotArticleWhereUniqueInput>
   }
 
+  export type ReportBlindArticleCreateNestedManyWithoutArticleInput = {
+    create?: XOR<Enumerable<ReportBlindArticleCreateWithoutArticleInput>, Enumerable<ReportBlindArticleUncheckedCreateWithoutArticleInput>>
+    connectOrCreate?: Enumerable<ReportBlindArticleCreateOrConnectWithoutArticleInput>
+    createMany?: ReportBlindArticleCreateManyArticleInputEnvelope
+    connect?: Enumerable<ReportBlindArticleWhereUniqueInput>
+  }
+
   export type CommentUncheckedCreateNestedManyWithoutArticleInput = {
     create?: XOR<Enumerable<CommentCreateWithoutArticleInput>, Enumerable<CommentUncheckedCreateWithoutArticleInput>>
     connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutArticleInput>
@@ -40305,6 +41646,13 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<HotArticleCreateOrConnectWithoutArticleInput>
     createMany?: HotArticleCreateManyArticleInputEnvelope
     connect?: Enumerable<HotArticleWhereUniqueInput>
+  }
+
+  export type ReportBlindArticleUncheckedCreateNestedManyWithoutArticleInput = {
+    create?: XOR<Enumerable<ReportBlindArticleCreateWithoutArticleInput>, Enumerable<ReportBlindArticleUncheckedCreateWithoutArticleInput>>
+    connectOrCreate?: Enumerable<ReportBlindArticleCreateOrConnectWithoutArticleInput>
+    createMany?: ReportBlindArticleCreateManyArticleInputEnvelope
+    connect?: Enumerable<ReportBlindArticleWhereUniqueInput>
   }
 
   export type ArticleUpdateimagesInput = {
@@ -40392,6 +41740,20 @@ export namespace Prisma {
     deleteMany?: Enumerable<HotArticleScalarWhereInput>
   }
 
+  export type ReportBlindArticleUpdateManyWithoutArticleNestedInput = {
+    create?: XOR<Enumerable<ReportBlindArticleCreateWithoutArticleInput>, Enumerable<ReportBlindArticleUncheckedCreateWithoutArticleInput>>
+    connectOrCreate?: Enumerable<ReportBlindArticleCreateOrConnectWithoutArticleInput>
+    upsert?: Enumerable<ReportBlindArticleUpsertWithWhereUniqueWithoutArticleInput>
+    createMany?: ReportBlindArticleCreateManyArticleInputEnvelope
+    set?: Enumerable<ReportBlindArticleWhereUniqueInput>
+    disconnect?: Enumerable<ReportBlindArticleWhereUniqueInput>
+    delete?: Enumerable<ReportBlindArticleWhereUniqueInput>
+    connect?: Enumerable<ReportBlindArticleWhereUniqueInput>
+    update?: Enumerable<ReportBlindArticleUpdateWithWhereUniqueWithoutArticleInput>
+    updateMany?: Enumerable<ReportBlindArticleUpdateManyWithWhereWithoutArticleInput>
+    deleteMany?: Enumerable<ReportBlindArticleScalarWhereInput>
+  }
+
   export type CommentUncheckedUpdateManyWithoutArticleNestedInput = {
     create?: XOR<Enumerable<CommentCreateWithoutArticleInput>, Enumerable<CommentUncheckedCreateWithoutArticleInput>>
     connectOrCreate?: Enumerable<CommentCreateOrConnectWithoutArticleInput>
@@ -40446,6 +41808,20 @@ export namespace Prisma {
     update?: Enumerable<HotArticleUpdateWithWhereUniqueWithoutArticleInput>
     updateMany?: Enumerable<HotArticleUpdateManyWithWhereWithoutArticleInput>
     deleteMany?: Enumerable<HotArticleScalarWhereInput>
+  }
+
+  export type ReportBlindArticleUncheckedUpdateManyWithoutArticleNestedInput = {
+    create?: XOR<Enumerable<ReportBlindArticleCreateWithoutArticleInput>, Enumerable<ReportBlindArticleUncheckedCreateWithoutArticleInput>>
+    connectOrCreate?: Enumerable<ReportBlindArticleCreateOrConnectWithoutArticleInput>
+    upsert?: Enumerable<ReportBlindArticleUpsertWithWhereUniqueWithoutArticleInput>
+    createMany?: ReportBlindArticleCreateManyArticleInputEnvelope
+    set?: Enumerable<ReportBlindArticleWhereUniqueInput>
+    disconnect?: Enumerable<ReportBlindArticleWhereUniqueInput>
+    delete?: Enumerable<ReportBlindArticleWhereUniqueInput>
+    connect?: Enumerable<ReportBlindArticleWhereUniqueInput>
+    update?: Enumerable<ReportBlindArticleUpdateWithWhereUniqueWithoutArticleInput>
+    updateMany?: Enumerable<ReportBlindArticleUpdateManyWithWhereWithoutArticleInput>
+    deleteMany?: Enumerable<ReportBlindArticleScalarWhereInput>
   }
 
   export type DeletedArticleCreateimagesInput = {
@@ -40789,6 +42165,34 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutPushDeviceInput
     connect?: UserWhereUniqueInput
     update?: XOR<UserUpdateWithoutPushDeviceInput, UserUncheckedUpdateWithoutPushDeviceInput>
+  }
+
+  export type ArticleCreateNestedOneWithoutReportBlindArticleInput = {
+    create?: XOR<ArticleCreateWithoutReportBlindArticleInput, ArticleUncheckedCreateWithoutReportBlindArticleInput>
+    connectOrCreate?: ArticleCreateOrConnectWithoutReportBlindArticleInput
+    connect?: ArticleWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutReportBlindArticleInput = {
+    create?: XOR<UserCreateWithoutReportBlindArticleInput, UserUncheckedCreateWithoutReportBlindArticleInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReportBlindArticleInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ArticleUpdateOneRequiredWithoutReportBlindArticleNestedInput = {
+    create?: XOR<ArticleCreateWithoutReportBlindArticleInput, ArticleUncheckedCreateWithoutReportBlindArticleInput>
+    connectOrCreate?: ArticleCreateOrConnectWithoutReportBlindArticleInput
+    upsert?: ArticleUpsertWithoutReportBlindArticleInput
+    connect?: ArticleWhereUniqueInput
+    update?: XOR<ArticleUpdateWithoutReportBlindArticleInput, ArticleUncheckedUpdateWithoutReportBlindArticleInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutReportBlindArticleNestedInput = {
+    create?: XOR<UserCreateWithoutReportBlindArticleInput, UserUncheckedCreateWithoutReportBlindArticleInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReportBlindArticleInput
+    upsert?: UserUpsertWithoutReportBlindArticleInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<UserUpdateWithoutReportBlindArticleInput, UserUncheckedUpdateWithoutReportBlindArticleInput>
   }
 
   export type NestedStringFilter = {
@@ -41155,6 +42559,7 @@ export namespace Prisma {
     reComment?: ReCommentCreateNestedManyWithoutArticleInput
     articleLike?: ArticleLikeCreateNestedManyWithoutArticleInput
     hotArticle?: HotArticleCreateNestedManyWithoutArticleInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleUncheckedCreateWithoutUserInput = {
@@ -41171,6 +42576,7 @@ export namespace Prisma {
     reComment?: ReCommentUncheckedCreateNestedManyWithoutArticleInput
     articleLike?: ArticleLikeUncheckedCreateNestedManyWithoutArticleInput
     hotArticle?: HotArticleUncheckedCreateNestedManyWithoutArticleInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleCreateOrConnectWithoutUserInput = {
@@ -41515,6 +42921,27 @@ export namespace Prisma {
 
   export type PushDeviceCreateManyUserInputEnvelope = {
     data: Enumerable<PushDeviceCreateManyUserInput>
+    skipDuplicates?: boolean
+  }
+
+  export type ReportBlindArticleCreateWithoutUserInput = {
+    createdAt?: Date | string
+    article: ArticleCreateNestedOneWithoutReportBlindArticleInput
+  }
+
+  export type ReportBlindArticleUncheckedCreateWithoutUserInput = {
+    id?: number
+    articleId: number
+    createdAt?: Date | string
+  }
+
+  export type ReportBlindArticleCreateOrConnectWithoutUserInput = {
+    where: ReportBlindArticleWhereUniqueInput
+    create: XOR<ReportBlindArticleCreateWithoutUserInput, ReportBlindArticleUncheckedCreateWithoutUserInput>
+  }
+
+  export type ReportBlindArticleCreateManyUserInputEnvelope = {
+    data: Enumerable<ReportBlindArticleCreateManyUserInput>
     skipDuplicates?: boolean
   }
 
@@ -41912,6 +43339,32 @@ export namespace Prisma {
     createdAt?: DateTimeFilter | Date | string
   }
 
+  export type ReportBlindArticleUpsertWithWhereUniqueWithoutUserInput = {
+    where: ReportBlindArticleWhereUniqueInput
+    update: XOR<ReportBlindArticleUpdateWithoutUserInput, ReportBlindArticleUncheckedUpdateWithoutUserInput>
+    create: XOR<ReportBlindArticleCreateWithoutUserInput, ReportBlindArticleUncheckedCreateWithoutUserInput>
+  }
+
+  export type ReportBlindArticleUpdateWithWhereUniqueWithoutUserInput = {
+    where: ReportBlindArticleWhereUniqueInput
+    data: XOR<ReportBlindArticleUpdateWithoutUserInput, ReportBlindArticleUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ReportBlindArticleUpdateManyWithWhereWithoutUserInput = {
+    where: ReportBlindArticleScalarWhereInput
+    data: XOR<ReportBlindArticleUpdateManyMutationInput, ReportBlindArticleUncheckedUpdateManyWithoutReportBlindArticleInput>
+  }
+
+  export type ReportBlindArticleScalarWhereInput = {
+    AND?: Enumerable<ReportBlindArticleScalarWhereInput>
+    OR?: Enumerable<ReportBlindArticleScalarWhereInput>
+    NOT?: Enumerable<ReportBlindArticleScalarWhereInput>
+    id?: IntFilter | number
+    articleId?: IntFilter | number
+    userId?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+  }
+
   export type UserSchoolCreateWithoutSchoolInput = {
     dept: string
     grade: string
@@ -41949,6 +43402,7 @@ export namespace Prisma {
     reComment?: ReCommentCreateNestedManyWithoutArticleInput
     articleLike?: ArticleLikeCreateNestedManyWithoutArticleInput
     hotArticle?: HotArticleCreateNestedManyWithoutArticleInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleUncheckedCreateWithoutSchoolInput = {
@@ -41965,6 +43419,7 @@ export namespace Prisma {
     reComment?: ReCommentUncheckedCreateNestedManyWithoutArticleInput
     articleLike?: ArticleLikeUncheckedCreateNestedManyWithoutArticleInput
     hotArticle?: HotArticleUncheckedCreateNestedManyWithoutArticleInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleCreateOrConnectWithoutSchoolInput = {
@@ -42045,6 +43500,7 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutImageInput = {
@@ -42072,6 +43528,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutImageInput = {
@@ -42147,6 +43604,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutImageInput = {
@@ -42174,6 +43632,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserSchoolVerifyUpsertWithWhereUniqueWithoutImageInput = {
@@ -42217,6 +43676,7 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSocialLoginInput = {
@@ -42244,6 +43704,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSocialLoginInput = {
@@ -42281,6 +43742,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSocialLoginInput = {
@@ -42308,6 +43770,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAgreementInput = {
@@ -42335,6 +43798,7 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAgreementInput = {
@@ -42362,6 +43826,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAgreementInput = {
@@ -42399,6 +43864,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAgreementInput = {
@@ -42426,6 +43892,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ImageCreateWithoutUserSchoolVerifyInput = {
@@ -42472,6 +43939,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserSchoolVerifyInput = {
@@ -42499,6 +43967,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserSchoolVerifyInput = {
@@ -42555,6 +44024,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserSchoolVerifyInput = {
@@ -42582,6 +44052,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SchoolCreateWithoutUserSchoolInput = {
@@ -42638,6 +44109,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserSchoolInput = {
@@ -42665,6 +44137,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserSchoolInput = {
@@ -42731,6 +44204,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserSchoolInput = {
@@ -42758,6 +44232,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AskedCreateWithoutAskedUserInput = {
@@ -42817,6 +44292,7 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAskedUserInput = {
@@ -42844,6 +44320,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAskedUserInput = {
@@ -42897,6 +44374,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAskedUserInput = {
@@ -42924,6 +44402,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AskedUserCreateWithoutAskedInput = {
@@ -42978,6 +44457,7 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAskedInput = {
@@ -43005,6 +44485,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAskedInput = {
@@ -43069,6 +44550,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAskedInput = {
@@ -43096,6 +44578,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleCreateWithoutBoardInput = {
@@ -43111,6 +44594,7 @@ export namespace Prisma {
     reComment?: ReCommentCreateNestedManyWithoutArticleInput
     articleLike?: ArticleLikeCreateNestedManyWithoutArticleInput
     hotArticle?: HotArticleCreateNestedManyWithoutArticleInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleUncheckedCreateWithoutBoardInput = {
@@ -43127,6 +44611,7 @@ export namespace Prisma {
     reComment?: ReCommentUncheckedCreateNestedManyWithoutArticleInput
     articleLike?: ArticleLikeUncheckedCreateNestedManyWithoutArticleInput
     hotArticle?: HotArticleUncheckedCreateNestedManyWithoutArticleInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleCreateOrConnectWithoutBoardInput = {
@@ -43244,6 +44729,7 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBoardOrganizationsInput = {
@@ -43271,6 +44757,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBoardOrganizationsInput = {
@@ -43334,6 +44821,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBoardOrganizationsInput = {
@@ -43361,6 +44849,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BoardCreateWithoutArticleInput = {
@@ -43414,6 +44903,7 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutArticleInput = {
@@ -43441,6 +44931,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutArticleInput = {
@@ -43584,6 +45075,27 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ReportBlindArticleCreateWithoutArticleInput = {
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutReportBlindArticleInput
+  }
+
+  export type ReportBlindArticleUncheckedCreateWithoutArticleInput = {
+    id?: number
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type ReportBlindArticleCreateOrConnectWithoutArticleInput = {
+    where: ReportBlindArticleWhereUniqueInput
+    create: XOR<ReportBlindArticleCreateWithoutArticleInput, ReportBlindArticleUncheckedCreateWithoutArticleInput>
+  }
+
+  export type ReportBlindArticleCreateManyArticleInputEnvelope = {
+    data: Enumerable<ReportBlindArticleCreateManyArticleInput>
+    skipDuplicates?: boolean
+  }
+
   export type BoardUpsertWithoutArticleInput = {
     update: XOR<BoardUpdateWithoutArticleInput, BoardUncheckedUpdateWithoutArticleInput>
     create: XOR<BoardCreateWithoutArticleInput, BoardUncheckedCreateWithoutArticleInput>
@@ -43640,6 +45152,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticleInput = {
@@ -43667,6 +45180,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SchoolUpsertWithoutArticleInput = {
@@ -43771,6 +45285,22 @@ export namespace Prisma {
     schoolId?: StringFilter | string
   }
 
+  export type ReportBlindArticleUpsertWithWhereUniqueWithoutArticleInput = {
+    where: ReportBlindArticleWhereUniqueInput
+    update: XOR<ReportBlindArticleUpdateWithoutArticleInput, ReportBlindArticleUncheckedUpdateWithoutArticleInput>
+    create: XOR<ReportBlindArticleCreateWithoutArticleInput, ReportBlindArticleUncheckedCreateWithoutArticleInput>
+  }
+
+  export type ReportBlindArticleUpdateWithWhereUniqueWithoutArticleInput = {
+    where: ReportBlindArticleWhereUniqueInput
+    data: XOR<ReportBlindArticleUpdateWithoutArticleInput, ReportBlindArticleUncheckedUpdateWithoutArticleInput>
+  }
+
+  export type ReportBlindArticleUpdateManyWithWhereWithoutArticleInput = {
+    where: ReportBlindArticleScalarWhereInput
+    data: XOR<ReportBlindArticleUpdateManyMutationInput, ReportBlindArticleUncheckedUpdateManyWithoutReportBlindArticleInput>
+  }
+
   export type ArticleCreateWithoutCommentInput = {
     title: string
     content: string
@@ -43784,6 +45314,7 @@ export namespace Prisma {
     reComment?: ReCommentCreateNestedManyWithoutArticleInput
     articleLike?: ArticleLikeCreateNestedManyWithoutArticleInput
     hotArticle?: HotArticleCreateNestedManyWithoutArticleInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleUncheckedCreateWithoutCommentInput = {
@@ -43800,6 +45331,7 @@ export namespace Prisma {
     reComment?: ReCommentUncheckedCreateNestedManyWithoutArticleInput
     articleLike?: ArticleLikeUncheckedCreateNestedManyWithoutArticleInput
     hotArticle?: HotArticleUncheckedCreateNestedManyWithoutArticleInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleCreateOrConnectWithoutCommentInput = {
@@ -43832,6 +45364,7 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentInput = {
@@ -43859,6 +45392,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentInput = {
@@ -43939,6 +45473,7 @@ export namespace Prisma {
     reComment?: ReCommentUpdateManyWithoutArticleNestedInput
     articleLike?: ArticleLikeUpdateManyWithoutArticleNestedInput
     hotArticle?: HotArticleUpdateManyWithoutArticleNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutArticleNestedInput
   }
 
   export type ArticleUncheckedUpdateWithoutCommentInput = {
@@ -43955,6 +45490,7 @@ export namespace Prisma {
     reComment?: ReCommentUncheckedUpdateManyWithoutArticleNestedInput
     articleLike?: ArticleLikeUncheckedUpdateManyWithoutArticleNestedInput
     hotArticle?: HotArticleUncheckedUpdateManyWithoutArticleNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutArticleNestedInput
   }
 
   export type UserUpsertWithoutCommentInput = {
@@ -43987,6 +45523,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentInput = {
@@ -44014,6 +45551,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CommentLikeUpsertWithWhereUniqueWithoutCommentInput = {
@@ -44061,6 +45599,7 @@ export namespace Prisma {
     comment?: CommentCreateNestedManyWithoutArticleInput
     articleLike?: ArticleLikeCreateNestedManyWithoutArticleInput
     hotArticle?: HotArticleCreateNestedManyWithoutArticleInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleUncheckedCreateWithoutReCommentInput = {
@@ -44077,6 +45616,7 @@ export namespace Prisma {
     comment?: CommentUncheckedCreateNestedManyWithoutArticleInput
     articleLike?: ArticleLikeUncheckedCreateNestedManyWithoutArticleInput
     hotArticle?: HotArticleUncheckedCreateNestedManyWithoutArticleInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleCreateOrConnectWithoutReCommentInput = {
@@ -44137,6 +45677,7 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReCommentInput = {
@@ -44164,6 +45705,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReCommentInput = {
@@ -44211,6 +45753,7 @@ export namespace Prisma {
     comment?: CommentUpdateManyWithoutArticleNestedInput
     articleLike?: ArticleLikeUpdateManyWithoutArticleNestedInput
     hotArticle?: HotArticleUpdateManyWithoutArticleNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutArticleNestedInput
   }
 
   export type ArticleUncheckedUpdateWithoutReCommentInput = {
@@ -44227,6 +45770,7 @@ export namespace Prisma {
     comment?: CommentUncheckedUpdateManyWithoutArticleNestedInput
     articleLike?: ArticleLikeUncheckedUpdateManyWithoutArticleNestedInput
     hotArticle?: HotArticleUncheckedUpdateManyWithoutArticleNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutArticleNestedInput
   }
 
   export type CommentUpsertWithoutRecommentsInput = {
@@ -44287,6 +45831,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReCommentInput = {
@@ -44314,6 +45859,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ReCommentLikeUpsertWithWhereUniqueWithoutRecommentInput = {
@@ -44357,6 +45903,7 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutArticleLikeInput = {
@@ -44384,6 +45931,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutArticleLikeInput = {
@@ -44404,6 +45952,7 @@ export namespace Prisma {
     comment?: CommentCreateNestedManyWithoutArticleInput
     reComment?: ReCommentCreateNestedManyWithoutArticleInput
     hotArticle?: HotArticleCreateNestedManyWithoutArticleInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleUncheckedCreateWithoutArticleLikeInput = {
@@ -44420,6 +45969,7 @@ export namespace Prisma {
     comment?: CommentUncheckedCreateNestedManyWithoutArticleInput
     reComment?: ReCommentUncheckedCreateNestedManyWithoutArticleInput
     hotArticle?: HotArticleUncheckedCreateNestedManyWithoutArticleInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleCreateOrConnectWithoutArticleLikeInput = {
@@ -44457,6 +46007,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticleLikeInput = {
@@ -44484,6 +46035,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleUpsertWithoutArticleLikeInput = {
@@ -44504,6 +46056,7 @@ export namespace Prisma {
     comment?: CommentUpdateManyWithoutArticleNestedInput
     reComment?: ReCommentUpdateManyWithoutArticleNestedInput
     hotArticle?: HotArticleUpdateManyWithoutArticleNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutArticleNestedInput
   }
 
   export type ArticleUncheckedUpdateWithoutArticleLikeInput = {
@@ -44520,6 +46073,7 @@ export namespace Prisma {
     comment?: CommentUncheckedUpdateManyWithoutArticleNestedInput
     reComment?: ReCommentUncheckedUpdateManyWithoutArticleNestedInput
     hotArticle?: HotArticleUncheckedUpdateManyWithoutArticleNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutArticleNestedInput
   }
 
   export type UserCreateWithoutCommentLikeInput = {
@@ -44547,6 +46101,7 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentLikeInput = {
@@ -44574,6 +46129,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentLikeInput = {
@@ -44639,6 +46195,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentLikeInput = {
@@ -44666,6 +46223,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CommentUpsertWithoutCommentLikeInput = {
@@ -44721,6 +46279,7 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReCommentLikeInput = {
@@ -44748,6 +46307,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReCommentLikeInput = {
@@ -44813,6 +46373,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReCommentLikeInput = {
@@ -44840,6 +46401,7 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ReCommentUpsertWithoutReCommentLikeInput = {
@@ -44883,6 +46445,7 @@ export namespace Prisma {
     comment?: CommentCreateNestedManyWithoutArticleInput
     reComment?: ReCommentCreateNestedManyWithoutArticleInput
     articleLike?: ArticleLikeCreateNestedManyWithoutArticleInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleUncheckedCreateWithoutHotArticleInput = {
@@ -44899,6 +46462,7 @@ export namespace Prisma {
     comment?: CommentUncheckedCreateNestedManyWithoutArticleInput
     reComment?: ReCommentUncheckedCreateNestedManyWithoutArticleInput
     articleLike?: ArticleLikeUncheckedCreateNestedManyWithoutArticleInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutArticleInput
   }
 
   export type ArticleCreateOrConnectWithoutHotArticleInput = {
@@ -44924,6 +46488,7 @@ export namespace Prisma {
     comment?: CommentUpdateManyWithoutArticleNestedInput
     reComment?: ReCommentUpdateManyWithoutArticleNestedInput
     articleLike?: ArticleLikeUpdateManyWithoutArticleNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutArticleNestedInput
   }
 
   export type ArticleUncheckedUpdateWithoutHotArticleInput = {
@@ -44940,6 +46505,7 @@ export namespace Prisma {
     comment?: CommentUncheckedUpdateManyWithoutArticleNestedInput
     reComment?: ReCommentUncheckedUpdateManyWithoutArticleNestedInput
     articleLike?: ArticleLikeUncheckedUpdateManyWithoutArticleNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutArticleNestedInput
   }
 
   export type UserCreateWithoutPushDeviceInput = {
@@ -44967,6 +46533,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPushDeviceInput = {
@@ -44994,6 +46561,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPushDeviceInput = {
@@ -45031,6 +46599,7 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPushDeviceInput = {
@@ -45058,6 +46627,205 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ArticleCreateWithoutReportBlindArticleInput = {
+    title: string
+    content: string
+    images?: ArticleCreateimagesInput | Enumerable<string>
+    views?: number
+    isAnonymous: boolean
+    createdAt?: Date | string
+    board: BoardCreateNestedOneWithoutArticleInput
+    user: UserCreateNestedOneWithoutArticleInput
+    school: SchoolCreateNestedOneWithoutArticleInput
+    comment?: CommentCreateNestedManyWithoutArticleInput
+    reComment?: ReCommentCreateNestedManyWithoutArticleInput
+    articleLike?: ArticleLikeCreateNestedManyWithoutArticleInput
+    hotArticle?: HotArticleCreateNestedManyWithoutArticleInput
+  }
+
+  export type ArticleUncheckedCreateWithoutReportBlindArticleInput = {
+    id?: number
+    schoolId: string
+    title: string
+    content: string
+    images?: ArticleCreateimagesInput | Enumerable<string>
+    views?: number
+    isAnonymous: boolean
+    userId: string
+    createdAt?: Date | string
+    boardId: number
+    comment?: CommentUncheckedCreateNestedManyWithoutArticleInput
+    reComment?: ReCommentUncheckedCreateNestedManyWithoutArticleInput
+    articleLike?: ArticleLikeUncheckedCreateNestedManyWithoutArticleInput
+    hotArticle?: HotArticleUncheckedCreateNestedManyWithoutArticleInput
+  }
+
+  export type ArticleCreateOrConnectWithoutReportBlindArticleInput = {
+    where: ArticleWhereUniqueInput
+    create: XOR<ArticleCreateWithoutReportBlindArticleInput, ArticleUncheckedCreateWithoutReportBlindArticleInput>
+  }
+
+  export type UserCreateWithoutReportBlindArticleInput = {
+    id?: string
+    email?: string | null
+    password?: string | null
+    name: string
+    profile?: string | null
+    isVerified?: boolean
+    phone?: string | null
+    createdAt?: Date | string
+    provider: UserLoginProviderType
+    userSchoolId?: string | null
+    agreement?: AgreementCreateNestedOneWithoutUserInput
+    article?: ArticleCreateNestedManyWithoutUserInput
+    asked?: AskedCreateNestedManyWithoutQuestionUserInput
+    askedUser?: AskedUserCreateNestedOneWithoutUserInput
+    boardOrganizations?: BoardManagerCreateNestedManyWithoutUserInput
+    comment?: CommentCreateNestedManyWithoutUserInput
+    image?: ImageCreateNestedManyWithoutUserInput
+    articleLike?: ArticleLikeCreateNestedManyWithoutUserInput
+    commentLike?: CommentLikeCreateNestedManyWithoutUserInput
+    reCommentLike?: ReCommentLikeCreateNestedManyWithoutUserInput
+    reComment?: ReCommentCreateNestedManyWithoutUserInput
+    socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
+    userSchool?: UserSchoolCreateNestedOneWithoutUserInput
+    userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutReportBlindArticleInput = {
+    id?: string
+    email?: string | null
+    password?: string | null
+    name: string
+    profile?: string | null
+    isVerified?: boolean
+    phone?: string | null
+    createdAt?: Date | string
+    provider: UserLoginProviderType
+    userSchoolId?: string | null
+    agreement?: AgreementUncheckedCreateNestedOneWithoutUserInput
+    article?: ArticleUncheckedCreateNestedManyWithoutUserInput
+    asked?: AskedUncheckedCreateNestedManyWithoutQuestionUserInput
+    askedUser?: AskedUserUncheckedCreateNestedOneWithoutUserInput
+    boardOrganizations?: BoardManagerUncheckedCreateNestedManyWithoutUserInput
+    comment?: CommentUncheckedCreateNestedManyWithoutUserInput
+    image?: ImageUncheckedCreateNestedManyWithoutUserInput
+    articleLike?: ArticleLikeUncheckedCreateNestedManyWithoutUserInput
+    commentLike?: CommentLikeUncheckedCreateNestedManyWithoutUserInput
+    reCommentLike?: ReCommentLikeUncheckedCreateNestedManyWithoutUserInput
+    reComment?: ReCommentUncheckedCreateNestedManyWithoutUserInput
+    socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
+    userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
+    userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutReportBlindArticleInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutReportBlindArticleInput, UserUncheckedCreateWithoutReportBlindArticleInput>
+  }
+
+  export type ArticleUpsertWithoutReportBlindArticleInput = {
+    update: XOR<ArticleUpdateWithoutReportBlindArticleInput, ArticleUncheckedUpdateWithoutReportBlindArticleInput>
+    create: XOR<ArticleCreateWithoutReportBlindArticleInput, ArticleUncheckedCreateWithoutReportBlindArticleInput>
+  }
+
+  export type ArticleUpdateWithoutReportBlindArticleInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    images?: ArticleUpdateimagesInput | Enumerable<string>
+    views?: IntFieldUpdateOperationsInput | number
+    isAnonymous?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    board?: BoardUpdateOneRequiredWithoutArticleNestedInput
+    user?: UserUpdateOneRequiredWithoutArticleNestedInput
+    school?: SchoolUpdateOneRequiredWithoutArticleNestedInput
+    comment?: CommentUpdateManyWithoutArticleNestedInput
+    reComment?: ReCommentUpdateManyWithoutArticleNestedInput
+    articleLike?: ArticleLikeUpdateManyWithoutArticleNestedInput
+    hotArticle?: HotArticleUpdateManyWithoutArticleNestedInput
+  }
+
+  export type ArticleUncheckedUpdateWithoutReportBlindArticleInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    schoolId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    images?: ArticleUpdateimagesInput | Enumerable<string>
+    views?: IntFieldUpdateOperationsInput | number
+    isAnonymous?: BoolFieldUpdateOperationsInput | boolean
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    boardId?: IntFieldUpdateOperationsInput | number
+    comment?: CommentUncheckedUpdateManyWithoutArticleNestedInput
+    reComment?: ReCommentUncheckedUpdateManyWithoutArticleNestedInput
+    articleLike?: ArticleLikeUncheckedUpdateManyWithoutArticleNestedInput
+    hotArticle?: HotArticleUncheckedUpdateManyWithoutArticleNestedInput
+  }
+
+  export type UserUpsertWithoutReportBlindArticleInput = {
+    update: XOR<UserUpdateWithoutReportBlindArticleInput, UserUncheckedUpdateWithoutReportBlindArticleInput>
+    create: XOR<UserCreateWithoutReportBlindArticleInput, UserUncheckedCreateWithoutReportBlindArticleInput>
+  }
+
+  export type UserUpdateWithoutReportBlindArticleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    provider?: EnumUserLoginProviderTypeFieldUpdateOperationsInput | UserLoginProviderType
+    userSchoolId?: NullableStringFieldUpdateOperationsInput | string | null
+    agreement?: AgreementUpdateOneWithoutUserNestedInput
+    article?: ArticleUpdateManyWithoutUserNestedInput
+    asked?: AskedUpdateManyWithoutQuestionUserNestedInput
+    askedUser?: AskedUserUpdateOneWithoutUserNestedInput
+    boardOrganizations?: BoardManagerUpdateManyWithoutUserNestedInput
+    comment?: CommentUpdateManyWithoutUserNestedInput
+    image?: ImageUpdateManyWithoutUserNestedInput
+    articleLike?: ArticleLikeUpdateManyWithoutUserNestedInput
+    commentLike?: CommentLikeUpdateManyWithoutUserNestedInput
+    reCommentLike?: ReCommentLikeUpdateManyWithoutUserNestedInput
+    reComment?: ReCommentUpdateManyWithoutUserNestedInput
+    socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
+    userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
+    userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutReportBlindArticleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    provider?: EnumUserLoginProviderTypeFieldUpdateOperationsInput | UserLoginProviderType
+    userSchoolId?: NullableStringFieldUpdateOperationsInput | string | null
+    agreement?: AgreementUncheckedUpdateOneWithoutUserNestedInput
+    article?: ArticleUncheckedUpdateManyWithoutUserNestedInput
+    asked?: AskedUncheckedUpdateManyWithoutQuestionUserNestedInput
+    askedUser?: AskedUserUncheckedUpdateOneWithoutUserNestedInput
+    boardOrganizations?: BoardManagerUncheckedUpdateManyWithoutUserNestedInput
+    comment?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    image?: ImageUncheckedUpdateManyWithoutUserNestedInput
+    articleLike?: ArticleLikeUncheckedUpdateManyWithoutUserNestedInput
+    commentLike?: CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+    reCommentLike?: ReCommentLikeUncheckedUpdateManyWithoutUserNestedInput
+    reComment?: ReCommentUncheckedUpdateManyWithoutUserNestedInput
+    socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
+    userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
+    userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleCreateManyUserInput = {
@@ -45154,6 +46922,12 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type ReportBlindArticleCreateManyUserInput = {
+    id?: number
+    articleId: number
+    createdAt?: Date | string
+  }
+
   export type ArticleUpdateWithoutUserInput = {
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
@@ -45167,6 +46941,7 @@ export namespace Prisma {
     reComment?: ReCommentUpdateManyWithoutArticleNestedInput
     articleLike?: ArticleLikeUpdateManyWithoutArticleNestedInput
     hotArticle?: HotArticleUpdateManyWithoutArticleNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutArticleNestedInput
   }
 
   export type ArticleUncheckedUpdateWithoutUserInput = {
@@ -45183,6 +46958,7 @@ export namespace Prisma {
     reComment?: ReCommentUncheckedUpdateManyWithoutArticleNestedInput
     articleLike?: ArticleLikeUncheckedUpdateManyWithoutArticleNestedInput
     hotArticle?: HotArticleUncheckedUpdateManyWithoutArticleNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutArticleNestedInput
   }
 
   export type ArticleUncheckedUpdateManyWithoutArticleInput = {
@@ -45449,6 +47225,23 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ReportBlindArticleUpdateWithoutUserInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    article?: ArticleUpdateOneRequiredWithoutReportBlindArticleNestedInput
+  }
+
+  export type ReportBlindArticleUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    articleId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReportBlindArticleUncheckedUpdateManyWithoutReportBlindArticleInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    articleId?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserSchoolCreateManySchoolInput = {
     userId: string
     dept: string
@@ -45502,6 +47295,7 @@ export namespace Prisma {
     reComment?: ReCommentUpdateManyWithoutArticleNestedInput
     articleLike?: ArticleLikeUpdateManyWithoutArticleNestedInput
     hotArticle?: HotArticleUpdateManyWithoutArticleNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutArticleNestedInput
   }
 
   export type ArticleUncheckedUpdateWithoutSchoolInput = {
@@ -45518,6 +47312,7 @@ export namespace Prisma {
     reComment?: ReCommentUncheckedUpdateManyWithoutArticleNestedInput
     articleLike?: ArticleLikeUncheckedUpdateManyWithoutArticleNestedInput
     hotArticle?: HotArticleUncheckedUpdateManyWithoutArticleNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutArticleNestedInput
   }
 
   export type UserSchoolVerifyCreateManyImageInput = {
@@ -45626,6 +47421,7 @@ export namespace Prisma {
     reComment?: ReCommentUpdateManyWithoutArticleNestedInput
     articleLike?: ArticleLikeUpdateManyWithoutArticleNestedInput
     hotArticle?: HotArticleUpdateManyWithoutArticleNestedInput
+    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutArticleNestedInput
   }
 
   export type ArticleUncheckedUpdateWithoutBoardInput = {
@@ -45642,6 +47438,7 @@ export namespace Prisma {
     reComment?: ReCommentUncheckedUpdateManyWithoutArticleNestedInput
     articleLike?: ArticleLikeUncheckedUpdateManyWithoutArticleNestedInput
     hotArticle?: HotArticleUncheckedUpdateManyWithoutArticleNestedInput
+    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutArticleNestedInput
   }
 
   export type BoardManagerUpdateWithoutBoardInput = {
@@ -45692,6 +47489,12 @@ export namespace Prisma {
   export type HotArticleCreateManyArticleInput = {
     id?: number
     schoolId: string
+  }
+
+  export type ReportBlindArticleCreateManyArticleInput = {
+    id?: number
+    userId: string
+    createdAt?: Date | string
   }
 
   export type CommentUpdateWithoutArticleInput = {
@@ -45764,6 +47567,17 @@ export namespace Prisma {
   export type HotArticleUncheckedUpdateManyWithoutHotArticleInput = {
     id?: IntFieldUpdateOperationsInput | number
     schoolId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ReportBlindArticleUpdateWithoutArticleInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutReportBlindArticleNestedInput
+  }
+
+  export type ReportBlindArticleUncheckedUpdateWithoutArticleInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CommentLikeCreateManyCommentInput = {
