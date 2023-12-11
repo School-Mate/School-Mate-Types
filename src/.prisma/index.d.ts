@@ -595,6 +595,7 @@ export type AdvertisePayload<ExtArgs extends $Extensions.Args = $Extensions.Defa
     title: string
     image: string
     link: string
+    views: number
     startDate: Date
     endDate: Date
   }, ExtArgs["result"]["advertise"]>
@@ -30936,10 +30937,12 @@ export namespace Prisma {
 
   export type AdvertiseAvgAggregateOutputType = {
     id: number | null
+    views: number | null
   }
 
   export type AdvertiseSumAggregateOutputType = {
     id: number | null
+    views: number | null
   }
 
   export type AdvertiseMinAggregateOutputType = {
@@ -30947,6 +30950,7 @@ export namespace Prisma {
     title: string | null
     image: string | null
     link: string | null
+    views: number | null
     startDate: Date | null
     endDate: Date | null
   }
@@ -30956,6 +30960,7 @@ export namespace Prisma {
     title: string | null
     image: string | null
     link: string | null
+    views: number | null
     startDate: Date | null
     endDate: Date | null
   }
@@ -30965,6 +30970,7 @@ export namespace Prisma {
     title: number
     image: number
     link: number
+    views: number
     startDate: number
     endDate: number
     _all: number
@@ -30973,10 +30979,12 @@ export namespace Prisma {
 
   export type AdvertiseAvgAggregateInputType = {
     id?: true
+    views?: true
   }
 
   export type AdvertiseSumAggregateInputType = {
     id?: true
+    views?: true
   }
 
   export type AdvertiseMinAggregateInputType = {
@@ -30984,6 +30992,7 @@ export namespace Prisma {
     title?: true
     image?: true
     link?: true
+    views?: true
     startDate?: true
     endDate?: true
   }
@@ -30993,6 +31002,7 @@ export namespace Prisma {
     title?: true
     image?: true
     link?: true
+    views?: true
     startDate?: true
     endDate?: true
   }
@@ -31002,6 +31012,7 @@ export namespace Prisma {
     title?: true
     image?: true
     link?: true
+    views?: true
     startDate?: true
     endDate?: true
     _all?: true
@@ -31099,6 +31110,7 @@ export namespace Prisma {
     title: string
     image: string
     link: string
+    views: number
     startDate: Date
     endDate: Date
     _count: AdvertiseCountAggregateOutputType | null
@@ -31127,6 +31139,7 @@ export namespace Prisma {
     title?: boolean
     image?: boolean
     link?: boolean
+    views?: boolean
     startDate?: boolean
     endDate?: boolean
   }, ExtArgs["result"]["advertise"]>
@@ -31136,6 +31149,7 @@ export namespace Prisma {
     title?: boolean
     image?: boolean
     link?: boolean
+    views?: boolean
     startDate?: boolean
     endDate?: boolean
   }
@@ -34993,6 +35007,7 @@ export namespace Prisma {
     title: 'title',
     image: 'image',
     link: 'link',
+    views: 'views',
     startDate: 'startDate',
     endDate: 'endDate'
   };
@@ -36598,6 +36613,7 @@ export namespace Prisma {
     title?: StringFilter | string
     image?: StringFilter | string
     link?: StringFilter | string
+    views?: IntFilter | number
     startDate?: DateTimeFilter | Date | string
     endDate?: DateTimeFilter | Date | string
   }
@@ -36607,6 +36623,7 @@ export namespace Prisma {
     title?: SortOrder
     image?: SortOrder
     link?: SortOrder
+    views?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
   }
@@ -36620,6 +36637,7 @@ export namespace Prisma {
     title?: SortOrder
     image?: SortOrder
     link?: SortOrder
+    views?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
     _count?: AdvertiseCountOrderByAggregateInput
@@ -36637,6 +36655,7 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter | string
     image?: StringWithAggregatesFilter | string
     link?: StringWithAggregatesFilter | string
+    views?: IntWithAggregatesFilter | number
     startDate?: DateTimeWithAggregatesFilter | Date | string
     endDate?: DateTimeWithAggregatesFilter | Date | string
   }
@@ -38667,6 +38686,7 @@ export namespace Prisma {
     title: string
     image: string
     link: string
+    views?: number
     startDate?: Date | string
     endDate: Date | string
   }
@@ -38676,6 +38696,7 @@ export namespace Prisma {
     title: string
     image: string
     link: string
+    views?: number
     startDate?: Date | string
     endDate: Date | string
   }
@@ -38684,6 +38705,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     image?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    views?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -38693,6 +38715,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     image?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    views?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -38702,6 +38725,7 @@ export namespace Prisma {
     title: string
     image: string
     link: string
+    views?: number
     startDate?: Date | string
     endDate: Date | string
   }
@@ -38710,6 +38734,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     image?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    views?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -38719,6 +38744,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     image?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    views?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -40328,12 +40354,14 @@ export namespace Prisma {
     title?: SortOrder
     image?: SortOrder
     link?: SortOrder
+    views?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
   }
 
   export type AdvertiseAvgOrderByAggregateInput = {
     id?: SortOrder
+    views?: SortOrder
   }
 
   export type AdvertiseMaxOrderByAggregateInput = {
@@ -40341,6 +40369,7 @@ export namespace Prisma {
     title?: SortOrder
     image?: SortOrder
     link?: SortOrder
+    views?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
   }
@@ -40350,12 +40379,14 @@ export namespace Prisma {
     title?: SortOrder
     image?: SortOrder
     link?: SortOrder
+    views?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
   }
 
   export type AdvertiseSumOrderByAggregateInput = {
     id?: SortOrder
+    views?: SortOrder
   }
 
   export type PushDeviceCountOrderByAggregateInput = {

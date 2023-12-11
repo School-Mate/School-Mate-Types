@@ -368,6 +368,7 @@ exports.Prisma.AdvertiseScalarFieldEnum = {
   title: 'title',
   image: 'image',
   link: 'link',
+  views: 'views',
   startDate: 'startDate',
   endDate: 'endDate'
 };
