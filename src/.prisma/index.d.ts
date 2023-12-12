@@ -179,7 +179,7 @@ export type UserSchoolPayload<ExtArgs extends $Extensions.Args = $Extensions.Def
   scalars: $Extensions.GetResult<{
     userId: string
     schoolId: string
-    dept: string
+    dept: string | null
     grade: string
     class: string
   }, ExtArgs["result"]["userSchool"]>
@@ -11869,7 +11869,7 @@ export namespace Prisma {
   export type UserSchoolGroupByOutputType = {
     userId: string
     schoolId: string
-    dept: string
+    dept: string | null
     grade: string
     class: string
     _count: UserSchoolCountAggregateOutputType | null
@@ -35489,7 +35489,7 @@ export namespace Prisma {
     NOT?: Enumerable<UserSchoolWhereInput>
     userId?: StringFilter | string
     schoolId?: StringFilter | string
-    dept?: StringFilter | string
+    dept?: StringNullableFilter | string | null
     grade?: StringFilter | string
     class?: StringFilter | string
     school?: XOR<SchoolRelationFilter, SchoolWhereInput>
@@ -35499,7 +35499,7 @@ export namespace Prisma {
   export type UserSchoolOrderByWithRelationInput = {
     userId?: SortOrder
     schoolId?: SortOrder
-    dept?: SortOrder
+    dept?: SortOrderInput | SortOrder
     grade?: SortOrder
     class?: SortOrder
     school?: SchoolOrderByWithRelationInput
@@ -35513,7 +35513,7 @@ export namespace Prisma {
   export type UserSchoolOrderByWithAggregationInput = {
     userId?: SortOrder
     schoolId?: SortOrder
-    dept?: SortOrder
+    dept?: SortOrderInput | SortOrder
     grade?: SortOrder
     class?: SortOrder
     _count?: UserSchoolCountOrderByAggregateInput
@@ -35527,7 +35527,7 @@ export namespace Prisma {
     NOT?: Enumerable<UserSchoolScalarWhereWithAggregatesInput>
     userId?: StringWithAggregatesFilter | string
     schoolId?: StringWithAggregatesFilter | string
-    dept?: StringWithAggregatesFilter | string
+    dept?: StringNullableWithAggregatesFilter | string | null
     grade?: StringWithAggregatesFilter | string
     class?: StringWithAggregatesFilter | string
   }
@@ -37335,7 +37335,7 @@ export namespace Prisma {
   }
 
   export type UserSchoolCreateInput = {
-    dept: string
+    dept?: string | null
     grade: string
     class: string
     school: SchoolCreateNestedOneWithoutUserSchoolInput
@@ -37345,13 +37345,13 @@ export namespace Prisma {
   export type UserSchoolUncheckedCreateInput = {
     userId: string
     schoolId: string
-    dept: string
+    dept?: string | null
     grade: string
     class: string
   }
 
   export type UserSchoolUpdateInput = {
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
     school?: SchoolUpdateOneRequiredWithoutUserSchoolNestedInput
@@ -37361,7 +37361,7 @@ export namespace Prisma {
   export type UserSchoolUncheckedUpdateInput = {
     userId?: StringFieldUpdateOperationsInput | string
     schoolId?: StringFieldUpdateOperationsInput | string
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
   }
@@ -37369,13 +37369,13 @@ export namespace Prisma {
   export type UserSchoolCreateManyInput = {
     userId: string
     schoolId: string
-    dept: string
+    dept?: string | null
     grade: string
     class: string
   }
 
   export type UserSchoolUpdateManyMutationInput = {
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
   }
@@ -37383,7 +37383,7 @@ export namespace Prisma {
   export type UserSchoolUncheckedUpdateManyInput = {
     userId?: StringFieldUpdateOperationsInput | string
     schoolId?: StringFieldUpdateOperationsInput | string
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
   }
@@ -42877,7 +42877,7 @@ export namespace Prisma {
   }
 
   export type UserSchoolCreateWithoutUserInput = {
-    dept: string
+    dept?: string | null
     grade: string
     class: string
     school: SchoolCreateNestedOneWithoutUserSchoolInput
@@ -42885,7 +42885,7 @@ export namespace Prisma {
 
   export type UserSchoolUncheckedCreateWithoutUserInput = {
     schoolId: string
-    dept: string
+    dept?: string | null
     grade: string
     class: string
   }
@@ -43297,7 +43297,7 @@ export namespace Prisma {
   }
 
   export type UserSchoolUpdateWithoutUserInput = {
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
     school?: SchoolUpdateOneRequiredWithoutUserSchoolNestedInput
@@ -43305,7 +43305,7 @@ export namespace Prisma {
 
   export type UserSchoolUncheckedUpdateWithoutUserInput = {
     schoolId?: StringFieldUpdateOperationsInput | string
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
   }
@@ -43397,7 +43397,7 @@ export namespace Prisma {
   }
 
   export type UserSchoolCreateWithoutSchoolInput = {
-    dept: string
+    dept?: string | null
     grade: string
     class: string
     user: UserCreateNestedOneWithoutUserSchoolInput
@@ -43405,7 +43405,7 @@ export namespace Prisma {
 
   export type UserSchoolUncheckedCreateWithoutSchoolInput = {
     userId: string
-    dept: string
+    dept?: string | null
     grade: string
     class: string
   }
@@ -43485,7 +43485,7 @@ export namespace Prisma {
     NOT?: Enumerable<UserSchoolScalarWhereInput>
     userId?: StringFilter | string
     schoolId?: StringFilter | string
-    dept?: StringFilter | string
+    dept?: StringNullableFilter | string | null
     grade?: StringFilter | string
     class?: StringFilter | string
   }
@@ -47275,7 +47275,7 @@ export namespace Prisma {
 
   export type UserSchoolCreateManySchoolInput = {
     userId: string
-    dept: string
+    dept?: string | null
     grade: string
     class: string
   }
@@ -47293,7 +47293,7 @@ export namespace Prisma {
   }
 
   export type UserSchoolUpdateWithoutSchoolInput = {
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneRequiredWithoutUserSchoolNestedInput
@@ -47301,14 +47301,14 @@ export namespace Prisma {
 
   export type UserSchoolUncheckedUpdateWithoutSchoolInput = {
     userId?: StringFieldUpdateOperationsInput | string
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserSchoolUncheckedUpdateManyWithoutUserSchoolInput = {
     userId?: StringFieldUpdateOperationsInput | string
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
   }
