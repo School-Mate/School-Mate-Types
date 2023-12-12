@@ -161,7 +161,7 @@ export type UserSchoolVerifyPayload<ExtArgs extends $Extensions.Args = $Extensio
     createdAt: Date
     schoolName: string
     userName: string
-    dept: string
+    dept: string | null
   }, ExtArgs["result"]["userSchoolVerify"]>
   composites: {}
 }
@@ -10929,7 +10929,7 @@ export namespace Prisma {
     createdAt: Date
     schoolName: string
     userName: string
-    dept: string
+    dept: string | null
     _count: UserSchoolVerifyCountAggregateOutputType | null
     _min: UserSchoolVerifyMinAggregateOutputType | null
     _max: UserSchoolVerifyMaxAggregateOutputType | null
@@ -35421,7 +35421,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter | Date | string
     schoolName?: StringFilter | string
     userName?: StringFilter | string
-    dept?: StringFilter | string
+    dept?: StringNullableFilter | string | null
     image?: XOR<ImageRelationFilter, ImageWhereInput>
     user?: XOR<UserRelationFilter, UserWhereInput>
   }
@@ -35438,7 +35438,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     schoolName?: SortOrder
     userName?: SortOrder
-    dept?: SortOrder
+    dept?: SortOrderInput | SortOrder
     image?: ImageOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
   }
@@ -35459,7 +35459,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     schoolName?: SortOrder
     userName?: SortOrder
-    dept?: SortOrder
+    dept?: SortOrderInput | SortOrder
     _count?: UserSchoolVerifyCountOrderByAggregateInput
     _max?: UserSchoolVerifyMaxOrderByAggregateInput
     _min?: UserSchoolVerifyMinOrderByAggregateInput
@@ -35480,7 +35480,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter | Date | string
     schoolName?: StringWithAggregatesFilter | string
     userName?: StringWithAggregatesFilter | string
-    dept?: StringWithAggregatesFilter | string
+    dept?: StringNullableWithAggregatesFilter | string | null
   }
 
   export type UserSchoolWhereInput = {
@@ -37241,7 +37241,7 @@ export namespace Prisma {
     createdAt?: Date | string
     schoolName: string
     userName: string
-    dept: string
+    dept?: string | null
     image: ImageCreateNestedOneWithoutUserSchoolVerifyInput
     user: UserCreateNestedOneWithoutUserSchoolVerifyInput
   }
@@ -37258,7 +37258,7 @@ export namespace Prisma {
     createdAt?: Date | string
     schoolName: string
     userName: string
-    dept: string
+    dept?: string | null
   }
 
   export type UserSchoolVerifyUpdateInput = {
@@ -37271,7 +37271,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolName?: StringFieldUpdateOperationsInput | string
     userName?: StringFieldUpdateOperationsInput | string
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
     image?: ImageUpdateOneRequiredWithoutUserSchoolVerifyNestedInput
     user?: UserUpdateOneRequiredWithoutUserSchoolVerifyNestedInput
   }
@@ -37288,7 +37288,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolName?: StringFieldUpdateOperationsInput | string
     userName?: StringFieldUpdateOperationsInput | string
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserSchoolVerifyCreateManyInput = {
@@ -37303,7 +37303,7 @@ export namespace Prisma {
     createdAt?: Date | string
     schoolName: string
     userName: string
-    dept: string
+    dept?: string | null
   }
 
   export type UserSchoolVerifyUpdateManyMutationInput = {
@@ -37316,7 +37316,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolName?: StringFieldUpdateOperationsInput | string
     userName?: StringFieldUpdateOperationsInput | string
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserSchoolVerifyUncheckedUpdateManyInput = {
@@ -37331,7 +37331,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolName?: StringFieldUpdateOperationsInput | string
     userName?: StringFieldUpdateOperationsInput | string
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserSchoolCreateInput = {
@@ -42905,7 +42905,7 @@ export namespace Prisma {
     createdAt?: Date | string
     schoolName: string
     userName: string
-    dept: string
+    dept?: string | null
     image: ImageCreateNestedOneWithoutUserSchoolVerifyInput
   }
 
@@ -42920,7 +42920,7 @@ export namespace Prisma {
     createdAt?: Date | string
     schoolName: string
     userName: string
-    dept: string
+    dept?: string | null
   }
 
   export type UserSchoolVerifyCreateOrConnectWithoutUserInput = {
@@ -43341,7 +43341,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter | Date | string
     schoolName?: StringFilter | string
     userName?: StringFilter | string
-    dept?: StringFilter | string
+    dept?: StringNullableFilter | string | null
   }
 
   export type PushDeviceUpsertWithWhereUniqueWithoutUserInput = {
@@ -43577,7 +43577,7 @@ export namespace Prisma {
     createdAt?: Date | string
     schoolName: string
     userName: string
-    dept: string
+    dept?: string | null
     user: UserCreateNestedOneWithoutUserSchoolVerifyInput
   }
 
@@ -43592,7 +43592,7 @@ export namespace Prisma {
     createdAt?: Date | string
     schoolName: string
     userName: string
-    dept: string
+    dept?: string | null
   }
 
   export type UserSchoolVerifyCreateOrConnectWithoutImageInput = {
@@ -46944,7 +46944,7 @@ export namespace Prisma {
     createdAt?: Date | string
     schoolName: string
     userName: string
-    dept: string
+    dept?: string | null
   }
 
   export type PushDeviceCreateManyUserInput = {
@@ -47206,7 +47206,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolName?: StringFieldUpdateOperationsInput | string
     userName?: StringFieldUpdateOperationsInput | string
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
     image?: ImageUpdateOneRequiredWithoutUserSchoolVerifyNestedInput
   }
 
@@ -47221,7 +47221,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolName?: StringFieldUpdateOperationsInput | string
     userName?: StringFieldUpdateOperationsInput | string
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserSchoolVerifyUncheckedUpdateManyWithoutUserSchoolVerifyInput = {
@@ -47235,7 +47235,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolName?: StringFieldUpdateOperationsInput | string
     userName?: StringFieldUpdateOperationsInput | string
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PushDeviceUpdateWithoutUserInput = {
@@ -47357,7 +47357,7 @@ export namespace Prisma {
     createdAt?: Date | string
     schoolName: string
     userName: string
-    dept: string
+    dept?: string | null
   }
 
   export type UserSchoolVerifyUpdateWithoutImageInput = {
@@ -47370,7 +47370,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolName?: StringFieldUpdateOperationsInput | string
     userName?: StringFieldUpdateOperationsInput | string
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutUserSchoolVerifyNestedInput
   }
 
@@ -47385,7 +47385,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolName?: StringFieldUpdateOperationsInput | string
     userName?: StringFieldUpdateOperationsInput | string
-    dept?: StringFieldUpdateOperationsInput | string
+    dept?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AskedCreateManyAskedUserInput = {
