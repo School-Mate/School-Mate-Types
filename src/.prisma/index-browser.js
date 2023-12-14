@@ -387,6 +387,13 @@ exports.Prisma.ReportBlindArticleScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ReportBlindUserScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  targetUserId: 'targetUserId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.MealScalarFieldEnum = {
   id: 'id',
   MLSV_FGR: 'MLSV_FGR',
@@ -481,6 +488,7 @@ exports.Prisma.ModelName = {
   Advertise: 'Advertise',
   PushDevice: 'PushDevice',
   ReportBlindArticle: 'ReportBlindArticle',
+  ReportBlindUser: 'ReportBlindUser',
   Meal: 'Meal'
 };
 
