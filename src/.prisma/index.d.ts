@@ -326,6 +326,7 @@ export type BoardPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultA
     description: string
     icon: string | null
     default: boolean
+    defaultBoardId: number | null
     noticeId: number[]
   }, ExtArgs["result"]["board"]>
   composites: {}
@@ -18403,11 +18404,13 @@ export namespace Prisma {
 
   export type BoardAvgAggregateOutputType = {
     id: number | null
+    defaultBoardId: number | null
     noticeId: number | null
   }
 
   export type BoardSumAggregateOutputType = {
     id: number | null
+    defaultBoardId: number | null
     noticeId: number[] | null
   }
 
@@ -18418,6 +18421,7 @@ export namespace Prisma {
     description: string | null
     icon: string | null
     default: boolean | null
+    defaultBoardId: number | null
   }
 
   export type BoardMaxAggregateOutputType = {
@@ -18427,6 +18431,7 @@ export namespace Prisma {
     description: string | null
     icon: string | null
     default: boolean | null
+    defaultBoardId: number | null
   }
 
   export type BoardCountAggregateOutputType = {
@@ -18436,6 +18441,7 @@ export namespace Prisma {
     description: number
     icon: number
     default: number
+    defaultBoardId: number
     noticeId: number
     _all: number
   }
@@ -18443,11 +18449,13 @@ export namespace Prisma {
 
   export type BoardAvgAggregateInputType = {
     id?: true
+    defaultBoardId?: true
     noticeId?: true
   }
 
   export type BoardSumAggregateInputType = {
     id?: true
+    defaultBoardId?: true
     noticeId?: true
   }
 
@@ -18458,6 +18466,7 @@ export namespace Prisma {
     description?: true
     icon?: true
     default?: true
+    defaultBoardId?: true
   }
 
   export type BoardMaxAggregateInputType = {
@@ -18467,6 +18476,7 @@ export namespace Prisma {
     description?: true
     icon?: true
     default?: true
+    defaultBoardId?: true
   }
 
   export type BoardCountAggregateInputType = {
@@ -18476,6 +18486,7 @@ export namespace Prisma {
     description?: true
     icon?: true
     default?: true
+    defaultBoardId?: true
     noticeId?: true
     _all?: true
   }
@@ -18574,6 +18585,7 @@ export namespace Prisma {
     description: string
     icon: string | null
     default: boolean
+    defaultBoardId: number | null
     noticeId: number[]
     _count: BoardCountAggregateOutputType | null
     _avg: BoardAvgAggregateOutputType | null
@@ -18603,6 +18615,7 @@ export namespace Prisma {
     description?: boolean
     icon?: boolean
     default?: boolean
+    defaultBoardId?: boolean
     noticeId?: boolean
     article?: boolean | Board$articleArgs<ExtArgs>
     managers?: boolean | Board$managersArgs<ExtArgs>
@@ -18616,6 +18629,7 @@ export namespace Prisma {
     description?: boolean
     icon?: boolean
     default?: boolean
+    defaultBoardId?: boolean
     noticeId?: boolean
   }
 
@@ -35941,6 +35955,7 @@ export namespace Prisma {
     description: 'description',
     icon: 'icon',
     default: 'default',
+    defaultBoardId: 'defaultBoardId',
     noticeId: 'noticeId'
   };
 
@@ -36986,6 +37001,7 @@ export namespace Prisma {
     description?: StringFilter | string
     icon?: StringNullableFilter | string | null
     default?: BoolFilter | boolean
+    defaultBoardId?: IntNullableFilter | number | null
     noticeId?: IntNullableListFilter
     article?: ArticleListRelationFilter
     managers?: BoardManagerListRelationFilter
@@ -36998,6 +37014,7 @@ export namespace Prisma {
     description?: SortOrder
     icon?: SortOrderInput | SortOrder
     default?: SortOrder
+    defaultBoardId?: SortOrderInput | SortOrder
     noticeId?: SortOrder
     article?: ArticleOrderByRelationAggregateInput
     managers?: BoardManagerOrderByRelationAggregateInput
@@ -37014,6 +37031,7 @@ export namespace Prisma {
     description?: SortOrder
     icon?: SortOrderInput | SortOrder
     default?: SortOrder
+    defaultBoardId?: SortOrderInput | SortOrder
     noticeId?: SortOrder
     _count?: BoardCountOrderByAggregateInput
     _avg?: BoardAvgOrderByAggregateInput
@@ -37032,6 +37050,7 @@ export namespace Prisma {
     description?: StringWithAggregatesFilter | string
     icon?: StringNullableWithAggregatesFilter | string | null
     default?: BoolWithAggregatesFilter | boolean
+    defaultBoardId?: IntNullableWithAggregatesFilter | number | null
     noticeId?: IntNullableListFilter
   }
 
@@ -38983,6 +39002,7 @@ export namespace Prisma {
     description: string
     icon?: string | null
     default?: boolean
+    defaultBoardId?: number | null
     noticeId?: BoardCreatenoticeIdInput | Enumerable<number>
     article?: ArticleCreateNestedManyWithoutBoardInput
     managers?: BoardManagerCreateNestedManyWithoutBoardInput
@@ -38995,6 +39015,7 @@ export namespace Prisma {
     description: string
     icon?: string | null
     default?: boolean
+    defaultBoardId?: number | null
     noticeId?: BoardCreatenoticeIdInput | Enumerable<number>
     article?: ArticleUncheckedCreateNestedManyWithoutBoardInput
     managers?: BoardManagerUncheckedCreateNestedManyWithoutBoardInput
@@ -39006,6 +39027,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     default?: BoolFieldUpdateOperationsInput | boolean
+    defaultBoardId?: NullableIntFieldUpdateOperationsInput | number | null
     noticeId?: BoardUpdatenoticeIdInput | Enumerable<number>
     article?: ArticleUpdateManyWithoutBoardNestedInput
     managers?: BoardManagerUpdateManyWithoutBoardNestedInput
@@ -39018,6 +39040,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     default?: BoolFieldUpdateOperationsInput | boolean
+    defaultBoardId?: NullableIntFieldUpdateOperationsInput | number | null
     noticeId?: BoardUpdatenoticeIdInput | Enumerable<number>
     article?: ArticleUncheckedUpdateManyWithoutBoardNestedInput
     managers?: BoardManagerUncheckedUpdateManyWithoutBoardNestedInput
@@ -39030,6 +39053,7 @@ export namespace Prisma {
     description: string
     icon?: string | null
     default?: boolean
+    defaultBoardId?: number | null
     noticeId?: BoardCreatenoticeIdInput | Enumerable<number>
   }
 
@@ -39039,6 +39063,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     default?: BoolFieldUpdateOperationsInput | boolean
+    defaultBoardId?: NullableIntFieldUpdateOperationsInput | number | null
     noticeId?: BoardUpdatenoticeIdInput | Enumerable<number>
   }
 
@@ -39049,6 +39074,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     default?: BoolFieldUpdateOperationsInput | boolean
+    defaultBoardId?: NullableIntFieldUpdateOperationsInput | number | null
     noticeId?: BoardUpdatenoticeIdInput | Enumerable<number>
   }
 
@@ -40959,6 +40985,17 @@ export namespace Prisma {
     _max?: NestedIntFilter
   }
 
+  export type IntNullableFilter = {
+    equals?: number | null
+    in?: Enumerable<number> | number | null
+    notIn?: Enumerable<number> | number | null
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntNullableFilter | number | null
+  }
+
   export type IntNullableListFilter = {
     equals?: Enumerable<number> | null
     has?: number | null
@@ -40974,11 +41011,13 @@ export namespace Prisma {
     description?: SortOrder
     icon?: SortOrder
     default?: SortOrder
+    defaultBoardId?: SortOrder
     noticeId?: SortOrder
   }
 
   export type BoardAvgOrderByAggregateInput = {
     id?: SortOrder
+    defaultBoardId?: SortOrder
     noticeId?: SortOrder
   }
 
@@ -40989,6 +41028,7 @@ export namespace Prisma {
     description?: SortOrder
     icon?: SortOrder
     default?: SortOrder
+    defaultBoardId?: SortOrder
   }
 
   export type BoardMinOrderByAggregateInput = {
@@ -40998,11 +41038,29 @@ export namespace Prisma {
     description?: SortOrder
     icon?: SortOrder
     default?: SortOrder
+    defaultBoardId?: SortOrder
   }
 
   export type BoardSumOrderByAggregateInput = {
     id?: SortOrder
+    defaultBoardId?: SortOrder
     noticeId?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter = {
+    equals?: number | null
+    in?: Enumerable<number> | number | null
+    notIn?: Enumerable<number> | number | null
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntNullableWithAggregatesFilter | number | null
+    _count?: NestedIntNullableFilter
+    _avg?: NestedFloatNullableFilter
+    _sum?: NestedIntNullableFilter
+    _min?: NestedIntNullableFilter
+    _max?: NestedIntNullableFilter
   }
 
   export type BoardRelationFilter = {
@@ -41274,17 +41332,6 @@ export namespace Prisma {
     articleId?: SortOrder
   }
 
-  export type IntNullableFilter = {
-    equals?: number | null
-    in?: Enumerable<number> | number | null
-    notIn?: Enumerable<number> | number | null
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntNullableFilter | number | null
-  }
-
   export type CommentRelationFilter = {
     is?: CommentWhereInput | null
     isNot?: CommentWhereInput | null
@@ -41336,22 +41383,6 @@ export namespace Prisma {
     id?: SortOrder
     articleId?: SortOrder
     commentId?: SortOrder
-  }
-
-  export type IntNullableWithAggregatesFilter = {
-    equals?: number | null
-    in?: Enumerable<number> | number | null
-    notIn?: Enumerable<number> | number | null
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntNullableWithAggregatesFilter | number | null
-    _count?: NestedIntNullableFilter
-    _avg?: NestedFloatNullableFilter
-    _sum?: NestedIntNullableFilter
-    _min?: NestedIntNullableFilter
-    _max?: NestedIntNullableFilter
   }
 
   export type EnumReportTargetTypeFilter = {
@@ -42785,6 +42816,14 @@ export namespace Prisma {
     connect?: Enumerable<BoardManagerWhereUniqueInput>
   }
 
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type BoardUpdatenoticeIdInput = {
     set?: Enumerable<number>
     push?: number | Enumerable<number>
@@ -43332,14 +43371,6 @@ export namespace Prisma {
     deleteMany?: Enumerable<ReCommentLikeScalarWhereInput>
   }
 
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type ReCommentLikeUncheckedUpdateManyWithoutRecommentNestedInput = {
     create?: XOR<Enumerable<ReCommentLikeCreateWithoutRecommentInput>, Enumerable<ReCommentLikeUncheckedCreateWithoutRecommentInput>>
     connectOrCreate?: Enumerable<ReCommentLikeCreateOrConnectWithoutRecommentInput>
@@ -43761,23 +43792,6 @@ export namespace Prisma {
     _max?: NestedIntFilter
   }
 
-  export type NestedEnumBoardRequestProcessFilter = {
-    equals?: BoardRequestProcess
-    in?: Enumerable<BoardRequestProcess>
-    notIn?: Enumerable<BoardRequestProcess>
-    not?: NestedEnumBoardRequestProcessFilter | BoardRequestProcess
-  }
-
-  export type NestedEnumBoardRequestProcessWithAggregatesFilter = {
-    equals?: BoardRequestProcess
-    in?: Enumerable<BoardRequestProcess>
-    notIn?: Enumerable<BoardRequestProcess>
-    not?: NestedEnumBoardRequestProcessWithAggregatesFilter | BoardRequestProcess
-    _count?: NestedIntFilter
-    _min?: NestedEnumBoardRequestProcessFilter
-    _max?: NestedEnumBoardRequestProcessFilter
-  }
-
   export type NestedIntNullableWithAggregatesFilter = {
     equals?: number | null
     in?: Enumerable<number> | number | null
@@ -43803,6 +43817,23 @@ export namespace Prisma {
     gt?: number
     gte?: number
     not?: NestedFloatNullableFilter | number | null
+  }
+
+  export type NestedEnumBoardRequestProcessFilter = {
+    equals?: BoardRequestProcess
+    in?: Enumerable<BoardRequestProcess>
+    notIn?: Enumerable<BoardRequestProcess>
+    not?: NestedEnumBoardRequestProcessFilter | BoardRequestProcess
+  }
+
+  export type NestedEnumBoardRequestProcessWithAggregatesFilter = {
+    equals?: BoardRequestProcess
+    in?: Enumerable<BoardRequestProcess>
+    notIn?: Enumerable<BoardRequestProcess>
+    not?: NestedEnumBoardRequestProcessWithAggregatesFilter | BoardRequestProcess
+    _count?: NestedIntFilter
+    _min?: NestedEnumBoardRequestProcessFilter
+    _max?: NestedEnumBoardRequestProcessFilter
   }
 
   export type NestedEnumReportTargetTypeFilter = {
@@ -46084,6 +46115,7 @@ export namespace Prisma {
     description: string
     icon?: string | null
     default?: boolean
+    defaultBoardId?: number | null
     noticeId?: BoardCreatenoticeIdInput | Enumerable<number>
     article?: ArticleCreateNestedManyWithoutBoardInput
   }
@@ -46095,6 +46127,7 @@ export namespace Prisma {
     description: string
     icon?: string | null
     default?: boolean
+    defaultBoardId?: number | null
     noticeId?: BoardCreatenoticeIdInput | Enumerable<number>
     article?: ArticleUncheckedCreateNestedManyWithoutBoardInput
   }
@@ -46178,6 +46211,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     default?: BoolFieldUpdateOperationsInput | boolean
+    defaultBoardId?: NullableIntFieldUpdateOperationsInput | number | null
     noticeId?: BoardUpdatenoticeIdInput | Enumerable<number>
     article?: ArticleUpdateManyWithoutBoardNestedInput
   }
@@ -46189,6 +46223,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     default?: BoolFieldUpdateOperationsInput | boolean
+    defaultBoardId?: NullableIntFieldUpdateOperationsInput | number | null
     noticeId?: BoardUpdatenoticeIdInput | Enumerable<number>
     article?: ArticleUncheckedUpdateManyWithoutBoardNestedInput
   }
@@ -46262,6 +46297,7 @@ export namespace Prisma {
     description: string
     icon?: string | null
     default?: boolean
+    defaultBoardId?: number | null
     noticeId?: BoardCreatenoticeIdInput | Enumerable<number>
     managers?: BoardManagerCreateNestedManyWithoutBoardInput
   }
@@ -46273,6 +46309,7 @@ export namespace Prisma {
     description: string
     icon?: string | null
     default?: boolean
+    defaultBoardId?: number | null
     noticeId?: BoardCreatenoticeIdInput | Enumerable<number>
     managers?: BoardManagerUncheckedCreateNestedManyWithoutBoardInput
   }
@@ -46513,6 +46550,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     default?: BoolFieldUpdateOperationsInput | boolean
+    defaultBoardId?: NullableIntFieldUpdateOperationsInput | number | null
     noticeId?: BoardUpdatenoticeIdInput | Enumerable<number>
     managers?: BoardManagerUpdateManyWithoutBoardNestedInput
   }
@@ -46524,6 +46562,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     default?: BoolFieldUpdateOperationsInput | boolean
+    defaultBoardId?: NullableIntFieldUpdateOperationsInput | number | null
     noticeId?: BoardUpdatenoticeIdInput | Enumerable<number>
     managers?: BoardManagerUncheckedUpdateManyWithoutBoardNestedInput
   }

@@ -248,6 +248,7 @@ exports.Prisma.BoardScalarFieldEnum = {
   description: 'description',
   icon: 'icon',
   default: 'default',
+  defaultBoardId: 'defaultBoardId',
   noticeId: 'noticeId'
 };
 
