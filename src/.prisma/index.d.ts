@@ -29,8 +29,9 @@ export type UserPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultAr
     userSchool: UserSchoolPayload<ExtArgs> | null
     userSchoolVerify: UserSchoolVerifyPayload<ExtArgs>[]
     pushDevice: PushDevicePayload<ExtArgs>[]
-    ReportBlindArticle: ReportBlindArticlePayload<ExtArgs>[]
-    ReportBlindUser: ReportBlindUserPayload<ExtArgs>[]
+    reportBlindArticle: ReportBlindArticlePayload<ExtArgs>[]
+    reportBlindUser: ReportBlindUserPayload<ExtArgs>[]
+    userBlock: UserBlockPayload<ExtArgs>[]
   }
   scalars: $Extensions.GetResult<{
     id: string
@@ -299,7 +300,9 @@ export type AskedPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultA
  */
 export type Asked = runtime.Types.DefaultSelection<AskedPayload>
 export type AdminPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
-  objects: {}
+  objects: {
+    userBlock: UserBlockPayload<ExtArgs>[]
+  }
   scalars: $Extensions.GetResult<{
     id: string
     loginId: string
@@ -387,6 +390,30 @@ export type ArticlePayload<ExtArgs extends $Extensions.Args = $Extensions.Defaul
  * 
  */
 export type Article = runtime.Types.DefaultSelection<ArticlePayload>
+export type UserBlockPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+  objects: {
+    transactionAdmin: AdminPayload<ExtArgs>
+    user: UserPayload<ExtArgs>
+  }
+  scalars: $Extensions.GetResult<{
+    id: string
+    userId: string
+    targetId: string
+    targetType: ReportTargetType
+    reason: string
+    startDate: Date
+    endDate: Date
+    createdAt: Date
+    transactionAdminId: string
+  }, ExtArgs["result"]["userBlock"]>
+  composites: {}
+}
+
+/**
+ * Model UserBlock
+ * 
+ */
+export type UserBlock = runtime.Types.DefaultSelection<UserBlockPayload>
 export type DefaultBoardPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
   objects: {}
   scalars: $Extensions.GetResult<{
@@ -425,6 +452,47 @@ export type DeletedArticlePayload<ExtArgs extends $Extensions.Args = $Extensions
  * 
  */
 export type DeletedArticle = runtime.Types.DefaultSelection<DeletedArticlePayload>
+export type DeletedCommentPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+  objects: {}
+  scalars: $Extensions.GetResult<{
+    id: number
+    userId: string
+    content: string
+    isAnonymous: boolean
+    isDeleted: boolean
+    createdAt: Date
+    updatedAt: Date
+    articleId: number
+  }, ExtArgs["result"]["deletedComment"]>
+  composites: {}
+}
+
+/**
+ * Model DeletedComment
+ * 
+ */
+export type DeletedComment = runtime.Types.DefaultSelection<DeletedCommentPayload>
+export type DeletedReCommentPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+  objects: {}
+  scalars: $Extensions.GetResult<{
+    id: number
+    articleId: number
+    userId: string
+    content: string
+    isAnonymous: boolean
+    isDeleted: boolean
+    createdAt: Date
+    updatedAt: Date
+    commentId: number | null
+  }, ExtArgs["result"]["deletedReComment"]>
+  composites: {}
+}
+
+/**
+ * Model DeletedReComment
+ * 
+ */
+export type DeletedReComment = runtime.Types.DefaultSelection<DeletedReCommentPayload>
 export type BoardRequestPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
   objects: {}
   scalars: $Extensions.GetResult<{
@@ -435,6 +503,7 @@ export type BoardRequestPayload<ExtArgs extends $Extensions.Args = $Extensions.D
     schoolId: string
     schoolName: string
     process: BoardRequestProcess
+    createdAt: Date
     message: string | null
   }, ExtArgs["result"]["boardRequest"]>
   composites: {}
@@ -505,6 +574,7 @@ export type ReportPayload<ExtArgs extends $Extensions.Args = $Extensions.Default
     targetType: ReportTargetType
     message: string
     targetId: string
+    targetUserId: string
     reportUserName: string
     process: ReportProcess
   }, ExtArgs["result"]["report"]>
@@ -712,15 +782,6 @@ export const Process: {
 export type Process = (typeof Process)[keyof typeof Process]
 
 
-export const BoardRequestProcess: {
-  pending: 'pending',
-  denied: 'denied',
-  success: 'success'
-};
-
-export type BoardRequestProcess = (typeof BoardRequestProcess)[keyof typeof BoardRequestProcess]
-
-
 export const ReportTargetType: {
   user: 'user',
   article: 'article',
@@ -730,6 +791,15 @@ export const ReportTargetType: {
 };
 
 export type ReportTargetType = (typeof ReportTargetType)[keyof typeof ReportTargetType]
+
+
+export const BoardRequestProcess: {
+  pending: 'pending',
+  denied: 'denied',
+  success: 'success'
+};
+
+export type BoardRequestProcess = (typeof BoardRequestProcess)[keyof typeof BoardRequestProcess]
 
 
 export const ReportProcess: {
@@ -1044,6 +1114,16 @@ export class PrismaClient<
   get article(): Prisma.ArticleDelegate<GlobalReject, ExtArgs>;
 
   /**
+   * `prisma.userBlock`: Exposes CRUD operations for the **UserBlock** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserBlocks
+    * const userBlocks = await prisma.userBlock.findMany()
+    * ```
+    */
+  get userBlock(): Prisma.UserBlockDelegate<GlobalReject, ExtArgs>;
+
+  /**
    * `prisma.defaultBoard`: Exposes CRUD operations for the **DefaultBoard** model.
     * Example usage:
     * ```ts
@@ -1062,6 +1142,26 @@ export class PrismaClient<
     * ```
     */
   get deletedArticle(): Prisma.DeletedArticleDelegate<GlobalReject, ExtArgs>;
+
+  /**
+   * `prisma.deletedComment`: Exposes CRUD operations for the **DeletedComment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DeletedComments
+    * const deletedComments = await prisma.deletedComment.findMany()
+    * ```
+    */
+  get deletedComment(): Prisma.DeletedCommentDelegate<GlobalReject, ExtArgs>;
+
+  /**
+   * `prisma.deletedReComment`: Exposes CRUD operations for the **DeletedReComment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DeletedReComments
+    * const deletedReComments = await prisma.deletedReComment.findMany()
+    * ```
+    */
+  get deletedReComment(): Prisma.DeletedReCommentDelegate<GlobalReject, ExtArgs>;
 
   /**
    * `prisma.boardRequest`: Exposes CRUD operations for the **BoardRequest** model.
@@ -1692,8 +1792,11 @@ export namespace Prisma {
     Board: 'Board',
     BoardManager: 'BoardManager',
     Article: 'Article',
+    UserBlock: 'UserBlock',
     DefaultBoard: 'DefaultBoard',
     DeletedArticle: 'DeletedArticle',
+    DeletedComment: 'DeletedComment',
+    DeletedReComment: 'DeletedReComment',
     BoardRequest: 'BoardRequest',
     Comment: 'Comment',
     ReComment: 'ReComment',
@@ -1723,7 +1826,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     meta: {
-      modelProps: 'user' | 'school' | 'image' | 'phoneVerifyRequest' | 'socialLogin' | 'agreement' | 'userSchoolVerify' | 'userSchool' | 'busStation' | 'busRoute' | 'busArrival' | 'askedUser' | 'asked' | 'admin' | 'board' | 'boardManager' | 'article' | 'defaultBoard' | 'deletedArticle' | 'boardRequest' | 'comment' | 'reComment' | 'report' | 'articleLike' | 'commentLike' | 'reCommentLike' | 'hotArticle' | 'advertise' | 'pushDevice' | 'reportBlindArticle' | 'reportBlindUser' | 'meal'
+      modelProps: 'user' | 'school' | 'image' | 'phoneVerifyRequest' | 'socialLogin' | 'agreement' | 'userSchoolVerify' | 'userSchool' | 'busStation' | 'busRoute' | 'busArrival' | 'askedUser' | 'asked' | 'admin' | 'board' | 'boardManager' | 'article' | 'userBlock' | 'defaultBoard' | 'deletedArticle' | 'deletedComment' | 'deletedReComment' | 'boardRequest' | 'comment' | 'reComment' | 'report' | 'articleLike' | 'commentLike' | 'reCommentLike' | 'hotArticle' | 'advertise' | 'pushDevice' | 'reportBlindArticle' | 'reportBlindUser' | 'meal'
       txIsolationLevel: Prisma.TransactionIsolationLevel
     },
     model: {
@@ -3070,6 +3173,85 @@ export namespace Prisma {
           }
         }
       }
+      UserBlock: {
+        operations: {
+          findUnique: {
+            args: Prisma.UserBlockFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<UserBlockPayload> | null
+            payload: UserBlockPayload<ExtArgs>
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserBlockFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<UserBlockPayload>
+            payload: UserBlockPayload<ExtArgs>
+          }
+          findFirst: {
+            args: Prisma.UserBlockFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<UserBlockPayload> | null
+            payload: UserBlockPayload<ExtArgs>
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserBlockFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<UserBlockPayload>
+            payload: UserBlockPayload<ExtArgs>
+          }
+          findMany: {
+            args: Prisma.UserBlockFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<UserBlockPayload>[]
+            payload: UserBlockPayload<ExtArgs>
+          }
+          create: {
+            args: Prisma.UserBlockCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<UserBlockPayload>
+            payload: UserBlockPayload<ExtArgs>
+          }
+          createMany: {
+            args: Prisma.UserBlockCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: UserBlockPayload<ExtArgs>
+          }
+          delete: {
+            args: Prisma.UserBlockDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<UserBlockPayload>
+            payload: UserBlockPayload<ExtArgs>
+          }
+          update: {
+            args: Prisma.UserBlockUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<UserBlockPayload>
+            payload: UserBlockPayload<ExtArgs>
+          }
+          deleteMany: {
+            args: Prisma.UserBlockDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: UserBlockPayload<ExtArgs>
+          }
+          updateMany: {
+            args: Prisma.UserBlockUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: UserBlockPayload<ExtArgs>
+          }
+          upsert: {
+            args: Prisma.UserBlockUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<UserBlockPayload>
+            payload: UserBlockPayload<ExtArgs>
+          }
+          aggregate: {
+            args: Prisma.UserBlockAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateUserBlock>
+            payload: UserBlockPayload<ExtArgs>
+          }
+          groupBy: {
+            args: Prisma.UserBlockGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<UserBlockGroupByOutputType>[]
+            payload: UserBlockPayload<ExtArgs>
+          }
+          count: {
+            args: Prisma.UserBlockCountArgs<ExtArgs>,
+            result: $Utils.Optional<UserBlockCountAggregateOutputType> | number
+            payload: UserBlockPayload<ExtArgs>
+          }
+        }
+      }
       DefaultBoard: {
         operations: {
           findUnique: {
@@ -3225,6 +3407,164 @@ export namespace Prisma {
             args: Prisma.DeletedArticleCountArgs<ExtArgs>,
             result: $Utils.Optional<DeletedArticleCountAggregateOutputType> | number
             payload: DeletedArticlePayload<ExtArgs>
+          }
+        }
+      }
+      DeletedComment: {
+        operations: {
+          findUnique: {
+            args: Prisma.DeletedCommentFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedCommentPayload> | null
+            payload: DeletedCommentPayload<ExtArgs>
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DeletedCommentFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedCommentPayload>
+            payload: DeletedCommentPayload<ExtArgs>
+          }
+          findFirst: {
+            args: Prisma.DeletedCommentFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedCommentPayload> | null
+            payload: DeletedCommentPayload<ExtArgs>
+          }
+          findFirstOrThrow: {
+            args: Prisma.DeletedCommentFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedCommentPayload>
+            payload: DeletedCommentPayload<ExtArgs>
+          }
+          findMany: {
+            args: Prisma.DeletedCommentFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedCommentPayload>[]
+            payload: DeletedCommentPayload<ExtArgs>
+          }
+          create: {
+            args: Prisma.DeletedCommentCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedCommentPayload>
+            payload: DeletedCommentPayload<ExtArgs>
+          }
+          createMany: {
+            args: Prisma.DeletedCommentCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: DeletedCommentPayload<ExtArgs>
+          }
+          delete: {
+            args: Prisma.DeletedCommentDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedCommentPayload>
+            payload: DeletedCommentPayload<ExtArgs>
+          }
+          update: {
+            args: Prisma.DeletedCommentUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedCommentPayload>
+            payload: DeletedCommentPayload<ExtArgs>
+          }
+          deleteMany: {
+            args: Prisma.DeletedCommentDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: DeletedCommentPayload<ExtArgs>
+          }
+          updateMany: {
+            args: Prisma.DeletedCommentUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: DeletedCommentPayload<ExtArgs>
+          }
+          upsert: {
+            args: Prisma.DeletedCommentUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedCommentPayload>
+            payload: DeletedCommentPayload<ExtArgs>
+          }
+          aggregate: {
+            args: Prisma.DeletedCommentAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateDeletedComment>
+            payload: DeletedCommentPayload<ExtArgs>
+          }
+          groupBy: {
+            args: Prisma.DeletedCommentGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<DeletedCommentGroupByOutputType>[]
+            payload: DeletedCommentPayload<ExtArgs>
+          }
+          count: {
+            args: Prisma.DeletedCommentCountArgs<ExtArgs>,
+            result: $Utils.Optional<DeletedCommentCountAggregateOutputType> | number
+            payload: DeletedCommentPayload<ExtArgs>
+          }
+        }
+      }
+      DeletedReComment: {
+        operations: {
+          findUnique: {
+            args: Prisma.DeletedReCommentFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedReCommentPayload> | null
+            payload: DeletedReCommentPayload<ExtArgs>
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DeletedReCommentFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedReCommentPayload>
+            payload: DeletedReCommentPayload<ExtArgs>
+          }
+          findFirst: {
+            args: Prisma.DeletedReCommentFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedReCommentPayload> | null
+            payload: DeletedReCommentPayload<ExtArgs>
+          }
+          findFirstOrThrow: {
+            args: Prisma.DeletedReCommentFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedReCommentPayload>
+            payload: DeletedReCommentPayload<ExtArgs>
+          }
+          findMany: {
+            args: Prisma.DeletedReCommentFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedReCommentPayload>[]
+            payload: DeletedReCommentPayload<ExtArgs>
+          }
+          create: {
+            args: Prisma.DeletedReCommentCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedReCommentPayload>
+            payload: DeletedReCommentPayload<ExtArgs>
+          }
+          createMany: {
+            args: Prisma.DeletedReCommentCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: DeletedReCommentPayload<ExtArgs>
+          }
+          delete: {
+            args: Prisma.DeletedReCommentDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedReCommentPayload>
+            payload: DeletedReCommentPayload<ExtArgs>
+          }
+          update: {
+            args: Prisma.DeletedReCommentUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedReCommentPayload>
+            payload: DeletedReCommentPayload<ExtArgs>
+          }
+          deleteMany: {
+            args: Prisma.DeletedReCommentDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: DeletedReCommentPayload<ExtArgs>
+          }
+          updateMany: {
+            args: Prisma.DeletedReCommentUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: DeletedReCommentPayload<ExtArgs>
+          }
+          upsert: {
+            args: Prisma.DeletedReCommentUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<DeletedReCommentPayload>
+            payload: DeletedReCommentPayload<ExtArgs>
+          }
+          aggregate: {
+            args: Prisma.DeletedReCommentAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateDeletedReComment>
+            payload: DeletedReCommentPayload<ExtArgs>
+          }
+          groupBy: {
+            args: Prisma.DeletedReCommentGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<DeletedReCommentGroupByOutputType>[]
+            payload: DeletedReCommentPayload<ExtArgs>
+          }
+          count: {
+            args: Prisma.DeletedReCommentCountArgs<ExtArgs>,
+            result: $Utils.Optional<DeletedReCommentCountAggregateOutputType> | number
+            payload: DeletedReCommentPayload<ExtArgs>
           }
         }
       }
@@ -4451,8 +4791,9 @@ export namespace Prisma {
     reComment: number
     userSchoolVerify: number
     pushDevice: number
-    ReportBlindArticle: number
-    ReportBlindUser: number
+    reportBlindArticle: number
+    reportBlindUser: number
+    userBlock: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
@@ -4467,8 +4808,9 @@ export namespace Prisma {
     reComment?: boolean | UserCountOutputTypeCountReCommentArgs
     userSchoolVerify?: boolean | UserCountOutputTypeCountUserSchoolVerifyArgs
     pushDevice?: boolean | UserCountOutputTypeCountPushDeviceArgs
-    ReportBlindArticle?: boolean | UserCountOutputTypeCountReportBlindArticleArgs
-    ReportBlindUser?: boolean | UserCountOutputTypeCountReportBlindUserArgs
+    reportBlindArticle?: boolean | UserCountOutputTypeCountReportBlindArticleArgs
+    reportBlindUser?: boolean | UserCountOutputTypeCountReportBlindUserArgs
+    userBlock?: boolean | UserCountOutputTypeCountUserBlockArgs
   }
 
   // Custom InputTypes
@@ -4588,6 +4930,14 @@ export namespace Prisma {
   }
 
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountUserBlockArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: UserBlockWhereInput
+  }
+
+
 
   /**
    * Count Type SchoolCountOutputType
@@ -4700,6 +5050,41 @@ export namespace Prisma {
    */
   export type AskedUserCountOutputTypeCountAskedArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: AskedWhereInput
+  }
+
+
+
+  /**
+   * Count Type AdminCountOutputType
+   */
+
+
+  export type AdminCountOutputType = {
+    userBlock: number
+  }
+
+  export type AdminCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    userBlock?: boolean | AdminCountOutputTypeCountUserBlockArgs
+  }
+
+  // Custom InputTypes
+
+  /**
+   * AdminCountOutputType without action
+   */
+  export type AdminCountOutputTypeArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminCountOutputType
+     */
+    select?: AdminCountOutputTypeSelect<ExtArgs> | null
+  }
+
+
+  /**
+   * AdminCountOutputType without action
+   */
+  export type AdminCountOutputTypeCountUserBlockArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: UserBlockWhereInput
   }
 
 
@@ -5129,8 +5514,9 @@ export namespace Prisma {
     userSchool?: boolean | UserSchoolArgs<ExtArgs>
     userSchoolVerify?: boolean | User$userSchoolVerifyArgs<ExtArgs>
     pushDevice?: boolean | User$pushDeviceArgs<ExtArgs>
-    ReportBlindArticle?: boolean | User$ReportBlindArticleArgs<ExtArgs>
-    ReportBlindUser?: boolean | User$ReportBlindUserArgs<ExtArgs>
+    reportBlindArticle?: boolean | User$reportBlindArticleArgs<ExtArgs>
+    reportBlindUser?: boolean | User$reportBlindUserArgs<ExtArgs>
+    userBlock?: boolean | User$userBlockArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -5163,8 +5549,9 @@ export namespace Prisma {
     userSchool?: boolean | UserSchoolArgs<ExtArgs>
     userSchoolVerify?: boolean | User$userSchoolVerifyArgs<ExtArgs>
     pushDevice?: boolean | User$pushDeviceArgs<ExtArgs>
-    ReportBlindArticle?: boolean | User$ReportBlindArticleArgs<ExtArgs>
-    ReportBlindUser?: boolean | User$ReportBlindUserArgs<ExtArgs>
+    reportBlindArticle?: boolean | User$reportBlindArticleArgs<ExtArgs>
+    reportBlindUser?: boolean | User$reportBlindUserArgs<ExtArgs>
+    userBlock?: boolean | User$userBlockArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeArgs<ExtArgs>
   }
 
@@ -5568,9 +5955,11 @@ export namespace Prisma {
 
     pushDevice<T extends User$pushDeviceArgs<ExtArgs> = {}>(args?: Subset<T, User$pushDeviceArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<PushDevicePayload<ExtArgs>, T, 'findMany', never>| Null>;
 
-    ReportBlindArticle<T extends User$ReportBlindArticleArgs<ExtArgs> = {}>(args?: Subset<T, User$ReportBlindArticleArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<ReportBlindArticlePayload<ExtArgs>, T, 'findMany', never>| Null>;
+    reportBlindArticle<T extends User$reportBlindArticleArgs<ExtArgs> = {}>(args?: Subset<T, User$reportBlindArticleArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<ReportBlindArticlePayload<ExtArgs>, T, 'findMany', never>| Null>;
 
-    ReportBlindUser<T extends User$ReportBlindUserArgs<ExtArgs> = {}>(args?: Subset<T, User$ReportBlindUserArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<ReportBlindUserPayload<ExtArgs>, T, 'findMany', never>| Null>;
+    reportBlindUser<T extends User$reportBlindUserArgs<ExtArgs> = {}>(args?: Subset<T, User$reportBlindUserArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<ReportBlindUserPayload<ExtArgs>, T, 'findMany', never>| Null>;
+
+    userBlock<T extends User$userBlockArgs<ExtArgs> = {}>(args?: Subset<T, User$userBlockArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<UserBlockPayload<ExtArgs>, T, 'findMany', never>| Null>;
 
     private get _document();
     /**
@@ -6159,9 +6548,9 @@ export namespace Prisma {
 
 
   /**
-   * User.ReportBlindArticle
+   * User.reportBlindArticle
    */
-  export type User$ReportBlindArticleArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+  export type User$reportBlindArticleArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the ReportBlindArticle
      */
@@ -6180,9 +6569,9 @@ export namespace Prisma {
 
 
   /**
-   * User.ReportBlindUser
+   * User.reportBlindUser
    */
-  export type User$ReportBlindUserArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+  export type User$reportBlindUserArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the ReportBlindUser
      */
@@ -6197,6 +6586,27 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: Enumerable<ReportBlindUserScalarFieldEnum>
+  }
+
+
+  /**
+   * User.userBlock
+   */
+  export type User$userBlockArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserBlock
+     */
+    select?: UserBlockSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserBlockInclude<ExtArgs> | null
+    where?: UserBlockWhereInput
+    orderBy?: Enumerable<UserBlockOrderByWithRelationInput>
+    cursor?: UserBlockWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<UserBlockScalarFieldEnum>
   }
 
 
@@ -17678,6 +18088,8 @@ export namespace Prisma {
     loginId?: boolean
     password?: boolean
     flags?: boolean
+    userBlock?: boolean | Admin$userBlockArgs<ExtArgs>
+    _count?: boolean | AdminCountOutputTypeArgs<ExtArgs>
   }, ExtArgs["result"]["admin"]>
 
   export type AdminSelectScalar = {
@@ -17685,6 +18097,11 @@ export namespace Prisma {
     loginId?: boolean
     password?: boolean
     flags?: boolean
+  }
+
+  export type AdminInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    userBlock?: boolean | Admin$userBlockArgs<ExtArgs>
+    _count?: boolean | AdminCountOutputTypeArgs<ExtArgs>
   }
 
 
@@ -18057,6 +18474,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
     constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
 
+    userBlock<T extends Admin$userBlockArgs<ExtArgs> = {}>(args?: Subset<T, Admin$userBlockArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<UserBlockPayload<ExtArgs>, T, 'findMany', never>| Null>;
 
     private get _document();
     /**
@@ -18094,6 +18512,10 @@ export namespace Prisma {
      */
     select?: AdminSelect<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AdminInclude<ExtArgs> | null
+    /**
      * Filter, which Admin to fetch.
      */
     where: AdminWhereUniqueInput
@@ -18120,6 +18542,10 @@ export namespace Prisma {
      */
     select?: AdminSelect<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AdminInclude<ExtArgs> | null
+    /**
      * Filter, which Admin to fetch.
      */
     where: AdminWhereUniqueInput
@@ -18134,6 +18560,10 @@ export namespace Prisma {
      * Select specific fields to fetch from the Admin
      */
     select?: AdminSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AdminInclude<ExtArgs> | null
     /**
      * Filter, which Admin to fetch.
      */
@@ -18191,6 +18621,10 @@ export namespace Prisma {
      */
     select?: AdminSelect<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AdminInclude<ExtArgs> | null
+    /**
      * Filter, which Admin to fetch.
      */
     where?: AdminWhereInput
@@ -18236,6 +18670,10 @@ export namespace Prisma {
      */
     select?: AdminSelect<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AdminInclude<ExtArgs> | null
+    /**
      * Filter, which Admins to fetch.
      */
     where?: AdminWhereInput
@@ -18276,6 +18714,10 @@ export namespace Prisma {
      */
     select?: AdminSelect<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AdminInclude<ExtArgs> | null
+    /**
      * The data needed to create a Admin.
      */
     data: XOR<AdminCreateInput, AdminUncheckedCreateInput>
@@ -18302,6 +18744,10 @@ export namespace Prisma {
      * Select specific fields to fetch from the Admin
      */
     select?: AdminSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AdminInclude<ExtArgs> | null
     /**
      * The data needed to update a Admin.
      */
@@ -18337,6 +18783,10 @@ export namespace Prisma {
      */
     select?: AdminSelect<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AdminInclude<ExtArgs> | null
+    /**
      * The filter to search for the Admin to update in case it exists.
      */
     where: AdminWhereUniqueInput
@@ -18360,6 +18810,10 @@ export namespace Prisma {
      */
     select?: AdminSelect<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AdminInclude<ExtArgs> | null
+    /**
      * Filter which Admin to delete.
      */
     where: AdminWhereUniqueInput
@@ -18378,6 +18832,27 @@ export namespace Prisma {
 
 
   /**
+   * Admin.userBlock
+   */
+  export type Admin$userBlockArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserBlock
+     */
+    select?: UserBlockSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserBlockInclude<ExtArgs> | null
+    where?: UserBlockWhereInput
+    orderBy?: Enumerable<UserBlockOrderByWithRelationInput>
+    cursor?: UserBlockWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<UserBlockScalarFieldEnum>
+  }
+
+
+  /**
    * Admin without action
    */
   export type AdminArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
@@ -18385,6 +18860,10 @@ export namespace Prisma {
      * Select specific fields to fetch from the Admin
      */
     select?: AdminSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: AdminInclude<ExtArgs> | null
   }
 
 
@@ -21522,6 +22001,970 @@ export namespace Prisma {
 
 
   /**
+   * Model UserBlock
+   */
+
+
+  export type AggregateUserBlock = {
+    _count: UserBlockCountAggregateOutputType | null
+    _min: UserBlockMinAggregateOutputType | null
+    _max: UserBlockMaxAggregateOutputType | null
+  }
+
+  export type UserBlockMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    targetId: string | null
+    targetType: ReportTargetType | null
+    reason: string | null
+    startDate: Date | null
+    endDate: Date | null
+    createdAt: Date | null
+    transactionAdminId: string | null
+  }
+
+  export type UserBlockMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    targetId: string | null
+    targetType: ReportTargetType | null
+    reason: string | null
+    startDate: Date | null
+    endDate: Date | null
+    createdAt: Date | null
+    transactionAdminId: string | null
+  }
+
+  export type UserBlockCountAggregateOutputType = {
+    id: number
+    userId: number
+    targetId: number
+    targetType: number
+    reason: number
+    startDate: number
+    endDate: number
+    createdAt: number
+    transactionAdminId: number
+    _all: number
+  }
+
+
+  export type UserBlockMinAggregateInputType = {
+    id?: true
+    userId?: true
+    targetId?: true
+    targetType?: true
+    reason?: true
+    startDate?: true
+    endDate?: true
+    createdAt?: true
+    transactionAdminId?: true
+  }
+
+  export type UserBlockMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    targetId?: true
+    targetType?: true
+    reason?: true
+    startDate?: true
+    endDate?: true
+    createdAt?: true
+    transactionAdminId?: true
+  }
+
+  export type UserBlockCountAggregateInputType = {
+    id?: true
+    userId?: true
+    targetId?: true
+    targetType?: true
+    reason?: true
+    startDate?: true
+    endDate?: true
+    createdAt?: true
+    transactionAdminId?: true
+    _all?: true
+  }
+
+  export type UserBlockAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserBlock to aggregate.
+     */
+    where?: UserBlockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserBlocks to fetch.
+     */
+    orderBy?: Enumerable<UserBlockOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserBlockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserBlocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserBlocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserBlocks
+    **/
+    _count?: true | UserBlockCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserBlockMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserBlockMaxAggregateInputType
+  }
+
+  export type GetUserBlockAggregateType<T extends UserBlockAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserBlock]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserBlock[P]>
+      : GetScalarType<T[P], AggregateUserBlock[P]>
+  }
+
+
+
+
+  export type UserBlockGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: UserBlockWhereInput
+    orderBy?: Enumerable<UserBlockOrderByWithAggregationInput>
+    by: UserBlockScalarFieldEnum[]
+    having?: UserBlockScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserBlockCountAggregateInputType | true
+    _min?: UserBlockMinAggregateInputType
+    _max?: UserBlockMaxAggregateInputType
+  }
+
+
+  export type UserBlockGroupByOutputType = {
+    id: string
+    userId: string
+    targetId: string
+    targetType: ReportTargetType
+    reason: string
+    startDate: Date
+    endDate: Date
+    createdAt: Date
+    transactionAdminId: string
+    _count: UserBlockCountAggregateOutputType | null
+    _min: UserBlockMinAggregateOutputType | null
+    _max: UserBlockMaxAggregateOutputType | null
+  }
+
+  type GetUserBlockGroupByPayload<T extends UserBlockGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<UserBlockGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserBlockGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserBlockGroupByOutputType[P]>
+            : GetScalarType<T[P], UserBlockGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserBlockSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    targetId?: boolean
+    targetType?: boolean
+    reason?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    createdAt?: boolean
+    transactionAdminId?: boolean
+    transactionAdmin?: boolean | AdminArgs<ExtArgs>
+    user?: boolean | UserArgs<ExtArgs>
+  }, ExtArgs["result"]["userBlock"]>
+
+  export type UserBlockSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    targetId?: boolean
+    targetType?: boolean
+    reason?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    createdAt?: boolean
+    transactionAdminId?: boolean
+  }
+
+  export type UserBlockInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    transactionAdmin?: boolean | AdminArgs<ExtArgs>
+    user?: boolean | UserArgs<ExtArgs>
+  }
+
+
+  type UserBlockGetPayload<S extends boolean | null | undefined | UserBlockArgs> = $Types.GetResult<UserBlockPayload, S>
+
+  type UserBlockCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
+    Omit<UserBlockFindManyArgs, 'select' | 'include'> & {
+      select?: UserBlockCountAggregateInputType | true
+    }
+
+  export interface UserBlockDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserBlock'], meta: { name: 'UserBlock' } }
+    /**
+     * Find zero or one UserBlock that matches the filter.
+     * @param {UserBlockFindUniqueArgs} args - Arguments to find a UserBlock
+     * @example
+     * // Get one UserBlock
+     * const userBlock = await prisma.userBlock.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends UserBlockFindUniqueArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, UserBlockFindUniqueArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'UserBlock'> extends True ? Prisma__UserBlockClient<$Types.GetResult<UserBlockPayload<ExtArgs>, T, 'findUnique', never>, never, ExtArgs> : Prisma__UserBlockClient<$Types.GetResult<UserBlockPayload<ExtArgs>, T, 'findUnique', never> | null, null, ExtArgs>
+
+    /**
+     * Find one UserBlock that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {UserBlockFindUniqueOrThrowArgs} args - Arguments to find a UserBlock
+     * @example
+     * // Get one UserBlock
+     * const userBlock = await prisma.userBlock.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends UserBlockFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, UserBlockFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__UserBlockClient<$Types.GetResult<UserBlockPayload<ExtArgs>, T, 'findUniqueOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find the first UserBlock that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserBlockFindFirstArgs} args - Arguments to find a UserBlock
+     * @example
+     * // Get one UserBlock
+     * const userBlock = await prisma.userBlock.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends UserBlockFindFirstArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, UserBlockFindFirstArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'UserBlock'> extends True ? Prisma__UserBlockClient<$Types.GetResult<UserBlockPayload<ExtArgs>, T, 'findFirst', never>, never, ExtArgs> : Prisma__UserBlockClient<$Types.GetResult<UserBlockPayload<ExtArgs>, T, 'findFirst', never> | null, null, ExtArgs>
+
+    /**
+     * Find the first UserBlock that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserBlockFindFirstOrThrowArgs} args - Arguments to find a UserBlock
+     * @example
+     * // Get one UserBlock
+     * const userBlock = await prisma.userBlock.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends UserBlockFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, UserBlockFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__UserBlockClient<$Types.GetResult<UserBlockPayload<ExtArgs>, T, 'findFirstOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find zero or more UserBlocks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserBlockFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserBlocks
+     * const userBlocks = await prisma.userBlock.findMany()
+     * 
+     * // Get first 10 UserBlocks
+     * const userBlocks = await prisma.userBlock.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userBlockWithIdOnly = await prisma.userBlock.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends UserBlockFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, UserBlockFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Types.GetResult<UserBlockPayload<ExtArgs>, T, 'findMany', never>>
+
+    /**
+     * Create a UserBlock.
+     * @param {UserBlockCreateArgs} args - Arguments to create a UserBlock.
+     * @example
+     * // Create one UserBlock
+     * const UserBlock = await prisma.userBlock.create({
+     *   data: {
+     *     // ... data to create a UserBlock
+     *   }
+     * })
+     * 
+    **/
+    create<T extends UserBlockCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, UserBlockCreateArgs<ExtArgs>>
+    ): Prisma__UserBlockClient<$Types.GetResult<UserBlockPayload<ExtArgs>, T, 'create', never>, never, ExtArgs>
+
+    /**
+     * Create many UserBlocks.
+     *     @param {UserBlockCreateManyArgs} args - Arguments to create many UserBlocks.
+     *     @example
+     *     // Create many UserBlocks
+     *     const userBlock = await prisma.userBlock.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends UserBlockCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, UserBlockCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a UserBlock.
+     * @param {UserBlockDeleteArgs} args - Arguments to delete one UserBlock.
+     * @example
+     * // Delete one UserBlock
+     * const UserBlock = await prisma.userBlock.delete({
+     *   where: {
+     *     // ... filter to delete one UserBlock
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends UserBlockDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, UserBlockDeleteArgs<ExtArgs>>
+    ): Prisma__UserBlockClient<$Types.GetResult<UserBlockPayload<ExtArgs>, T, 'delete', never>, never, ExtArgs>
+
+    /**
+     * Update one UserBlock.
+     * @param {UserBlockUpdateArgs} args - Arguments to update one UserBlock.
+     * @example
+     * // Update one UserBlock
+     * const userBlock = await prisma.userBlock.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends UserBlockUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, UserBlockUpdateArgs<ExtArgs>>
+    ): Prisma__UserBlockClient<$Types.GetResult<UserBlockPayload<ExtArgs>, T, 'update', never>, never, ExtArgs>
+
+    /**
+     * Delete zero or more UserBlocks.
+     * @param {UserBlockDeleteManyArgs} args - Arguments to filter UserBlocks to delete.
+     * @example
+     * // Delete a few UserBlocks
+     * const { count } = await prisma.userBlock.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends UserBlockDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, UserBlockDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserBlocks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserBlockUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserBlocks
+     * const userBlock = await prisma.userBlock.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends UserBlockUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, UserBlockUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one UserBlock.
+     * @param {UserBlockUpsertArgs} args - Arguments to update or create a UserBlock.
+     * @example
+     * // Update or create a UserBlock
+     * const userBlock = await prisma.userBlock.upsert({
+     *   create: {
+     *     // ... data to create a UserBlock
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserBlock we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends UserBlockUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, UserBlockUpsertArgs<ExtArgs>>
+    ): Prisma__UserBlockClient<$Types.GetResult<UserBlockPayload<ExtArgs>, T, 'upsert', never>, never, ExtArgs>
+
+    /**
+     * Count the number of UserBlocks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserBlockCountArgs} args - Arguments to filter UserBlocks to count.
+     * @example
+     * // Count the number of UserBlocks
+     * const count = await prisma.userBlock.count({
+     *   where: {
+     *     // ... the filter for the UserBlocks we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserBlockCountArgs>(
+      args?: Subset<T, UserBlockCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserBlockCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserBlock.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserBlockAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserBlockAggregateArgs>(args: Subset<T, UserBlockAggregateArgs>): Prisma.PrismaPromise<GetUserBlockAggregateType<T>>
+
+    /**
+     * Group by UserBlock.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserBlockGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserBlockGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserBlockGroupByArgs['orderBy'] }
+        : { orderBy?: UserBlockGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserBlockGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserBlockGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserBlock.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__UserBlockClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    transactionAdmin<T extends AdminArgs<ExtArgs> = {}>(args?: Subset<T, AdminArgs<ExtArgs>>): Prisma__AdminClient<$Types.GetResult<AdminPayload<ExtArgs>, T, 'findUnique', never> | Null, never, ExtArgs>;
+
+    user<T extends UserArgs<ExtArgs> = {}>(args?: Subset<T, UserArgs<ExtArgs>>): Prisma__UserClient<$Types.GetResult<UserPayload<ExtArgs>, T, 'findUnique', never> | Null, never, ExtArgs>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * UserBlock base type for findUnique actions
+   */
+  export type UserBlockFindUniqueArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserBlock
+     */
+    select?: UserBlockSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserBlockInclude<ExtArgs> | null
+    /**
+     * Filter, which UserBlock to fetch.
+     */
+    where: UserBlockWhereUniqueInput
+  }
+
+  /**
+   * UserBlock findUnique
+   */
+  export interface UserBlockFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends UserBlockFindUniqueArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * UserBlock findUniqueOrThrow
+   */
+  export type UserBlockFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserBlock
+     */
+    select?: UserBlockSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserBlockInclude<ExtArgs> | null
+    /**
+     * Filter, which UserBlock to fetch.
+     */
+    where: UserBlockWhereUniqueInput
+  }
+
+
+  /**
+   * UserBlock base type for findFirst actions
+   */
+  export type UserBlockFindFirstArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserBlock
+     */
+    select?: UserBlockSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserBlockInclude<ExtArgs> | null
+    /**
+     * Filter, which UserBlock to fetch.
+     */
+    where?: UserBlockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserBlocks to fetch.
+     */
+    orderBy?: Enumerable<UserBlockOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserBlocks.
+     */
+    cursor?: UserBlockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserBlocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserBlocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserBlocks.
+     */
+    distinct?: Enumerable<UserBlockScalarFieldEnum>
+  }
+
+  /**
+   * UserBlock findFirst
+   */
+  export interface UserBlockFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends UserBlockFindFirstArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * UserBlock findFirstOrThrow
+   */
+  export type UserBlockFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserBlock
+     */
+    select?: UserBlockSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserBlockInclude<ExtArgs> | null
+    /**
+     * Filter, which UserBlock to fetch.
+     */
+    where?: UserBlockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserBlocks to fetch.
+     */
+    orderBy?: Enumerable<UserBlockOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserBlocks.
+     */
+    cursor?: UserBlockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserBlocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserBlocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserBlocks.
+     */
+    distinct?: Enumerable<UserBlockScalarFieldEnum>
+  }
+
+
+  /**
+   * UserBlock findMany
+   */
+  export type UserBlockFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserBlock
+     */
+    select?: UserBlockSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserBlockInclude<ExtArgs> | null
+    /**
+     * Filter, which UserBlocks to fetch.
+     */
+    where?: UserBlockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserBlocks to fetch.
+     */
+    orderBy?: Enumerable<UserBlockOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserBlocks.
+     */
+    cursor?: UserBlockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserBlocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserBlocks.
+     */
+    skip?: number
+    distinct?: Enumerable<UserBlockScalarFieldEnum>
+  }
+
+
+  /**
+   * UserBlock create
+   */
+  export type UserBlockCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserBlock
+     */
+    select?: UserBlockSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserBlockInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UserBlock.
+     */
+    data: XOR<UserBlockCreateInput, UserBlockUncheckedCreateInput>
+  }
+
+
+  /**
+   * UserBlock createMany
+   */
+  export type UserBlockCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserBlocks.
+     */
+    data: Enumerable<UserBlockCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * UserBlock update
+   */
+  export type UserBlockUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserBlock
+     */
+    select?: UserBlockSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserBlockInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UserBlock.
+     */
+    data: XOR<UserBlockUpdateInput, UserBlockUncheckedUpdateInput>
+    /**
+     * Choose, which UserBlock to update.
+     */
+    where: UserBlockWhereUniqueInput
+  }
+
+
+  /**
+   * UserBlock updateMany
+   */
+  export type UserBlockUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserBlocks.
+     */
+    data: XOR<UserBlockUpdateManyMutationInput, UserBlockUncheckedUpdateManyInput>
+    /**
+     * Filter which UserBlocks to update
+     */
+    where?: UserBlockWhereInput
+  }
+
+
+  /**
+   * UserBlock upsert
+   */
+  export type UserBlockUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserBlock
+     */
+    select?: UserBlockSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserBlockInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UserBlock to update in case it exists.
+     */
+    where: UserBlockWhereUniqueInput
+    /**
+     * In case the UserBlock found by the `where` argument doesn't exist, create a new UserBlock with this data.
+     */
+    create: XOR<UserBlockCreateInput, UserBlockUncheckedCreateInput>
+    /**
+     * In case the UserBlock was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserBlockUpdateInput, UserBlockUncheckedUpdateInput>
+  }
+
+
+  /**
+   * UserBlock delete
+   */
+  export type UserBlockDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserBlock
+     */
+    select?: UserBlockSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserBlockInclude<ExtArgs> | null
+    /**
+     * Filter which UserBlock to delete.
+     */
+    where: UserBlockWhereUniqueInput
+  }
+
+
+  /**
+   * UserBlock deleteMany
+   */
+  export type UserBlockDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserBlocks to delete
+     */
+    where?: UserBlockWhereInput
+  }
+
+
+  /**
+   * UserBlock without action
+   */
+  export type UserBlockArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserBlock
+     */
+    select?: UserBlockSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: UserBlockInclude<ExtArgs> | null
+  }
+
+
+
+  /**
    * Model DefaultBoard
    */
 
@@ -23386,6 +24829,1905 @@ export namespace Prisma {
 
 
   /**
+   * Model DeletedComment
+   */
+
+
+  export type AggregateDeletedComment = {
+    _count: DeletedCommentCountAggregateOutputType | null
+    _avg: DeletedCommentAvgAggregateOutputType | null
+    _sum: DeletedCommentSumAggregateOutputType | null
+    _min: DeletedCommentMinAggregateOutputType | null
+    _max: DeletedCommentMaxAggregateOutputType | null
+  }
+
+  export type DeletedCommentAvgAggregateOutputType = {
+    id: number | null
+    articleId: number | null
+  }
+
+  export type DeletedCommentSumAggregateOutputType = {
+    id: number | null
+    articleId: number | null
+  }
+
+  export type DeletedCommentMinAggregateOutputType = {
+    id: number | null
+    userId: string | null
+    content: string | null
+    isAnonymous: boolean | null
+    isDeleted: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    articleId: number | null
+  }
+
+  export type DeletedCommentMaxAggregateOutputType = {
+    id: number | null
+    userId: string | null
+    content: string | null
+    isAnonymous: boolean | null
+    isDeleted: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    articleId: number | null
+  }
+
+  export type DeletedCommentCountAggregateOutputType = {
+    id: number
+    userId: number
+    content: number
+    isAnonymous: number
+    isDeleted: number
+    createdAt: number
+    updatedAt: number
+    articleId: number
+    _all: number
+  }
+
+
+  export type DeletedCommentAvgAggregateInputType = {
+    id?: true
+    articleId?: true
+  }
+
+  export type DeletedCommentSumAggregateInputType = {
+    id?: true
+    articleId?: true
+  }
+
+  export type DeletedCommentMinAggregateInputType = {
+    id?: true
+    userId?: true
+    content?: true
+    isAnonymous?: true
+    isDeleted?: true
+    createdAt?: true
+    updatedAt?: true
+    articleId?: true
+  }
+
+  export type DeletedCommentMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    content?: true
+    isAnonymous?: true
+    isDeleted?: true
+    createdAt?: true
+    updatedAt?: true
+    articleId?: true
+  }
+
+  export type DeletedCommentCountAggregateInputType = {
+    id?: true
+    userId?: true
+    content?: true
+    isAnonymous?: true
+    isDeleted?: true
+    createdAt?: true
+    updatedAt?: true
+    articleId?: true
+    _all?: true
+  }
+
+  export type DeletedCommentAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DeletedComment to aggregate.
+     */
+    where?: DeletedCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeletedComments to fetch.
+     */
+    orderBy?: Enumerable<DeletedCommentOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DeletedCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeletedComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeletedComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DeletedComments
+    **/
+    _count?: true | DeletedCommentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DeletedCommentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DeletedCommentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DeletedCommentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DeletedCommentMaxAggregateInputType
+  }
+
+  export type GetDeletedCommentAggregateType<T extends DeletedCommentAggregateArgs> = {
+        [P in keyof T & keyof AggregateDeletedComment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDeletedComment[P]>
+      : GetScalarType<T[P], AggregateDeletedComment[P]>
+  }
+
+
+
+
+  export type DeletedCommentGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: DeletedCommentWhereInput
+    orderBy?: Enumerable<DeletedCommentOrderByWithAggregationInput>
+    by: DeletedCommentScalarFieldEnum[]
+    having?: DeletedCommentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DeletedCommentCountAggregateInputType | true
+    _avg?: DeletedCommentAvgAggregateInputType
+    _sum?: DeletedCommentSumAggregateInputType
+    _min?: DeletedCommentMinAggregateInputType
+    _max?: DeletedCommentMaxAggregateInputType
+  }
+
+
+  export type DeletedCommentGroupByOutputType = {
+    id: number
+    userId: string
+    content: string
+    isAnonymous: boolean
+    isDeleted: boolean
+    createdAt: Date
+    updatedAt: Date
+    articleId: number
+    _count: DeletedCommentCountAggregateOutputType | null
+    _avg: DeletedCommentAvgAggregateOutputType | null
+    _sum: DeletedCommentSumAggregateOutputType | null
+    _min: DeletedCommentMinAggregateOutputType | null
+    _max: DeletedCommentMaxAggregateOutputType | null
+  }
+
+  type GetDeletedCommentGroupByPayload<T extends DeletedCommentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<DeletedCommentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DeletedCommentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DeletedCommentGroupByOutputType[P]>
+            : GetScalarType<T[P], DeletedCommentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DeletedCommentSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    content?: boolean
+    isAnonymous?: boolean
+    isDeleted?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    articleId?: boolean
+  }, ExtArgs["result"]["deletedComment"]>
+
+  export type DeletedCommentSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    content?: boolean
+    isAnonymous?: boolean
+    isDeleted?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    articleId?: boolean
+  }
+
+
+  type DeletedCommentGetPayload<S extends boolean | null | undefined | DeletedCommentArgs> = $Types.GetResult<DeletedCommentPayload, S>
+
+  type DeletedCommentCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
+    Omit<DeletedCommentFindManyArgs, 'select' | 'include'> & {
+      select?: DeletedCommentCountAggregateInputType | true
+    }
+
+  export interface DeletedCommentDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DeletedComment'], meta: { name: 'DeletedComment' } }
+    /**
+     * Find zero or one DeletedComment that matches the filter.
+     * @param {DeletedCommentFindUniqueArgs} args - Arguments to find a DeletedComment
+     * @example
+     * // Get one DeletedComment
+     * const deletedComment = await prisma.deletedComment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends DeletedCommentFindUniqueArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, DeletedCommentFindUniqueArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'DeletedComment'> extends True ? Prisma__DeletedCommentClient<$Types.GetResult<DeletedCommentPayload<ExtArgs>, T, 'findUnique', never>, never, ExtArgs> : Prisma__DeletedCommentClient<$Types.GetResult<DeletedCommentPayload<ExtArgs>, T, 'findUnique', never> | null, null, ExtArgs>
+
+    /**
+     * Find one DeletedComment that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {DeletedCommentFindUniqueOrThrowArgs} args - Arguments to find a DeletedComment
+     * @example
+     * // Get one DeletedComment
+     * const deletedComment = await prisma.deletedComment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends DeletedCommentFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, DeletedCommentFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__DeletedCommentClient<$Types.GetResult<DeletedCommentPayload<ExtArgs>, T, 'findUniqueOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find the first DeletedComment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeletedCommentFindFirstArgs} args - Arguments to find a DeletedComment
+     * @example
+     * // Get one DeletedComment
+     * const deletedComment = await prisma.deletedComment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends DeletedCommentFindFirstArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, DeletedCommentFindFirstArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'DeletedComment'> extends True ? Prisma__DeletedCommentClient<$Types.GetResult<DeletedCommentPayload<ExtArgs>, T, 'findFirst', never>, never, ExtArgs> : Prisma__DeletedCommentClient<$Types.GetResult<DeletedCommentPayload<ExtArgs>, T, 'findFirst', never> | null, null, ExtArgs>
+
+    /**
+     * Find the first DeletedComment that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeletedCommentFindFirstOrThrowArgs} args - Arguments to find a DeletedComment
+     * @example
+     * // Get one DeletedComment
+     * const deletedComment = await prisma.deletedComment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends DeletedCommentFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, DeletedCommentFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__DeletedCommentClient<$Types.GetResult<DeletedCommentPayload<ExtArgs>, T, 'findFirstOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find zero or more DeletedComments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeletedCommentFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DeletedComments
+     * const deletedComments = await prisma.deletedComment.findMany()
+     * 
+     * // Get first 10 DeletedComments
+     * const deletedComments = await prisma.deletedComment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const deletedCommentWithIdOnly = await prisma.deletedComment.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends DeletedCommentFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, DeletedCommentFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Types.GetResult<DeletedCommentPayload<ExtArgs>, T, 'findMany', never>>
+
+    /**
+     * Create a DeletedComment.
+     * @param {DeletedCommentCreateArgs} args - Arguments to create a DeletedComment.
+     * @example
+     * // Create one DeletedComment
+     * const DeletedComment = await prisma.deletedComment.create({
+     *   data: {
+     *     // ... data to create a DeletedComment
+     *   }
+     * })
+     * 
+    **/
+    create<T extends DeletedCommentCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, DeletedCommentCreateArgs<ExtArgs>>
+    ): Prisma__DeletedCommentClient<$Types.GetResult<DeletedCommentPayload<ExtArgs>, T, 'create', never>, never, ExtArgs>
+
+    /**
+     * Create many DeletedComments.
+     *     @param {DeletedCommentCreateManyArgs} args - Arguments to create many DeletedComments.
+     *     @example
+     *     // Create many DeletedComments
+     *     const deletedComment = await prisma.deletedComment.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends DeletedCommentCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, DeletedCommentCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a DeletedComment.
+     * @param {DeletedCommentDeleteArgs} args - Arguments to delete one DeletedComment.
+     * @example
+     * // Delete one DeletedComment
+     * const DeletedComment = await prisma.deletedComment.delete({
+     *   where: {
+     *     // ... filter to delete one DeletedComment
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends DeletedCommentDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, DeletedCommentDeleteArgs<ExtArgs>>
+    ): Prisma__DeletedCommentClient<$Types.GetResult<DeletedCommentPayload<ExtArgs>, T, 'delete', never>, never, ExtArgs>
+
+    /**
+     * Update one DeletedComment.
+     * @param {DeletedCommentUpdateArgs} args - Arguments to update one DeletedComment.
+     * @example
+     * // Update one DeletedComment
+     * const deletedComment = await prisma.deletedComment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends DeletedCommentUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, DeletedCommentUpdateArgs<ExtArgs>>
+    ): Prisma__DeletedCommentClient<$Types.GetResult<DeletedCommentPayload<ExtArgs>, T, 'update', never>, never, ExtArgs>
+
+    /**
+     * Delete zero or more DeletedComments.
+     * @param {DeletedCommentDeleteManyArgs} args - Arguments to filter DeletedComments to delete.
+     * @example
+     * // Delete a few DeletedComments
+     * const { count } = await prisma.deletedComment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends DeletedCommentDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, DeletedCommentDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DeletedComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeletedCommentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DeletedComments
+     * const deletedComment = await prisma.deletedComment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends DeletedCommentUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, DeletedCommentUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one DeletedComment.
+     * @param {DeletedCommentUpsertArgs} args - Arguments to update or create a DeletedComment.
+     * @example
+     * // Update or create a DeletedComment
+     * const deletedComment = await prisma.deletedComment.upsert({
+     *   create: {
+     *     // ... data to create a DeletedComment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DeletedComment we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends DeletedCommentUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, DeletedCommentUpsertArgs<ExtArgs>>
+    ): Prisma__DeletedCommentClient<$Types.GetResult<DeletedCommentPayload<ExtArgs>, T, 'upsert', never>, never, ExtArgs>
+
+    /**
+     * Count the number of DeletedComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeletedCommentCountArgs} args - Arguments to filter DeletedComments to count.
+     * @example
+     * // Count the number of DeletedComments
+     * const count = await prisma.deletedComment.count({
+     *   where: {
+     *     // ... the filter for the DeletedComments we want to count
+     *   }
+     * })
+    **/
+    count<T extends DeletedCommentCountArgs>(
+      args?: Subset<T, DeletedCommentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DeletedCommentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DeletedComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeletedCommentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DeletedCommentAggregateArgs>(args: Subset<T, DeletedCommentAggregateArgs>): Prisma.PrismaPromise<GetDeletedCommentAggregateType<T>>
+
+    /**
+     * Group by DeletedComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeletedCommentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DeletedCommentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DeletedCommentGroupByArgs['orderBy'] }
+        : { orderBy?: DeletedCommentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DeletedCommentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDeletedCommentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DeletedComment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__DeletedCommentClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * DeletedComment base type for findUnique actions
+   */
+  export type DeletedCommentFindUniqueArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedComment
+     */
+    select?: DeletedCommentSelect<ExtArgs> | null
+    /**
+     * Filter, which DeletedComment to fetch.
+     */
+    where: DeletedCommentWhereUniqueInput
+  }
+
+  /**
+   * DeletedComment findUnique
+   */
+  export interface DeletedCommentFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends DeletedCommentFindUniqueArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * DeletedComment findUniqueOrThrow
+   */
+  export type DeletedCommentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedComment
+     */
+    select?: DeletedCommentSelect<ExtArgs> | null
+    /**
+     * Filter, which DeletedComment to fetch.
+     */
+    where: DeletedCommentWhereUniqueInput
+  }
+
+
+  /**
+   * DeletedComment base type for findFirst actions
+   */
+  export type DeletedCommentFindFirstArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedComment
+     */
+    select?: DeletedCommentSelect<ExtArgs> | null
+    /**
+     * Filter, which DeletedComment to fetch.
+     */
+    where?: DeletedCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeletedComments to fetch.
+     */
+    orderBy?: Enumerable<DeletedCommentOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DeletedComments.
+     */
+    cursor?: DeletedCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeletedComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeletedComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DeletedComments.
+     */
+    distinct?: Enumerable<DeletedCommentScalarFieldEnum>
+  }
+
+  /**
+   * DeletedComment findFirst
+   */
+  export interface DeletedCommentFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends DeletedCommentFindFirstArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * DeletedComment findFirstOrThrow
+   */
+  export type DeletedCommentFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedComment
+     */
+    select?: DeletedCommentSelect<ExtArgs> | null
+    /**
+     * Filter, which DeletedComment to fetch.
+     */
+    where?: DeletedCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeletedComments to fetch.
+     */
+    orderBy?: Enumerable<DeletedCommentOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DeletedComments.
+     */
+    cursor?: DeletedCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeletedComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeletedComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DeletedComments.
+     */
+    distinct?: Enumerable<DeletedCommentScalarFieldEnum>
+  }
+
+
+  /**
+   * DeletedComment findMany
+   */
+  export type DeletedCommentFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedComment
+     */
+    select?: DeletedCommentSelect<ExtArgs> | null
+    /**
+     * Filter, which DeletedComments to fetch.
+     */
+    where?: DeletedCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeletedComments to fetch.
+     */
+    orderBy?: Enumerable<DeletedCommentOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DeletedComments.
+     */
+    cursor?: DeletedCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeletedComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeletedComments.
+     */
+    skip?: number
+    distinct?: Enumerable<DeletedCommentScalarFieldEnum>
+  }
+
+
+  /**
+   * DeletedComment create
+   */
+  export type DeletedCommentCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedComment
+     */
+    select?: DeletedCommentSelect<ExtArgs> | null
+    /**
+     * The data needed to create a DeletedComment.
+     */
+    data: XOR<DeletedCommentCreateInput, DeletedCommentUncheckedCreateInput>
+  }
+
+
+  /**
+   * DeletedComment createMany
+   */
+  export type DeletedCommentCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DeletedComments.
+     */
+    data: Enumerable<DeletedCommentCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * DeletedComment update
+   */
+  export type DeletedCommentUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedComment
+     */
+    select?: DeletedCommentSelect<ExtArgs> | null
+    /**
+     * The data needed to update a DeletedComment.
+     */
+    data: XOR<DeletedCommentUpdateInput, DeletedCommentUncheckedUpdateInput>
+    /**
+     * Choose, which DeletedComment to update.
+     */
+    where: DeletedCommentWhereUniqueInput
+  }
+
+
+  /**
+   * DeletedComment updateMany
+   */
+  export type DeletedCommentUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DeletedComments.
+     */
+    data: XOR<DeletedCommentUpdateManyMutationInput, DeletedCommentUncheckedUpdateManyInput>
+    /**
+     * Filter which DeletedComments to update
+     */
+    where?: DeletedCommentWhereInput
+  }
+
+
+  /**
+   * DeletedComment upsert
+   */
+  export type DeletedCommentUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedComment
+     */
+    select?: DeletedCommentSelect<ExtArgs> | null
+    /**
+     * The filter to search for the DeletedComment to update in case it exists.
+     */
+    where: DeletedCommentWhereUniqueInput
+    /**
+     * In case the DeletedComment found by the `where` argument doesn't exist, create a new DeletedComment with this data.
+     */
+    create: XOR<DeletedCommentCreateInput, DeletedCommentUncheckedCreateInput>
+    /**
+     * In case the DeletedComment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DeletedCommentUpdateInput, DeletedCommentUncheckedUpdateInput>
+  }
+
+
+  /**
+   * DeletedComment delete
+   */
+  export type DeletedCommentDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedComment
+     */
+    select?: DeletedCommentSelect<ExtArgs> | null
+    /**
+     * Filter which DeletedComment to delete.
+     */
+    where: DeletedCommentWhereUniqueInput
+  }
+
+
+  /**
+   * DeletedComment deleteMany
+   */
+  export type DeletedCommentDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DeletedComments to delete
+     */
+    where?: DeletedCommentWhereInput
+  }
+
+
+  /**
+   * DeletedComment without action
+   */
+  export type DeletedCommentArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedComment
+     */
+    select?: DeletedCommentSelect<ExtArgs> | null
+  }
+
+
+
+  /**
+   * Model DeletedReComment
+   */
+
+
+  export type AggregateDeletedReComment = {
+    _count: DeletedReCommentCountAggregateOutputType | null
+    _avg: DeletedReCommentAvgAggregateOutputType | null
+    _sum: DeletedReCommentSumAggregateOutputType | null
+    _min: DeletedReCommentMinAggregateOutputType | null
+    _max: DeletedReCommentMaxAggregateOutputType | null
+  }
+
+  export type DeletedReCommentAvgAggregateOutputType = {
+    id: number | null
+    articleId: number | null
+    commentId: number | null
+  }
+
+  export type DeletedReCommentSumAggregateOutputType = {
+    id: number | null
+    articleId: number | null
+    commentId: number | null
+  }
+
+  export type DeletedReCommentMinAggregateOutputType = {
+    id: number | null
+    articleId: number | null
+    userId: string | null
+    content: string | null
+    isAnonymous: boolean | null
+    isDeleted: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    commentId: number | null
+  }
+
+  export type DeletedReCommentMaxAggregateOutputType = {
+    id: number | null
+    articleId: number | null
+    userId: string | null
+    content: string | null
+    isAnonymous: boolean | null
+    isDeleted: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    commentId: number | null
+  }
+
+  export type DeletedReCommentCountAggregateOutputType = {
+    id: number
+    articleId: number
+    userId: number
+    content: number
+    isAnonymous: number
+    isDeleted: number
+    createdAt: number
+    updatedAt: number
+    commentId: number
+    _all: number
+  }
+
+
+  export type DeletedReCommentAvgAggregateInputType = {
+    id?: true
+    articleId?: true
+    commentId?: true
+  }
+
+  export type DeletedReCommentSumAggregateInputType = {
+    id?: true
+    articleId?: true
+    commentId?: true
+  }
+
+  export type DeletedReCommentMinAggregateInputType = {
+    id?: true
+    articleId?: true
+    userId?: true
+    content?: true
+    isAnonymous?: true
+    isDeleted?: true
+    createdAt?: true
+    updatedAt?: true
+    commentId?: true
+  }
+
+  export type DeletedReCommentMaxAggregateInputType = {
+    id?: true
+    articleId?: true
+    userId?: true
+    content?: true
+    isAnonymous?: true
+    isDeleted?: true
+    createdAt?: true
+    updatedAt?: true
+    commentId?: true
+  }
+
+  export type DeletedReCommentCountAggregateInputType = {
+    id?: true
+    articleId?: true
+    userId?: true
+    content?: true
+    isAnonymous?: true
+    isDeleted?: true
+    createdAt?: true
+    updatedAt?: true
+    commentId?: true
+    _all?: true
+  }
+
+  export type DeletedReCommentAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DeletedReComment to aggregate.
+     */
+    where?: DeletedReCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeletedReComments to fetch.
+     */
+    orderBy?: Enumerable<DeletedReCommentOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DeletedReCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeletedReComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeletedReComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DeletedReComments
+    **/
+    _count?: true | DeletedReCommentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DeletedReCommentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DeletedReCommentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DeletedReCommentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DeletedReCommentMaxAggregateInputType
+  }
+
+  export type GetDeletedReCommentAggregateType<T extends DeletedReCommentAggregateArgs> = {
+        [P in keyof T & keyof AggregateDeletedReComment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDeletedReComment[P]>
+      : GetScalarType<T[P], AggregateDeletedReComment[P]>
+  }
+
+
+
+
+  export type DeletedReCommentGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: DeletedReCommentWhereInput
+    orderBy?: Enumerable<DeletedReCommentOrderByWithAggregationInput>
+    by: DeletedReCommentScalarFieldEnum[]
+    having?: DeletedReCommentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DeletedReCommentCountAggregateInputType | true
+    _avg?: DeletedReCommentAvgAggregateInputType
+    _sum?: DeletedReCommentSumAggregateInputType
+    _min?: DeletedReCommentMinAggregateInputType
+    _max?: DeletedReCommentMaxAggregateInputType
+  }
+
+
+  export type DeletedReCommentGroupByOutputType = {
+    id: number
+    articleId: number
+    userId: string
+    content: string
+    isAnonymous: boolean
+    isDeleted: boolean
+    createdAt: Date
+    updatedAt: Date
+    commentId: number | null
+    _count: DeletedReCommentCountAggregateOutputType | null
+    _avg: DeletedReCommentAvgAggregateOutputType | null
+    _sum: DeletedReCommentSumAggregateOutputType | null
+    _min: DeletedReCommentMinAggregateOutputType | null
+    _max: DeletedReCommentMaxAggregateOutputType | null
+  }
+
+  type GetDeletedReCommentGroupByPayload<T extends DeletedReCommentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<DeletedReCommentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DeletedReCommentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DeletedReCommentGroupByOutputType[P]>
+            : GetScalarType<T[P], DeletedReCommentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DeletedReCommentSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    articleId?: boolean
+    userId?: boolean
+    content?: boolean
+    isAnonymous?: boolean
+    isDeleted?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    commentId?: boolean
+  }, ExtArgs["result"]["deletedReComment"]>
+
+  export type DeletedReCommentSelectScalar = {
+    id?: boolean
+    articleId?: boolean
+    userId?: boolean
+    content?: boolean
+    isAnonymous?: boolean
+    isDeleted?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    commentId?: boolean
+  }
+
+
+  type DeletedReCommentGetPayload<S extends boolean | null | undefined | DeletedReCommentArgs> = $Types.GetResult<DeletedReCommentPayload, S>
+
+  type DeletedReCommentCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
+    Omit<DeletedReCommentFindManyArgs, 'select' | 'include'> & {
+      select?: DeletedReCommentCountAggregateInputType | true
+    }
+
+  export interface DeletedReCommentDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DeletedReComment'], meta: { name: 'DeletedReComment' } }
+    /**
+     * Find zero or one DeletedReComment that matches the filter.
+     * @param {DeletedReCommentFindUniqueArgs} args - Arguments to find a DeletedReComment
+     * @example
+     * // Get one DeletedReComment
+     * const deletedReComment = await prisma.deletedReComment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends DeletedReCommentFindUniqueArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, DeletedReCommentFindUniqueArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'DeletedReComment'> extends True ? Prisma__DeletedReCommentClient<$Types.GetResult<DeletedReCommentPayload<ExtArgs>, T, 'findUnique', never>, never, ExtArgs> : Prisma__DeletedReCommentClient<$Types.GetResult<DeletedReCommentPayload<ExtArgs>, T, 'findUnique', never> | null, null, ExtArgs>
+
+    /**
+     * Find one DeletedReComment that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {DeletedReCommentFindUniqueOrThrowArgs} args - Arguments to find a DeletedReComment
+     * @example
+     * // Get one DeletedReComment
+     * const deletedReComment = await prisma.deletedReComment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends DeletedReCommentFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, DeletedReCommentFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__DeletedReCommentClient<$Types.GetResult<DeletedReCommentPayload<ExtArgs>, T, 'findUniqueOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find the first DeletedReComment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeletedReCommentFindFirstArgs} args - Arguments to find a DeletedReComment
+     * @example
+     * // Get one DeletedReComment
+     * const deletedReComment = await prisma.deletedReComment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends DeletedReCommentFindFirstArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, DeletedReCommentFindFirstArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'DeletedReComment'> extends True ? Prisma__DeletedReCommentClient<$Types.GetResult<DeletedReCommentPayload<ExtArgs>, T, 'findFirst', never>, never, ExtArgs> : Prisma__DeletedReCommentClient<$Types.GetResult<DeletedReCommentPayload<ExtArgs>, T, 'findFirst', never> | null, null, ExtArgs>
+
+    /**
+     * Find the first DeletedReComment that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeletedReCommentFindFirstOrThrowArgs} args - Arguments to find a DeletedReComment
+     * @example
+     * // Get one DeletedReComment
+     * const deletedReComment = await prisma.deletedReComment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends DeletedReCommentFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, DeletedReCommentFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__DeletedReCommentClient<$Types.GetResult<DeletedReCommentPayload<ExtArgs>, T, 'findFirstOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find zero or more DeletedReComments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeletedReCommentFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DeletedReComments
+     * const deletedReComments = await prisma.deletedReComment.findMany()
+     * 
+     * // Get first 10 DeletedReComments
+     * const deletedReComments = await prisma.deletedReComment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const deletedReCommentWithIdOnly = await prisma.deletedReComment.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends DeletedReCommentFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, DeletedReCommentFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Types.GetResult<DeletedReCommentPayload<ExtArgs>, T, 'findMany', never>>
+
+    /**
+     * Create a DeletedReComment.
+     * @param {DeletedReCommentCreateArgs} args - Arguments to create a DeletedReComment.
+     * @example
+     * // Create one DeletedReComment
+     * const DeletedReComment = await prisma.deletedReComment.create({
+     *   data: {
+     *     // ... data to create a DeletedReComment
+     *   }
+     * })
+     * 
+    **/
+    create<T extends DeletedReCommentCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, DeletedReCommentCreateArgs<ExtArgs>>
+    ): Prisma__DeletedReCommentClient<$Types.GetResult<DeletedReCommentPayload<ExtArgs>, T, 'create', never>, never, ExtArgs>
+
+    /**
+     * Create many DeletedReComments.
+     *     @param {DeletedReCommentCreateManyArgs} args - Arguments to create many DeletedReComments.
+     *     @example
+     *     // Create many DeletedReComments
+     *     const deletedReComment = await prisma.deletedReComment.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends DeletedReCommentCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, DeletedReCommentCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a DeletedReComment.
+     * @param {DeletedReCommentDeleteArgs} args - Arguments to delete one DeletedReComment.
+     * @example
+     * // Delete one DeletedReComment
+     * const DeletedReComment = await prisma.deletedReComment.delete({
+     *   where: {
+     *     // ... filter to delete one DeletedReComment
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends DeletedReCommentDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, DeletedReCommentDeleteArgs<ExtArgs>>
+    ): Prisma__DeletedReCommentClient<$Types.GetResult<DeletedReCommentPayload<ExtArgs>, T, 'delete', never>, never, ExtArgs>
+
+    /**
+     * Update one DeletedReComment.
+     * @param {DeletedReCommentUpdateArgs} args - Arguments to update one DeletedReComment.
+     * @example
+     * // Update one DeletedReComment
+     * const deletedReComment = await prisma.deletedReComment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends DeletedReCommentUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, DeletedReCommentUpdateArgs<ExtArgs>>
+    ): Prisma__DeletedReCommentClient<$Types.GetResult<DeletedReCommentPayload<ExtArgs>, T, 'update', never>, never, ExtArgs>
+
+    /**
+     * Delete zero or more DeletedReComments.
+     * @param {DeletedReCommentDeleteManyArgs} args - Arguments to filter DeletedReComments to delete.
+     * @example
+     * // Delete a few DeletedReComments
+     * const { count } = await prisma.deletedReComment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends DeletedReCommentDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, DeletedReCommentDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DeletedReComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeletedReCommentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DeletedReComments
+     * const deletedReComment = await prisma.deletedReComment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends DeletedReCommentUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, DeletedReCommentUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one DeletedReComment.
+     * @param {DeletedReCommentUpsertArgs} args - Arguments to update or create a DeletedReComment.
+     * @example
+     * // Update or create a DeletedReComment
+     * const deletedReComment = await prisma.deletedReComment.upsert({
+     *   create: {
+     *     // ... data to create a DeletedReComment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DeletedReComment we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends DeletedReCommentUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, DeletedReCommentUpsertArgs<ExtArgs>>
+    ): Prisma__DeletedReCommentClient<$Types.GetResult<DeletedReCommentPayload<ExtArgs>, T, 'upsert', never>, never, ExtArgs>
+
+    /**
+     * Count the number of DeletedReComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeletedReCommentCountArgs} args - Arguments to filter DeletedReComments to count.
+     * @example
+     * // Count the number of DeletedReComments
+     * const count = await prisma.deletedReComment.count({
+     *   where: {
+     *     // ... the filter for the DeletedReComments we want to count
+     *   }
+     * })
+    **/
+    count<T extends DeletedReCommentCountArgs>(
+      args?: Subset<T, DeletedReCommentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DeletedReCommentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DeletedReComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeletedReCommentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DeletedReCommentAggregateArgs>(args: Subset<T, DeletedReCommentAggregateArgs>): Prisma.PrismaPromise<GetDeletedReCommentAggregateType<T>>
+
+    /**
+     * Group by DeletedReComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeletedReCommentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DeletedReCommentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DeletedReCommentGroupByArgs['orderBy'] }
+        : { orderBy?: DeletedReCommentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DeletedReCommentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDeletedReCommentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DeletedReComment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__DeletedReCommentClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * DeletedReComment base type for findUnique actions
+   */
+  export type DeletedReCommentFindUniqueArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedReComment
+     */
+    select?: DeletedReCommentSelect<ExtArgs> | null
+    /**
+     * Filter, which DeletedReComment to fetch.
+     */
+    where: DeletedReCommentWhereUniqueInput
+  }
+
+  /**
+   * DeletedReComment findUnique
+   */
+  export interface DeletedReCommentFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends DeletedReCommentFindUniqueArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * DeletedReComment findUniqueOrThrow
+   */
+  export type DeletedReCommentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedReComment
+     */
+    select?: DeletedReCommentSelect<ExtArgs> | null
+    /**
+     * Filter, which DeletedReComment to fetch.
+     */
+    where: DeletedReCommentWhereUniqueInput
+  }
+
+
+  /**
+   * DeletedReComment base type for findFirst actions
+   */
+  export type DeletedReCommentFindFirstArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedReComment
+     */
+    select?: DeletedReCommentSelect<ExtArgs> | null
+    /**
+     * Filter, which DeletedReComment to fetch.
+     */
+    where?: DeletedReCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeletedReComments to fetch.
+     */
+    orderBy?: Enumerable<DeletedReCommentOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DeletedReComments.
+     */
+    cursor?: DeletedReCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeletedReComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeletedReComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DeletedReComments.
+     */
+    distinct?: Enumerable<DeletedReCommentScalarFieldEnum>
+  }
+
+  /**
+   * DeletedReComment findFirst
+   */
+  export interface DeletedReCommentFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends DeletedReCommentFindFirstArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * DeletedReComment findFirstOrThrow
+   */
+  export type DeletedReCommentFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedReComment
+     */
+    select?: DeletedReCommentSelect<ExtArgs> | null
+    /**
+     * Filter, which DeletedReComment to fetch.
+     */
+    where?: DeletedReCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeletedReComments to fetch.
+     */
+    orderBy?: Enumerable<DeletedReCommentOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DeletedReComments.
+     */
+    cursor?: DeletedReCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeletedReComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeletedReComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DeletedReComments.
+     */
+    distinct?: Enumerable<DeletedReCommentScalarFieldEnum>
+  }
+
+
+  /**
+   * DeletedReComment findMany
+   */
+  export type DeletedReCommentFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedReComment
+     */
+    select?: DeletedReCommentSelect<ExtArgs> | null
+    /**
+     * Filter, which DeletedReComments to fetch.
+     */
+    where?: DeletedReCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DeletedReComments to fetch.
+     */
+    orderBy?: Enumerable<DeletedReCommentOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DeletedReComments.
+     */
+    cursor?: DeletedReCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DeletedReComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DeletedReComments.
+     */
+    skip?: number
+    distinct?: Enumerable<DeletedReCommentScalarFieldEnum>
+  }
+
+
+  /**
+   * DeletedReComment create
+   */
+  export type DeletedReCommentCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedReComment
+     */
+    select?: DeletedReCommentSelect<ExtArgs> | null
+    /**
+     * The data needed to create a DeletedReComment.
+     */
+    data: XOR<DeletedReCommentCreateInput, DeletedReCommentUncheckedCreateInput>
+  }
+
+
+  /**
+   * DeletedReComment createMany
+   */
+  export type DeletedReCommentCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DeletedReComments.
+     */
+    data: Enumerable<DeletedReCommentCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * DeletedReComment update
+   */
+  export type DeletedReCommentUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedReComment
+     */
+    select?: DeletedReCommentSelect<ExtArgs> | null
+    /**
+     * The data needed to update a DeletedReComment.
+     */
+    data: XOR<DeletedReCommentUpdateInput, DeletedReCommentUncheckedUpdateInput>
+    /**
+     * Choose, which DeletedReComment to update.
+     */
+    where: DeletedReCommentWhereUniqueInput
+  }
+
+
+  /**
+   * DeletedReComment updateMany
+   */
+  export type DeletedReCommentUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DeletedReComments.
+     */
+    data: XOR<DeletedReCommentUpdateManyMutationInput, DeletedReCommentUncheckedUpdateManyInput>
+    /**
+     * Filter which DeletedReComments to update
+     */
+    where?: DeletedReCommentWhereInput
+  }
+
+
+  /**
+   * DeletedReComment upsert
+   */
+  export type DeletedReCommentUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedReComment
+     */
+    select?: DeletedReCommentSelect<ExtArgs> | null
+    /**
+     * The filter to search for the DeletedReComment to update in case it exists.
+     */
+    where: DeletedReCommentWhereUniqueInput
+    /**
+     * In case the DeletedReComment found by the `where` argument doesn't exist, create a new DeletedReComment with this data.
+     */
+    create: XOR<DeletedReCommentCreateInput, DeletedReCommentUncheckedCreateInput>
+    /**
+     * In case the DeletedReComment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DeletedReCommentUpdateInput, DeletedReCommentUncheckedUpdateInput>
+  }
+
+
+  /**
+   * DeletedReComment delete
+   */
+  export type DeletedReCommentDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedReComment
+     */
+    select?: DeletedReCommentSelect<ExtArgs> | null
+    /**
+     * Filter which DeletedReComment to delete.
+     */
+    where: DeletedReCommentWhereUniqueInput
+  }
+
+
+  /**
+   * DeletedReComment deleteMany
+   */
+  export type DeletedReCommentDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DeletedReComments to delete
+     */
+    where?: DeletedReCommentWhereInput
+  }
+
+
+  /**
+   * DeletedReComment without action
+   */
+  export type DeletedReCommentArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DeletedReComment
+     */
+    select?: DeletedReCommentSelect<ExtArgs> | null
+  }
+
+
+
+  /**
    * Model BoardRequest
    */
 
@@ -23404,6 +26746,7 @@ export namespace Prisma {
     schoolId: string | null
     schoolName: string | null
     process: BoardRequestProcess | null
+    createdAt: Date | null
     message: string | null
   }
 
@@ -23415,6 +26758,7 @@ export namespace Prisma {
     schoolId: string | null
     schoolName: string | null
     process: BoardRequestProcess | null
+    createdAt: Date | null
     message: string | null
   }
 
@@ -23426,6 +26770,7 @@ export namespace Prisma {
     schoolId: number
     schoolName: number
     process: number
+    createdAt: number
     message: number
     _all: number
   }
@@ -23439,6 +26784,7 @@ export namespace Prisma {
     schoolId?: true
     schoolName?: true
     process?: true
+    createdAt?: true
     message?: true
   }
 
@@ -23450,6 +26796,7 @@ export namespace Prisma {
     schoolId?: true
     schoolName?: true
     process?: true
+    createdAt?: true
     message?: true
   }
 
@@ -23461,6 +26808,7 @@ export namespace Prisma {
     schoolId?: true
     schoolName?: true
     process?: true
+    createdAt?: true
     message?: true
     _all?: true
   }
@@ -23546,6 +26894,7 @@ export namespace Prisma {
     schoolId: string
     schoolName: string
     process: BoardRequestProcess
+    createdAt: Date
     message: string | null
     _count: BoardRequestCountAggregateOutputType | null
     _min: BoardRequestMinAggregateOutputType | null
@@ -23574,6 +26923,7 @@ export namespace Prisma {
     schoolId?: boolean
     schoolName?: boolean
     process?: boolean
+    createdAt?: boolean
     message?: boolean
   }, ExtArgs["result"]["boardRequest"]>
 
@@ -23585,6 +26935,7 @@ export namespace Prisma {
     schoolId?: boolean
     schoolName?: boolean
     process?: boolean
+    createdAt?: boolean
     message?: boolean
   }
 
@@ -26390,6 +29741,7 @@ export namespace Prisma {
     targetType: ReportTargetType | null
     message: string | null
     targetId: string | null
+    targetUserId: string | null
     reportUserName: string | null
     process: ReportProcess | null
   }
@@ -26401,6 +29753,7 @@ export namespace Prisma {
     targetType: ReportTargetType | null
     message: string | null
     targetId: string | null
+    targetUserId: string | null
     reportUserName: string | null
     process: ReportProcess | null
   }
@@ -26412,6 +29765,7 @@ export namespace Prisma {
     targetType: number
     message: number
     targetId: number
+    targetUserId: number
     reportUserName: number
     process: number
     _all: number
@@ -26425,6 +29779,7 @@ export namespace Prisma {
     targetType?: true
     message?: true
     targetId?: true
+    targetUserId?: true
     reportUserName?: true
     process?: true
   }
@@ -26436,6 +29791,7 @@ export namespace Prisma {
     targetType?: true
     message?: true
     targetId?: true
+    targetUserId?: true
     reportUserName?: true
     process?: true
   }
@@ -26447,6 +29803,7 @@ export namespace Prisma {
     targetType?: true
     message?: true
     targetId?: true
+    targetUserId?: true
     reportUserName?: true
     process?: true
     _all?: true
@@ -26532,6 +29889,7 @@ export namespace Prisma {
     targetType: ReportTargetType
     message: string
     targetId: string
+    targetUserId: string
     reportUserName: string
     process: ReportProcess
     _count: ReportCountAggregateOutputType | null
@@ -26560,6 +29918,7 @@ export namespace Prisma {
     targetType?: boolean
     message?: boolean
     targetId?: boolean
+    targetUserId?: boolean
     reportUserName?: boolean
     process?: boolean
   }, ExtArgs["result"]["report"]>
@@ -26571,6 +29930,7 @@ export namespace Prisma {
     targetType?: boolean
     message?: boolean
     targetId?: boolean
+    targetUserId?: boolean
     reportUserName?: boolean
     process?: boolean
   }
@@ -35988,6 +39348,21 @@ export namespace Prisma {
   export type ArticleScalarFieldEnum = (typeof ArticleScalarFieldEnum)[keyof typeof ArticleScalarFieldEnum]
 
 
+  export const UserBlockScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    targetId: 'targetId',
+    targetType: 'targetType',
+    reason: 'reason',
+    startDate: 'startDate',
+    endDate: 'endDate',
+    createdAt: 'createdAt',
+    transactionAdminId: 'transactionAdminId'
+  };
+
+  export type UserBlockScalarFieldEnum = (typeof UserBlockScalarFieldEnum)[keyof typeof UserBlockScalarFieldEnum]
+
+
   export const DefaultBoardScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -36014,6 +39389,35 @@ export namespace Prisma {
   export type DeletedArticleScalarFieldEnum = (typeof DeletedArticleScalarFieldEnum)[keyof typeof DeletedArticleScalarFieldEnum]
 
 
+  export const DeletedCommentScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    content: 'content',
+    isAnonymous: 'isAnonymous',
+    isDeleted: 'isDeleted',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    articleId: 'articleId'
+  };
+
+  export type DeletedCommentScalarFieldEnum = (typeof DeletedCommentScalarFieldEnum)[keyof typeof DeletedCommentScalarFieldEnum]
+
+
+  export const DeletedReCommentScalarFieldEnum: {
+    id: 'id',
+    articleId: 'articleId',
+    userId: 'userId',
+    content: 'content',
+    isAnonymous: 'isAnonymous',
+    isDeleted: 'isDeleted',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    commentId: 'commentId'
+  };
+
+  export type DeletedReCommentScalarFieldEnum = (typeof DeletedReCommentScalarFieldEnum)[keyof typeof DeletedReCommentScalarFieldEnum]
+
+
   export const BoardRequestScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -36022,6 +39426,7 @@ export namespace Prisma {
     schoolId: 'schoolId',
     schoolName: 'schoolName',
     process: 'process',
+    createdAt: 'createdAt',
     message: 'message'
   };
 
@@ -36064,6 +39469,7 @@ export namespace Prisma {
     targetType: 'targetType',
     message: 'message',
     targetId: 'targetId',
+    targetUserId: 'targetUserId',
     reportUserName: 'reportUserName',
     process: 'process'
   };
@@ -36223,8 +39629,9 @@ export namespace Prisma {
     userSchool?: XOR<UserSchoolRelationFilter, UserSchoolWhereInput> | null
     userSchoolVerify?: UserSchoolVerifyListRelationFilter
     pushDevice?: PushDeviceListRelationFilter
-    ReportBlindArticle?: ReportBlindArticleListRelationFilter
-    ReportBlindUser?: ReportBlindUserListRelationFilter
+    reportBlindArticle?: ReportBlindArticleListRelationFilter
+    reportBlindUser?: ReportBlindUserListRelationFilter
+    userBlock?: UserBlockListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -36253,8 +39660,9 @@ export namespace Prisma {
     userSchool?: UserSchoolOrderByWithRelationInput
     userSchoolVerify?: UserSchoolVerifyOrderByRelationAggregateInput
     pushDevice?: PushDeviceOrderByRelationAggregateInput
-    ReportBlindArticle?: ReportBlindArticleOrderByRelationAggregateInput
-    ReportBlindUser?: ReportBlindUserOrderByRelationAggregateInput
+    reportBlindArticle?: ReportBlindArticleOrderByRelationAggregateInput
+    reportBlindUser?: ReportBlindUserOrderByRelationAggregateInput
+    userBlock?: UserBlockOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = {
@@ -36955,6 +40363,7 @@ export namespace Prisma {
     loginId?: StringFilter | string
     password?: StringFilter | string
     flags?: IntFilter | number
+    userBlock?: UserBlockListRelationFilter
   }
 
   export type AdminOrderByWithRelationInput = {
@@ -36962,6 +40371,7 @@ export namespace Prisma {
     loginId?: SortOrder
     password?: SortOrder
     flags?: SortOrder
+    userBlock?: UserBlockOrderByRelationAggregateInput
   }
 
   export type AdminWhereUniqueInput = {
@@ -37184,6 +40594,71 @@ export namespace Prisma {
     boardId?: IntWithAggregatesFilter | number
   }
 
+  export type UserBlockWhereInput = {
+    AND?: Enumerable<UserBlockWhereInput>
+    OR?: Enumerable<UserBlockWhereInput>
+    NOT?: Enumerable<UserBlockWhereInput>
+    id?: StringFilter | string
+    userId?: StringFilter | string
+    targetId?: StringFilter | string
+    targetType?: EnumReportTargetTypeFilter | ReportTargetType
+    reason?: StringFilter | string
+    startDate?: DateTimeFilter | Date | string
+    endDate?: DateTimeFilter | Date | string
+    createdAt?: DateTimeFilter | Date | string
+    transactionAdminId?: StringFilter | string
+    transactionAdmin?: XOR<AdminRelationFilter, AdminWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type UserBlockOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    targetId?: SortOrder
+    targetType?: SortOrder
+    reason?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    createdAt?: SortOrder
+    transactionAdminId?: SortOrder
+    transactionAdmin?: AdminOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type UserBlockWhereUniqueInput = {
+    id?: string
+  }
+
+  export type UserBlockOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    targetId?: SortOrder
+    targetType?: SortOrder
+    reason?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    createdAt?: SortOrder
+    transactionAdminId?: SortOrder
+    _count?: UserBlockCountOrderByAggregateInput
+    _max?: UserBlockMaxOrderByAggregateInput
+    _min?: UserBlockMinOrderByAggregateInput
+  }
+
+  export type UserBlockScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<UserBlockScalarWhereWithAggregatesInput>
+    OR?: Enumerable<UserBlockScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<UserBlockScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    userId?: StringWithAggregatesFilter | string
+    targetId?: StringWithAggregatesFilter | string
+    targetType?: EnumReportTargetTypeWithAggregatesFilter | ReportTargetType
+    reason?: StringWithAggregatesFilter | string
+    startDate?: DateTimeWithAggregatesFilter | Date | string
+    endDate?: DateTimeWithAggregatesFilter | Date | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    transactionAdminId?: StringWithAggregatesFilter | string
+  }
+
   export type DefaultBoardWhereInput = {
     AND?: Enumerable<DefaultBoardWhereInput>
     OR?: Enumerable<DefaultBoardWhereInput>
@@ -37294,6 +40769,128 @@ export namespace Prisma {
     boardId?: IntWithAggregatesFilter | number
   }
 
+  export type DeletedCommentWhereInput = {
+    AND?: Enumerable<DeletedCommentWhereInput>
+    OR?: Enumerable<DeletedCommentWhereInput>
+    NOT?: Enumerable<DeletedCommentWhereInput>
+    id?: IntFilter | number
+    userId?: StringFilter | string
+    content?: StringFilter | string
+    isAnonymous?: BoolFilter | boolean
+    isDeleted?: BoolFilter | boolean
+    createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
+    articleId?: IntFilter | number
+  }
+
+  export type DeletedCommentOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    content?: SortOrder
+    isAnonymous?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    articleId?: SortOrder
+  }
+
+  export type DeletedCommentWhereUniqueInput = {
+    id?: number
+  }
+
+  export type DeletedCommentOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    content?: SortOrder
+    isAnonymous?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    articleId?: SortOrder
+    _count?: DeletedCommentCountOrderByAggregateInput
+    _avg?: DeletedCommentAvgOrderByAggregateInput
+    _max?: DeletedCommentMaxOrderByAggregateInput
+    _min?: DeletedCommentMinOrderByAggregateInput
+    _sum?: DeletedCommentSumOrderByAggregateInput
+  }
+
+  export type DeletedCommentScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<DeletedCommentScalarWhereWithAggregatesInput>
+    OR?: Enumerable<DeletedCommentScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<DeletedCommentScalarWhereWithAggregatesInput>
+    id?: IntWithAggregatesFilter | number
+    userId?: StringWithAggregatesFilter | string
+    content?: StringWithAggregatesFilter | string
+    isAnonymous?: BoolWithAggregatesFilter | boolean
+    isDeleted?: BoolWithAggregatesFilter | boolean
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
+    articleId?: IntWithAggregatesFilter | number
+  }
+
+  export type DeletedReCommentWhereInput = {
+    AND?: Enumerable<DeletedReCommentWhereInput>
+    OR?: Enumerable<DeletedReCommentWhereInput>
+    NOT?: Enumerable<DeletedReCommentWhereInput>
+    id?: IntFilter | number
+    articleId?: IntFilter | number
+    userId?: StringFilter | string
+    content?: StringFilter | string
+    isAnonymous?: BoolFilter | boolean
+    isDeleted?: BoolFilter | boolean
+    createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
+    commentId?: IntNullableFilter | number | null
+  }
+
+  export type DeletedReCommentOrderByWithRelationInput = {
+    id?: SortOrder
+    articleId?: SortOrder
+    userId?: SortOrder
+    content?: SortOrder
+    isAnonymous?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    commentId?: SortOrderInput | SortOrder
+  }
+
+  export type DeletedReCommentWhereUniqueInput = {
+    id?: number
+  }
+
+  export type DeletedReCommentOrderByWithAggregationInput = {
+    id?: SortOrder
+    articleId?: SortOrder
+    userId?: SortOrder
+    content?: SortOrder
+    isAnonymous?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    commentId?: SortOrderInput | SortOrder
+    _count?: DeletedReCommentCountOrderByAggregateInput
+    _avg?: DeletedReCommentAvgOrderByAggregateInput
+    _max?: DeletedReCommentMaxOrderByAggregateInput
+    _min?: DeletedReCommentMinOrderByAggregateInput
+    _sum?: DeletedReCommentSumOrderByAggregateInput
+  }
+
+  export type DeletedReCommentScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<DeletedReCommentScalarWhereWithAggregatesInput>
+    OR?: Enumerable<DeletedReCommentScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<DeletedReCommentScalarWhereWithAggregatesInput>
+    id?: IntWithAggregatesFilter | number
+    articleId?: IntWithAggregatesFilter | number
+    userId?: StringWithAggregatesFilter | string
+    content?: StringWithAggregatesFilter | string
+    isAnonymous?: BoolWithAggregatesFilter | boolean
+    isDeleted?: BoolWithAggregatesFilter | boolean
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
+    commentId?: IntNullableWithAggregatesFilter | number | null
+  }
+
   export type BoardRequestWhereInput = {
     AND?: Enumerable<BoardRequestWhereInput>
     OR?: Enumerable<BoardRequestWhereInput>
@@ -37305,6 +40902,7 @@ export namespace Prisma {
     schoolId?: StringFilter | string
     schoolName?: StringFilter | string
     process?: EnumBoardRequestProcessFilter | BoardRequestProcess
+    createdAt?: DateTimeFilter | Date | string
     message?: StringNullableFilter | string | null
   }
 
@@ -37316,6 +40914,7 @@ export namespace Prisma {
     schoolId?: SortOrder
     schoolName?: SortOrder
     process?: SortOrder
+    createdAt?: SortOrder
     message?: SortOrderInput | SortOrder
   }
 
@@ -37331,6 +40930,7 @@ export namespace Prisma {
     schoolId?: SortOrder
     schoolName?: SortOrder
     process?: SortOrder
+    createdAt?: SortOrder
     message?: SortOrderInput | SortOrder
     _count?: BoardRequestCountOrderByAggregateInput
     _max?: BoardRequestMaxOrderByAggregateInput
@@ -37348,6 +40948,7 @@ export namespace Prisma {
     schoolId?: StringWithAggregatesFilter | string
     schoolName?: StringWithAggregatesFilter | string
     process?: EnumBoardRequestProcessWithAggregatesFilter | BoardRequestProcess
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
     message?: StringNullableWithAggregatesFilter | string | null
   }
 
@@ -37499,6 +41100,7 @@ export namespace Prisma {
     targetType?: EnumReportTargetTypeFilter | ReportTargetType
     message?: StringFilter | string
     targetId?: StringFilter | string
+    targetUserId?: StringFilter | string
     reportUserName?: StringFilter | string
     process?: EnumReportProcessFilter | ReportProcess
   }
@@ -37510,6 +41112,7 @@ export namespace Prisma {
     targetType?: SortOrder
     message?: SortOrder
     targetId?: SortOrder
+    targetUserId?: SortOrder
     reportUserName?: SortOrder
     process?: SortOrder
   }
@@ -37525,6 +41128,7 @@ export namespace Prisma {
     targetType?: SortOrder
     message?: SortOrder
     targetId?: SortOrder
+    targetUserId?: SortOrder
     reportUserName?: SortOrder
     process?: SortOrder
     _count?: ReportCountOrderByAggregateInput
@@ -37542,6 +41146,7 @@ export namespace Prisma {
     targetType?: EnumReportTargetTypeWithAggregatesFilter | ReportTargetType
     message?: StringWithAggregatesFilter | string
     targetId?: StringWithAggregatesFilter | string
+    targetUserId?: StringWithAggregatesFilter | string
     reportUserName?: StringWithAggregatesFilter | string
     process?: EnumReportProcessWithAggregatesFilter | ReportProcess
   }
@@ -37996,8 +41601,9 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -38026,8 +41632,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -38056,8 +41663,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -38086,8 +41694,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -38952,6 +42561,7 @@ export namespace Prisma {
     loginId: string
     password: string
     flags: number
+    userBlock?: UserBlockCreateNestedManyWithoutTransactionAdminInput
   }
 
   export type AdminUncheckedCreateInput = {
@@ -38959,6 +42569,7 @@ export namespace Prisma {
     loginId: string
     password: string
     flags: number
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutTransactionAdminInput
   }
 
   export type AdminUpdateInput = {
@@ -38966,6 +42577,7 @@ export namespace Prisma {
     loginId?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     flags?: IntFieldUpdateOperationsInput | number
+    userBlock?: UserBlockUpdateManyWithoutTransactionAdminNestedInput
   }
 
   export type AdminUncheckedUpdateInput = {
@@ -38973,6 +42585,7 @@ export namespace Prisma {
     loginId?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     flags?: IntFieldUpdateOperationsInput | number
+    userBlock?: UserBlockUncheckedUpdateManyWithoutTransactionAdminNestedInput
   }
 
   export type AdminCreateManyInput = {
@@ -39230,6 +42843,88 @@ export namespace Prisma {
     boardId?: IntFieldUpdateOperationsInput | number
   }
 
+  export type UserBlockCreateInput = {
+    id?: string
+    targetId: string
+    targetType: ReportTargetType
+    reason: string
+    startDate?: Date | string
+    endDate: Date | string
+    createdAt?: Date | string
+    transactionAdmin: AdminCreateNestedOneWithoutUserBlockInput
+    user: UserCreateNestedOneWithoutUserBlockInput
+  }
+
+  export type UserBlockUncheckedCreateInput = {
+    id?: string
+    userId: string
+    targetId: string
+    targetType: ReportTargetType
+    reason: string
+    startDate?: Date | string
+    endDate: Date | string
+    createdAt?: Date | string
+    transactionAdminId: string
+  }
+
+  export type UserBlockUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumReportTargetTypeFieldUpdateOperationsInput | ReportTargetType
+    reason?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactionAdmin?: AdminUpdateOneRequiredWithoutUserBlockNestedInput
+    user?: UserUpdateOneRequiredWithoutUserBlockNestedInput
+  }
+
+  export type UserBlockUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumReportTargetTypeFieldUpdateOperationsInput | ReportTargetType
+    reason?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactionAdminId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type UserBlockCreateManyInput = {
+    id?: string
+    userId: string
+    targetId: string
+    targetType: ReportTargetType
+    reason: string
+    startDate?: Date | string
+    endDate: Date | string
+    createdAt?: Date | string
+    transactionAdminId: string
+  }
+
+  export type UserBlockUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumReportTargetTypeFieldUpdateOperationsInput | ReportTargetType
+    reason?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserBlockUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumReportTargetTypeFieldUpdateOperationsInput | ReportTargetType
+    reason?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactionAdminId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type DefaultBoardCreateInput = {
     name: string
     description: string
@@ -39367,6 +43062,167 @@ export namespace Prisma {
     boardId?: IntFieldUpdateOperationsInput | number
   }
 
+  export type DeletedCommentCreateInput = {
+    id: number
+    userId: string
+    content: string
+    isAnonymous: boolean
+    isDeleted: boolean
+    createdAt: Date | string
+    updatedAt: Date | string
+    articleId: number
+  }
+
+  export type DeletedCommentUncheckedCreateInput = {
+    id: number
+    userId: string
+    content: string
+    isAnonymous: boolean
+    isDeleted: boolean
+    createdAt: Date | string
+    updatedAt: Date | string
+    articleId: number
+  }
+
+  export type DeletedCommentUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    isAnonymous?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    articleId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DeletedCommentUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    isAnonymous?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    articleId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DeletedCommentCreateManyInput = {
+    id: number
+    userId: string
+    content: string
+    isAnonymous: boolean
+    isDeleted: boolean
+    createdAt: Date | string
+    updatedAt: Date | string
+    articleId: number
+  }
+
+  export type DeletedCommentUpdateManyMutationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    isAnonymous?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    articleId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DeletedCommentUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    isAnonymous?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    articleId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DeletedReCommentCreateInput = {
+    id: number
+    articleId: number
+    userId: string
+    content: string
+    isAnonymous: boolean
+    isDeleted: boolean
+    createdAt: Date | string
+    updatedAt: Date | string
+    commentId?: number | null
+  }
+
+  export type DeletedReCommentUncheckedCreateInput = {
+    id: number
+    articleId: number
+    userId: string
+    content: string
+    isAnonymous: boolean
+    isDeleted: boolean
+    createdAt: Date | string
+    updatedAt: Date | string
+    commentId?: number | null
+  }
+
+  export type DeletedReCommentUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    articleId?: IntFieldUpdateOperationsInput | number
+    userId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    isAnonymous?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    commentId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type DeletedReCommentUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    articleId?: IntFieldUpdateOperationsInput | number
+    userId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    isAnonymous?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    commentId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type DeletedReCommentCreateManyInput = {
+    id: number
+    articleId: number
+    userId: string
+    content: string
+    isAnonymous: boolean
+    isDeleted: boolean
+    createdAt: Date | string
+    updatedAt: Date | string
+    commentId?: number | null
+  }
+
+  export type DeletedReCommentUpdateManyMutationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    articleId?: IntFieldUpdateOperationsInput | number
+    userId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    isAnonymous?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    commentId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type DeletedReCommentUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    articleId?: IntFieldUpdateOperationsInput | number
+    userId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    isAnonymous?: BoolFieldUpdateOperationsInput | boolean
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    commentId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
   export type BoardRequestCreateInput = {
     id?: string
     name: string
@@ -39375,6 +43231,7 @@ export namespace Prisma {
     schoolId: string
     schoolName: string
     process?: BoardRequestProcess
+    createdAt?: Date | string
     message?: string | null
   }
 
@@ -39386,6 +43243,7 @@ export namespace Prisma {
     schoolId: string
     schoolName: string
     process?: BoardRequestProcess
+    createdAt?: Date | string
     message?: string | null
   }
 
@@ -39397,6 +43255,7 @@ export namespace Prisma {
     schoolId?: StringFieldUpdateOperationsInput | string
     schoolName?: StringFieldUpdateOperationsInput | string
     process?: EnumBoardRequestProcessFieldUpdateOperationsInput | BoardRequestProcess
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     message?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -39408,6 +43267,7 @@ export namespace Prisma {
     schoolId?: StringFieldUpdateOperationsInput | string
     schoolName?: StringFieldUpdateOperationsInput | string
     process?: EnumBoardRequestProcessFieldUpdateOperationsInput | BoardRequestProcess
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     message?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -39419,6 +43279,7 @@ export namespace Prisma {
     schoolId: string
     schoolName: string
     process?: BoardRequestProcess
+    createdAt?: Date | string
     message?: string | null
   }
 
@@ -39430,6 +43291,7 @@ export namespace Prisma {
     schoolId?: StringFieldUpdateOperationsInput | string
     schoolName?: StringFieldUpdateOperationsInput | string
     process?: EnumBoardRequestProcessFieldUpdateOperationsInput | BoardRequestProcess
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     message?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -39441,6 +43303,7 @@ export namespace Prisma {
     schoolId?: StringFieldUpdateOperationsInput | string
     schoolName?: StringFieldUpdateOperationsInput | string
     process?: EnumBoardRequestProcessFieldUpdateOperationsInput | BoardRequestProcess
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     message?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -39613,6 +43476,7 @@ export namespace Prisma {
     targetType: ReportTargetType
     message: string
     targetId: string
+    targetUserId: string
     reportUserName: string
     process?: ReportProcess
   }
@@ -39624,6 +43488,7 @@ export namespace Prisma {
     targetType: ReportTargetType
     message: string
     targetId: string
+    targetUserId: string
     reportUserName: string
     process?: ReportProcess
   }
@@ -39635,6 +43500,7 @@ export namespace Prisma {
     targetType?: EnumReportTargetTypeFieldUpdateOperationsInput | ReportTargetType
     message?: StringFieldUpdateOperationsInput | string
     targetId?: StringFieldUpdateOperationsInput | string
+    targetUserId?: StringFieldUpdateOperationsInput | string
     reportUserName?: StringFieldUpdateOperationsInput | string
     process?: EnumReportProcessFieldUpdateOperationsInput | ReportProcess
   }
@@ -39646,6 +43512,7 @@ export namespace Prisma {
     targetType?: EnumReportTargetTypeFieldUpdateOperationsInput | ReportTargetType
     message?: StringFieldUpdateOperationsInput | string
     targetId?: StringFieldUpdateOperationsInput | string
+    targetUserId?: StringFieldUpdateOperationsInput | string
     reportUserName?: StringFieldUpdateOperationsInput | string
     process?: EnumReportProcessFieldUpdateOperationsInput | ReportProcess
   }
@@ -39657,6 +43524,7 @@ export namespace Prisma {
     targetType: ReportTargetType
     message: string
     targetId: string
+    targetUserId: string
     reportUserName: string
     process?: ReportProcess
   }
@@ -39668,6 +43536,7 @@ export namespace Prisma {
     targetType?: EnumReportTargetTypeFieldUpdateOperationsInput | ReportTargetType
     message?: StringFieldUpdateOperationsInput | string
     targetId?: StringFieldUpdateOperationsInput | string
+    targetUserId?: StringFieldUpdateOperationsInput | string
     reportUserName?: StringFieldUpdateOperationsInput | string
     process?: EnumReportProcessFieldUpdateOperationsInput | ReportProcess
   }
@@ -39679,6 +43548,7 @@ export namespace Prisma {
     targetType?: EnumReportTargetTypeFieldUpdateOperationsInput | ReportTargetType
     message?: StringFieldUpdateOperationsInput | string
     targetId?: StringFieldUpdateOperationsInput | string
+    targetUserId?: StringFieldUpdateOperationsInput | string
     reportUserName?: StringFieldUpdateOperationsInput | string
     process?: EnumReportProcessFieldUpdateOperationsInput | ReportProcess
   }
@@ -40280,6 +44150,12 @@ export namespace Prisma {
     none?: ReportBlindUserWhereInput
   }
 
+  export type UserBlockListRelationFilter = {
+    every?: UserBlockWhereInput
+    some?: UserBlockWhereInput
+    none?: UserBlockWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -40334,6 +44210,10 @@ export namespace Prisma {
   }
 
   export type ReportBlindUserOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserBlockOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -41156,6 +45036,64 @@ export namespace Prisma {
     boardId?: SortOrder
   }
 
+  export type EnumReportTargetTypeFilter = {
+    equals?: ReportTargetType
+    in?: Enumerable<ReportTargetType>
+    notIn?: Enumerable<ReportTargetType>
+    not?: NestedEnumReportTargetTypeFilter | ReportTargetType
+  }
+
+  export type AdminRelationFilter = {
+    is?: AdminWhereInput | null
+    isNot?: AdminWhereInput | null
+  }
+
+  export type UserBlockCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    targetId?: SortOrder
+    targetType?: SortOrder
+    reason?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    createdAt?: SortOrder
+    transactionAdminId?: SortOrder
+  }
+
+  export type UserBlockMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    targetId?: SortOrder
+    targetType?: SortOrder
+    reason?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    createdAt?: SortOrder
+    transactionAdminId?: SortOrder
+  }
+
+  export type UserBlockMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    targetId?: SortOrder
+    targetType?: SortOrder
+    reason?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    createdAt?: SortOrder
+    transactionAdminId?: SortOrder
+  }
+
+  export type EnumReportTargetTypeWithAggregatesFilter = {
+    equals?: ReportTargetType
+    in?: Enumerable<ReportTargetType>
+    notIn?: Enumerable<ReportTargetType>
+    not?: NestedEnumReportTargetTypeWithAggregatesFilter | ReportTargetType
+    _count?: NestedIntFilter
+    _min?: NestedEnumReportTargetTypeFilter
+    _max?: NestedEnumReportTargetTypeFilter
+  }
+
   export type DefaultBoardCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -41234,6 +45172,97 @@ export namespace Prisma {
     boardId?: SortOrder
   }
 
+  export type DeletedCommentCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    content?: SortOrder
+    isAnonymous?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    articleId?: SortOrder
+  }
+
+  export type DeletedCommentAvgOrderByAggregateInput = {
+    id?: SortOrder
+    articleId?: SortOrder
+  }
+
+  export type DeletedCommentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    content?: SortOrder
+    isAnonymous?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    articleId?: SortOrder
+  }
+
+  export type DeletedCommentMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    content?: SortOrder
+    isAnonymous?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    articleId?: SortOrder
+  }
+
+  export type DeletedCommentSumOrderByAggregateInput = {
+    id?: SortOrder
+    articleId?: SortOrder
+  }
+
+  export type DeletedReCommentCountOrderByAggregateInput = {
+    id?: SortOrder
+    articleId?: SortOrder
+    userId?: SortOrder
+    content?: SortOrder
+    isAnonymous?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    commentId?: SortOrder
+  }
+
+  export type DeletedReCommentAvgOrderByAggregateInput = {
+    id?: SortOrder
+    articleId?: SortOrder
+    commentId?: SortOrder
+  }
+
+  export type DeletedReCommentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    articleId?: SortOrder
+    userId?: SortOrder
+    content?: SortOrder
+    isAnonymous?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    commentId?: SortOrder
+  }
+
+  export type DeletedReCommentMinOrderByAggregateInput = {
+    id?: SortOrder
+    articleId?: SortOrder
+    userId?: SortOrder
+    content?: SortOrder
+    isAnonymous?: SortOrder
+    isDeleted?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    commentId?: SortOrder
+  }
+
+  export type DeletedReCommentSumOrderByAggregateInput = {
+    id?: SortOrder
+    articleId?: SortOrder
+    commentId?: SortOrder
+  }
+
   export type EnumBoardRequestProcessFilter = {
     equals?: BoardRequestProcess
     in?: Enumerable<BoardRequestProcess>
@@ -41249,6 +45278,7 @@ export namespace Prisma {
     schoolId?: SortOrder
     schoolName?: SortOrder
     process?: SortOrder
+    createdAt?: SortOrder
     message?: SortOrder
   }
 
@@ -41260,6 +45290,7 @@ export namespace Prisma {
     schoolId?: SortOrder
     schoolName?: SortOrder
     process?: SortOrder
+    createdAt?: SortOrder
     message?: SortOrder
   }
 
@@ -41271,6 +45302,7 @@ export namespace Prisma {
     schoolId?: SortOrder
     schoolName?: SortOrder
     process?: SortOrder
+    createdAt?: SortOrder
     message?: SortOrder
   }
 
@@ -41385,13 +45417,6 @@ export namespace Prisma {
     commentId?: SortOrder
   }
 
-  export type EnumReportTargetTypeFilter = {
-    equals?: ReportTargetType
-    in?: Enumerable<ReportTargetType>
-    notIn?: Enumerable<ReportTargetType>
-    not?: NestedEnumReportTargetTypeFilter | ReportTargetType
-  }
-
   export type EnumReportProcessFilter = {
     equals?: ReportProcess
     in?: Enumerable<ReportProcess>
@@ -41406,6 +45431,7 @@ export namespace Prisma {
     targetType?: SortOrder
     message?: SortOrder
     targetId?: SortOrder
+    targetUserId?: SortOrder
     reportUserName?: SortOrder
     process?: SortOrder
   }
@@ -41417,6 +45443,7 @@ export namespace Prisma {
     targetType?: SortOrder
     message?: SortOrder
     targetId?: SortOrder
+    targetUserId?: SortOrder
     reportUserName?: SortOrder
     process?: SortOrder
   }
@@ -41428,18 +45455,9 @@ export namespace Prisma {
     targetType?: SortOrder
     message?: SortOrder
     targetId?: SortOrder
+    targetUserId?: SortOrder
     reportUserName?: SortOrder
     process?: SortOrder
-  }
-
-  export type EnumReportTargetTypeWithAggregatesFilter = {
-    equals?: ReportTargetType
-    in?: Enumerable<ReportTargetType>
-    notIn?: Enumerable<ReportTargetType>
-    not?: NestedEnumReportTargetTypeWithAggregatesFilter | ReportTargetType
-    _count?: NestedIntFilter
-    _min?: NestedEnumReportTargetTypeFilter
-    _max?: NestedEnumReportTargetTypeFilter
   }
 
   export type EnumReportProcessWithAggregatesFilter = {
@@ -41860,6 +45878,13 @@ export namespace Prisma {
     connect?: Enumerable<ReportBlindUserWhereUniqueInput>
   }
 
+  export type UserBlockCreateNestedManyWithoutUserInput = {
+    create?: XOR<Enumerable<UserBlockCreateWithoutUserInput>, Enumerable<UserBlockUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<UserBlockCreateOrConnectWithoutUserInput>
+    createMany?: UserBlockCreateManyUserInputEnvelope
+    connect?: Enumerable<UserBlockWhereUniqueInput>
+  }
+
   export type AgreementUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<AgreementCreateWithoutUserInput, AgreementUncheckedCreateWithoutUserInput>
     connectOrCreate?: AgreementCreateOrConnectWithoutUserInput
@@ -41973,6 +45998,13 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<ReportBlindUserCreateOrConnectWithoutUserInput>
     createMany?: ReportBlindUserCreateManyUserInputEnvelope
     connect?: Enumerable<ReportBlindUserWhereUniqueInput>
+  }
+
+  export type UserBlockUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<Enumerable<UserBlockCreateWithoutUserInput>, Enumerable<UserBlockUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<UserBlockCreateOrConnectWithoutUserInput>
+    createMany?: UserBlockCreateManyUserInputEnvelope
+    connect?: Enumerable<UserBlockWhereUniqueInput>
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -42217,6 +46249,20 @@ export namespace Prisma {
     deleteMany?: Enumerable<ReportBlindUserScalarWhereInput>
   }
 
+  export type UserBlockUpdateManyWithoutUserNestedInput = {
+    create?: XOR<Enumerable<UserBlockCreateWithoutUserInput>, Enumerable<UserBlockUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<UserBlockCreateOrConnectWithoutUserInput>
+    upsert?: Enumerable<UserBlockUpsertWithWhereUniqueWithoutUserInput>
+    createMany?: UserBlockCreateManyUserInputEnvelope
+    set?: Enumerable<UserBlockWhereUniqueInput>
+    disconnect?: Enumerable<UserBlockWhereUniqueInput>
+    delete?: Enumerable<UserBlockWhereUniqueInput>
+    connect?: Enumerable<UserBlockWhereUniqueInput>
+    update?: Enumerable<UserBlockUpdateWithWhereUniqueWithoutUserInput>
+    updateMany?: Enumerable<UserBlockUpdateManyWithWhereWithoutUserInput>
+    deleteMany?: Enumerable<UserBlockScalarWhereInput>
+  }
+
   export type AgreementUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<AgreementCreateWithoutUserInput, AgreementUncheckedCreateWithoutUserInput>
     connectOrCreate?: AgreementCreateOrConnectWithoutUserInput
@@ -42437,6 +46483,20 @@ export namespace Prisma {
     update?: Enumerable<ReportBlindUserUpdateWithWhereUniqueWithoutUserInput>
     updateMany?: Enumerable<ReportBlindUserUpdateManyWithWhereWithoutUserInput>
     deleteMany?: Enumerable<ReportBlindUserScalarWhereInput>
+  }
+
+  export type UserBlockUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<Enumerable<UserBlockCreateWithoutUserInput>, Enumerable<UserBlockUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<UserBlockCreateOrConnectWithoutUserInput>
+    upsert?: Enumerable<UserBlockUpsertWithWhereUniqueWithoutUserInput>
+    createMany?: UserBlockCreateManyUserInputEnvelope
+    set?: Enumerable<UserBlockWhereUniqueInput>
+    disconnect?: Enumerable<UserBlockWhereUniqueInput>
+    delete?: Enumerable<UserBlockWhereUniqueInput>
+    connect?: Enumerable<UserBlockWhereUniqueInput>
+    update?: Enumerable<UserBlockUpdateWithWhereUniqueWithoutUserInput>
+    updateMany?: Enumerable<UserBlockUpdateManyWithWhereWithoutUserInput>
+    deleteMany?: Enumerable<UserBlockScalarWhereInput>
   }
 
   export type UserSchoolCreateNestedManyWithoutSchoolInput = {
@@ -42776,12 +46836,54 @@ export namespace Prisma {
     update?: XOR<UserUpdateWithoutAskedInput, UserUncheckedUpdateWithoutAskedInput>
   }
 
+  export type UserBlockCreateNestedManyWithoutTransactionAdminInput = {
+    create?: XOR<Enumerable<UserBlockCreateWithoutTransactionAdminInput>, Enumerable<UserBlockUncheckedCreateWithoutTransactionAdminInput>>
+    connectOrCreate?: Enumerable<UserBlockCreateOrConnectWithoutTransactionAdminInput>
+    createMany?: UserBlockCreateManyTransactionAdminInputEnvelope
+    connect?: Enumerable<UserBlockWhereUniqueInput>
+  }
+
+  export type UserBlockUncheckedCreateNestedManyWithoutTransactionAdminInput = {
+    create?: XOR<Enumerable<UserBlockCreateWithoutTransactionAdminInput>, Enumerable<UserBlockUncheckedCreateWithoutTransactionAdminInput>>
+    connectOrCreate?: Enumerable<UserBlockCreateOrConnectWithoutTransactionAdminInput>
+    createMany?: UserBlockCreateManyTransactionAdminInputEnvelope
+    connect?: Enumerable<UserBlockWhereUniqueInput>
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type UserBlockUpdateManyWithoutTransactionAdminNestedInput = {
+    create?: XOR<Enumerable<UserBlockCreateWithoutTransactionAdminInput>, Enumerable<UserBlockUncheckedCreateWithoutTransactionAdminInput>>
+    connectOrCreate?: Enumerable<UserBlockCreateOrConnectWithoutTransactionAdminInput>
+    upsert?: Enumerable<UserBlockUpsertWithWhereUniqueWithoutTransactionAdminInput>
+    createMany?: UserBlockCreateManyTransactionAdminInputEnvelope
+    set?: Enumerable<UserBlockWhereUniqueInput>
+    disconnect?: Enumerable<UserBlockWhereUniqueInput>
+    delete?: Enumerable<UserBlockWhereUniqueInput>
+    connect?: Enumerable<UserBlockWhereUniqueInput>
+    update?: Enumerable<UserBlockUpdateWithWhereUniqueWithoutTransactionAdminInput>
+    updateMany?: Enumerable<UserBlockUpdateManyWithWhereWithoutTransactionAdminInput>
+    deleteMany?: Enumerable<UserBlockScalarWhereInput>
+  }
+
+  export type UserBlockUncheckedUpdateManyWithoutTransactionAdminNestedInput = {
+    create?: XOR<Enumerable<UserBlockCreateWithoutTransactionAdminInput>, Enumerable<UserBlockUncheckedCreateWithoutTransactionAdminInput>>
+    connectOrCreate?: Enumerable<UserBlockCreateOrConnectWithoutTransactionAdminInput>
+    upsert?: Enumerable<UserBlockUpsertWithWhereUniqueWithoutTransactionAdminInput>
+    createMany?: UserBlockCreateManyTransactionAdminInputEnvelope
+    set?: Enumerable<UserBlockWhereUniqueInput>
+    disconnect?: Enumerable<UserBlockWhereUniqueInput>
+    delete?: Enumerable<UserBlockWhereUniqueInput>
+    connect?: Enumerable<UserBlockWhereUniqueInput>
+    update?: Enumerable<UserBlockUpdateWithWhereUniqueWithoutTransactionAdminInput>
+    updateMany?: Enumerable<UserBlockUpdateManyWithWhereWithoutTransactionAdminInput>
+    deleteMany?: Enumerable<UserBlockScalarWhereInput>
   }
 
   export type BoardCreatenoticeIdInput = {
@@ -43174,6 +47276,38 @@ export namespace Prisma {
     deleteMany?: Enumerable<ReportBlindArticleScalarWhereInput>
   }
 
+  export type AdminCreateNestedOneWithoutUserBlockInput = {
+    create?: XOR<AdminCreateWithoutUserBlockInput, AdminUncheckedCreateWithoutUserBlockInput>
+    connectOrCreate?: AdminCreateOrConnectWithoutUserBlockInput
+    connect?: AdminWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutUserBlockInput = {
+    create?: XOR<UserCreateWithoutUserBlockInput, UserUncheckedCreateWithoutUserBlockInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserBlockInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumReportTargetTypeFieldUpdateOperationsInput = {
+    set?: ReportTargetType
+  }
+
+  export type AdminUpdateOneRequiredWithoutUserBlockNestedInput = {
+    create?: XOR<AdminCreateWithoutUserBlockInput, AdminUncheckedCreateWithoutUserBlockInput>
+    connectOrCreate?: AdminCreateOrConnectWithoutUserBlockInput
+    upsert?: AdminUpsertWithoutUserBlockInput
+    connect?: AdminWhereUniqueInput
+    update?: XOR<AdminUpdateWithoutUserBlockInput, AdminUncheckedUpdateWithoutUserBlockInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutUserBlockNestedInput = {
+    create?: XOR<UserCreateWithoutUserBlockInput, UserUncheckedCreateWithoutUserBlockInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserBlockInput
+    upsert?: UserUpsertWithoutUserBlockInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<UserUpdateWithoutUserBlockInput, UserUncheckedUpdateWithoutUserBlockInput>
+  }
+
   export type DeletedArticleCreateimagesInput = {
     set: Enumerable<string>
   }
@@ -43383,10 +47517,6 @@ export namespace Prisma {
     update?: Enumerable<ReCommentLikeUpdateWithWhereUniqueWithoutRecommentInput>
     updateMany?: Enumerable<ReCommentLikeUpdateManyWithWhereWithoutRecommentInput>
     deleteMany?: Enumerable<ReCommentLikeScalarWhereInput>
-  }
-
-  export type EnumReportTargetTypeFieldUpdateOperationsInput = {
-    set?: ReportTargetType
   }
 
   export type EnumReportProcessFieldUpdateOperationsInput = {
@@ -43819,6 +47949,23 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter | number | null
   }
 
+  export type NestedEnumReportTargetTypeFilter = {
+    equals?: ReportTargetType
+    in?: Enumerable<ReportTargetType>
+    notIn?: Enumerable<ReportTargetType>
+    not?: NestedEnumReportTargetTypeFilter | ReportTargetType
+  }
+
+  export type NestedEnumReportTargetTypeWithAggregatesFilter = {
+    equals?: ReportTargetType
+    in?: Enumerable<ReportTargetType>
+    notIn?: Enumerable<ReportTargetType>
+    not?: NestedEnumReportTargetTypeWithAggregatesFilter | ReportTargetType
+    _count?: NestedIntFilter
+    _min?: NestedEnumReportTargetTypeFilter
+    _max?: NestedEnumReportTargetTypeFilter
+  }
+
   export type NestedEnumBoardRequestProcessFilter = {
     equals?: BoardRequestProcess
     in?: Enumerable<BoardRequestProcess>
@@ -43836,28 +47983,11 @@ export namespace Prisma {
     _max?: NestedEnumBoardRequestProcessFilter
   }
 
-  export type NestedEnumReportTargetTypeFilter = {
-    equals?: ReportTargetType
-    in?: Enumerable<ReportTargetType>
-    notIn?: Enumerable<ReportTargetType>
-    not?: NestedEnumReportTargetTypeFilter | ReportTargetType
-  }
-
   export type NestedEnumReportProcessFilter = {
     equals?: ReportProcess
     in?: Enumerable<ReportProcess>
     notIn?: Enumerable<ReportProcess>
     not?: NestedEnumReportProcessFilter | ReportProcess
-  }
-
-  export type NestedEnumReportTargetTypeWithAggregatesFilter = {
-    equals?: ReportTargetType
-    in?: Enumerable<ReportTargetType>
-    notIn?: Enumerable<ReportTargetType>
-    not?: NestedEnumReportTargetTypeWithAggregatesFilter | ReportTargetType
-    _count?: NestedIntFilter
-    _min?: NestedEnumReportTargetTypeFilter
-    _max?: NestedEnumReportTargetTypeFilter
   }
 
   export type NestedEnumReportProcessWithAggregatesFilter = {
@@ -44322,6 +48452,38 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UserBlockCreateWithoutUserInput = {
+    id?: string
+    targetId: string
+    targetType: ReportTargetType
+    reason: string
+    startDate?: Date | string
+    endDate: Date | string
+    createdAt?: Date | string
+    transactionAdmin: AdminCreateNestedOneWithoutUserBlockInput
+  }
+
+  export type UserBlockUncheckedCreateWithoutUserInput = {
+    id?: string
+    targetId: string
+    targetType: ReportTargetType
+    reason: string
+    startDate?: Date | string
+    endDate: Date | string
+    createdAt?: Date | string
+    transactionAdminId: string
+  }
+
+  export type UserBlockCreateOrConnectWithoutUserInput = {
+    where: UserBlockWhereUniqueInput
+    create: XOR<UserBlockCreateWithoutUserInput, UserBlockUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserBlockCreateManyUserInputEnvelope = {
+    data: Enumerable<UserBlockCreateManyUserInput>
+    skipDuplicates?: boolean
+  }
+
   export type AgreementUpsertWithoutUserInput = {
     update: XOR<AgreementUpdateWithoutUserInput, AgreementUncheckedUpdateWithoutUserInput>
     create: XOR<AgreementCreateWithoutUserInput, AgreementUncheckedCreateWithoutUserInput>
@@ -44768,6 +48930,37 @@ export namespace Prisma {
     createdAt?: DateTimeFilter | Date | string
   }
 
+  export type UserBlockUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserBlockWhereUniqueInput
+    update: XOR<UserBlockUpdateWithoutUserInput, UserBlockUncheckedUpdateWithoutUserInput>
+    create: XOR<UserBlockCreateWithoutUserInput, UserBlockUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserBlockUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserBlockWhereUniqueInput
+    data: XOR<UserBlockUpdateWithoutUserInput, UserBlockUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserBlockUpdateManyWithWhereWithoutUserInput = {
+    where: UserBlockScalarWhereInput
+    data: XOR<UserBlockUpdateManyMutationInput, UserBlockUncheckedUpdateManyWithoutUserBlockInput>
+  }
+
+  export type UserBlockScalarWhereInput = {
+    AND?: Enumerable<UserBlockScalarWhereInput>
+    OR?: Enumerable<UserBlockScalarWhereInput>
+    NOT?: Enumerable<UserBlockScalarWhereInput>
+    id?: StringFilter | string
+    userId?: StringFilter | string
+    targetId?: StringFilter | string
+    targetType?: EnumReportTargetTypeFilter | ReportTargetType
+    reason?: StringFilter | string
+    startDate?: DateTimeFilter | Date | string
+    endDate?: DateTimeFilter | Date | string
+    createdAt?: DateTimeFilter | Date | string
+    transactionAdminId?: StringFilter | string
+  }
+
   export type UserSchoolCreateWithoutSchoolInput = {
     dept?: string | null
     grade: string
@@ -44903,8 +49096,9 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutImageInput = {
@@ -44932,8 +49126,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutImageInput = {
@@ -45009,8 +49204,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutImageInput = {
@@ -45038,8 +49234,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserSchoolVerifyUpsertWithWhereUniqueWithoutImageInput = {
@@ -45083,8 +49280,9 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSocialLoginInput = {
@@ -45112,8 +49310,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSocialLoginInput = {
@@ -45151,8 +49350,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSocialLoginInput = {
@@ -45180,8 +49380,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAgreementInput = {
@@ -45209,8 +49410,9 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAgreementInput = {
@@ -45238,8 +49440,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAgreementInput = {
@@ -45277,8 +49480,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAgreementInput = {
@@ -45306,8 +49510,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ImageCreateWithoutUserSchoolVerifyInput = {
@@ -45354,8 +49559,9 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserSchoolVerifyInput = {
@@ -45383,8 +49589,9 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserSchoolVerifyInput = {
@@ -45441,8 +49648,9 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserSchoolVerifyInput = {
@@ -45470,8 +49678,9 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SchoolCreateWithoutUserSchoolInput = {
@@ -45528,8 +49737,9 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserSchoolInput = {
@@ -45557,8 +49767,9 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserSchoolInput = {
@@ -45625,8 +49836,9 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserSchoolInput = {
@@ -45654,8 +49866,9 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AskedCreateWithoutAskedUserInput = {
@@ -45715,8 +49928,9 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAskedUserInput = {
@@ -45744,8 +49958,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAskedUserInput = {
@@ -45799,8 +50014,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAskedUserInput = {
@@ -45828,8 +50044,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AskedUserCreateWithoutAskedInput = {
@@ -45884,8 +50101,9 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAskedInput = {
@@ -45913,8 +50131,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAskedInput = {
@@ -45979,8 +50198,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAskedInput = {
@@ -46008,8 +50228,57 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserBlockCreateWithoutTransactionAdminInput = {
+    id?: string
+    targetId: string
+    targetType: ReportTargetType
+    reason: string
+    startDate?: Date | string
+    endDate: Date | string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutUserBlockInput
+  }
+
+  export type UserBlockUncheckedCreateWithoutTransactionAdminInput = {
+    id?: string
+    userId: string
+    targetId: string
+    targetType: ReportTargetType
+    reason: string
+    startDate?: Date | string
+    endDate: Date | string
+    createdAt?: Date | string
+  }
+
+  export type UserBlockCreateOrConnectWithoutTransactionAdminInput = {
+    where: UserBlockWhereUniqueInput
+    create: XOR<UserBlockCreateWithoutTransactionAdminInput, UserBlockUncheckedCreateWithoutTransactionAdminInput>
+  }
+
+  export type UserBlockCreateManyTransactionAdminInputEnvelope = {
+    data: Enumerable<UserBlockCreateManyTransactionAdminInput>
+    skipDuplicates?: boolean
+  }
+
+  export type UserBlockUpsertWithWhereUniqueWithoutTransactionAdminInput = {
+    where: UserBlockWhereUniqueInput
+    update: XOR<UserBlockUpdateWithoutTransactionAdminInput, UserBlockUncheckedUpdateWithoutTransactionAdminInput>
+    create: XOR<UserBlockCreateWithoutTransactionAdminInput, UserBlockUncheckedCreateWithoutTransactionAdminInput>
+  }
+
+  export type UserBlockUpdateWithWhereUniqueWithoutTransactionAdminInput = {
+    where: UserBlockWhereUniqueInput
+    data: XOR<UserBlockUpdateWithoutTransactionAdminInput, UserBlockUncheckedUpdateWithoutTransactionAdminInput>
+  }
+
+  export type UserBlockUpdateManyWithWhereWithoutTransactionAdminInput = {
+    where: UserBlockScalarWhereInput
+    data: XOR<UserBlockUpdateManyMutationInput, UserBlockUncheckedUpdateManyWithoutUserBlockInput>
   }
 
   export type ArticleCreateWithoutBoardInput = {
@@ -46162,8 +50431,9 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBoardOrganizationsInput = {
@@ -46191,8 +50461,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBoardOrganizationsInput = {
@@ -46258,8 +50529,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBoardOrganizationsInput = {
@@ -46287,8 +50559,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BoardCreateWithoutArticleInput = {
@@ -46344,8 +50617,9 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutArticleInput = {
@@ -46373,8 +50647,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutArticleInput = {
@@ -46597,8 +50872,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticleInput = {
@@ -46626,8 +50902,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SchoolUpsertWithoutArticleInput = {
@@ -46748,6 +51025,174 @@ export namespace Prisma {
     data: XOR<ReportBlindArticleUpdateManyMutationInput, ReportBlindArticleUncheckedUpdateManyWithoutReportBlindArticleInput>
   }
 
+  export type AdminCreateWithoutUserBlockInput = {
+    id?: string
+    loginId: string
+    password: string
+    flags: number
+  }
+
+  export type AdminUncheckedCreateWithoutUserBlockInput = {
+    id?: string
+    loginId: string
+    password: string
+    flags: number
+  }
+
+  export type AdminCreateOrConnectWithoutUserBlockInput = {
+    where: AdminWhereUniqueInput
+    create: XOR<AdminCreateWithoutUserBlockInput, AdminUncheckedCreateWithoutUserBlockInput>
+  }
+
+  export type UserCreateWithoutUserBlockInput = {
+    id?: string
+    email?: string | null
+    password?: string | null
+    name: string
+    profile?: string | null
+    isVerified?: boolean
+    phone?: string | null
+    createdAt?: Date | string
+    provider: UserLoginProviderType
+    userSchoolId?: string | null
+    agreement?: AgreementCreateNestedOneWithoutUserInput
+    article?: ArticleCreateNestedManyWithoutUserInput
+    asked?: AskedCreateNestedManyWithoutQuestionUserInput
+    askedUser?: AskedUserCreateNestedOneWithoutUserInput
+    boardOrganizations?: BoardManagerCreateNestedManyWithoutUserInput
+    comment?: CommentCreateNestedManyWithoutUserInput
+    image?: ImageCreateNestedManyWithoutUserInput
+    articleLike?: ArticleLikeCreateNestedManyWithoutUserInput
+    commentLike?: CommentLikeCreateNestedManyWithoutUserInput
+    reCommentLike?: ReCommentLikeCreateNestedManyWithoutUserInput
+    reComment?: ReCommentCreateNestedManyWithoutUserInput
+    socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
+    userSchool?: UserSchoolCreateNestedOneWithoutUserInput
+    userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutUserBlockInput = {
+    id?: string
+    email?: string | null
+    password?: string | null
+    name: string
+    profile?: string | null
+    isVerified?: boolean
+    phone?: string | null
+    createdAt?: Date | string
+    provider: UserLoginProviderType
+    userSchoolId?: string | null
+    agreement?: AgreementUncheckedCreateNestedOneWithoutUserInput
+    article?: ArticleUncheckedCreateNestedManyWithoutUserInput
+    asked?: AskedUncheckedCreateNestedManyWithoutQuestionUserInput
+    askedUser?: AskedUserUncheckedCreateNestedOneWithoutUserInput
+    boardOrganizations?: BoardManagerUncheckedCreateNestedManyWithoutUserInput
+    comment?: CommentUncheckedCreateNestedManyWithoutUserInput
+    image?: ImageUncheckedCreateNestedManyWithoutUserInput
+    articleLike?: ArticleLikeUncheckedCreateNestedManyWithoutUserInput
+    commentLike?: CommentLikeUncheckedCreateNestedManyWithoutUserInput
+    reCommentLike?: ReCommentLikeUncheckedCreateNestedManyWithoutUserInput
+    reComment?: ReCommentUncheckedCreateNestedManyWithoutUserInput
+    socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
+    userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
+    userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutUserBlockInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutUserBlockInput, UserUncheckedCreateWithoutUserBlockInput>
+  }
+
+  export type AdminUpsertWithoutUserBlockInput = {
+    update: XOR<AdminUpdateWithoutUserBlockInput, AdminUncheckedUpdateWithoutUserBlockInput>
+    create: XOR<AdminCreateWithoutUserBlockInput, AdminUncheckedCreateWithoutUserBlockInput>
+  }
+
+  export type AdminUpdateWithoutUserBlockInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    loginId?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    flags?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type AdminUncheckedUpdateWithoutUserBlockInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    loginId?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    flags?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type UserUpsertWithoutUserBlockInput = {
+    update: XOR<UserUpdateWithoutUserBlockInput, UserUncheckedUpdateWithoutUserBlockInput>
+    create: XOR<UserCreateWithoutUserBlockInput, UserUncheckedCreateWithoutUserBlockInput>
+  }
+
+  export type UserUpdateWithoutUserBlockInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    provider?: EnumUserLoginProviderTypeFieldUpdateOperationsInput | UserLoginProviderType
+    userSchoolId?: NullableStringFieldUpdateOperationsInput | string | null
+    agreement?: AgreementUpdateOneWithoutUserNestedInput
+    article?: ArticleUpdateManyWithoutUserNestedInput
+    asked?: AskedUpdateManyWithoutQuestionUserNestedInput
+    askedUser?: AskedUserUpdateOneWithoutUserNestedInput
+    boardOrganizations?: BoardManagerUpdateManyWithoutUserNestedInput
+    comment?: CommentUpdateManyWithoutUserNestedInput
+    image?: ImageUpdateManyWithoutUserNestedInput
+    articleLike?: ArticleLikeUpdateManyWithoutUserNestedInput
+    commentLike?: CommentLikeUpdateManyWithoutUserNestedInput
+    reCommentLike?: ReCommentLikeUpdateManyWithoutUserNestedInput
+    reComment?: ReCommentUpdateManyWithoutUserNestedInput
+    socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
+    userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
+    userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutUserBlockInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    provider?: EnumUserLoginProviderTypeFieldUpdateOperationsInput | UserLoginProviderType
+    userSchoolId?: NullableStringFieldUpdateOperationsInput | string | null
+    agreement?: AgreementUncheckedUpdateOneWithoutUserNestedInput
+    article?: ArticleUncheckedUpdateManyWithoutUserNestedInput
+    asked?: AskedUncheckedUpdateManyWithoutQuestionUserNestedInput
+    askedUser?: AskedUserUncheckedUpdateOneWithoutUserNestedInput
+    boardOrganizations?: BoardManagerUncheckedUpdateManyWithoutUserNestedInput
+    comment?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    image?: ImageUncheckedUpdateManyWithoutUserNestedInput
+    articleLike?: ArticleLikeUncheckedUpdateManyWithoutUserNestedInput
+    commentLike?: CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+    reCommentLike?: ReCommentLikeUncheckedUpdateManyWithoutUserNestedInput
+    reComment?: ReCommentUncheckedUpdateManyWithoutUserNestedInput
+    socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
+    userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
+    userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type ArticleCreateWithoutCommentInput = {
     title: string
     content: string
@@ -46811,8 +51256,9 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentInput = {
@@ -46840,8 +51286,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentInput = {
@@ -46972,8 +51419,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentInput = {
@@ -47001,8 +51449,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CommentLikeUpsertWithWhereUniqueWithoutCommentInput = {
@@ -47128,8 +51577,9 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReCommentInput = {
@@ -47157,8 +51607,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReCommentInput = {
@@ -47284,8 +51735,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReCommentInput = {
@@ -47313,8 +51765,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ReCommentLikeUpsertWithWhereUniqueWithoutRecommentInput = {
@@ -47358,8 +51811,9 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutArticleLikeInput = {
@@ -47387,8 +51841,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutArticleLikeInput = {
@@ -47464,8 +51919,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticleLikeInput = {
@@ -47493,8 +51949,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleUpsertWithoutArticleLikeInput = {
@@ -47560,8 +52017,9 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentLikeInput = {
@@ -47589,8 +52047,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentLikeInput = {
@@ -47656,8 +52115,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentLikeInput = {
@@ -47685,8 +52145,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CommentUpsertWithoutCommentLikeInput = {
@@ -47742,8 +52203,9 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReCommentLikeInput = {
@@ -47771,8 +52233,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReCommentLikeInput = {
@@ -47838,8 +52301,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReCommentLikeInput = {
@@ -47867,8 +52331,9 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ReCommentUpsertWithoutReCommentLikeInput = {
@@ -48000,8 +52465,9 @@ export namespace Prisma {
     socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPushDeviceInput = {
@@ -48029,8 +52495,9 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPushDeviceInput = {
@@ -48068,8 +52535,9 @@ export namespace Prisma {
     socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPushDeviceInput = {
@@ -48097,8 +52565,9 @@ export namespace Prisma {
     socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleCreateWithoutReportBlindArticleInput = {
@@ -48165,7 +52634,8 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReportBlindArticleInput = {
@@ -48194,7 +52664,8 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReportBlindArticleInput = {
@@ -48271,7 +52742,8 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportBlindArticleInput = {
@@ -48300,7 +52772,8 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutReportBlindUserInput = {
@@ -48329,7 +52802,8 @@ export namespace Prisma {
     userSchool?: UserSchoolCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReportBlindUserInput = {
@@ -48358,7 +52832,8 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
     userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReportBlindUserInput = {
@@ -48397,7 +52872,8 @@ export namespace Prisma {
     userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportBlindUserInput = {
@@ -48426,7 +52902,8 @@ export namespace Prisma {
     userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
     userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
-    ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleCreateManyUserInput = {
@@ -48533,6 +53010,17 @@ export namespace Prisma {
     id?: number
     targetUserId: string
     createdAt?: Date | string
+  }
+
+  export type UserBlockCreateManyUserInput = {
+    id?: string
+    targetId: string
+    targetType: ReportTargetType
+    reason: string
+    startDate?: Date | string
+    endDate: Date | string
+    createdAt?: Date | string
+    transactionAdminId: string
   }
 
   export type ArticleUpdateWithoutUserInput = {
@@ -48866,6 +53354,39 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type UserBlockUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumReportTargetTypeFieldUpdateOperationsInput | ReportTargetType
+    reason?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactionAdmin?: AdminUpdateOneRequiredWithoutUserBlockNestedInput
+  }
+
+  export type UserBlockUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumReportTargetTypeFieldUpdateOperationsInput | ReportTargetType
+    reason?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactionAdminId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type UserBlockUncheckedUpdateManyWithoutUserBlockInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumReportTargetTypeFieldUpdateOperationsInput | ReportTargetType
+    reason?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transactionAdminId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type UserSchoolCreateManySchoolInput = {
     userId: string
     dept?: string | null
@@ -49012,6 +53533,39 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     answerTimeAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isAnonymous?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type UserBlockCreateManyTransactionAdminInput = {
+    id?: string
+    userId: string
+    targetId: string
+    targetType: ReportTargetType
+    reason: string
+    startDate?: Date | string
+    endDate: Date | string
+    createdAt?: Date | string
+  }
+
+  export type UserBlockUpdateWithoutTransactionAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumReportTargetTypeFieldUpdateOperationsInput | ReportTargetType
+    reason?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutUserBlockNestedInput
+  }
+
+  export type UserBlockUncheckedUpdateWithoutTransactionAdminInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: EnumReportTargetTypeFieldUpdateOperationsInput | ReportTargetType
+    reason?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ArticleCreateManyBoardInput = {

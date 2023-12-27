@@ -272,6 +272,18 @@ exports.Prisma.ArticleScalarFieldEnum = {
   boardId: 'boardId'
 };
 
+exports.Prisma.UserBlockScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  targetId: 'targetId',
+  targetType: 'targetType',
+  reason: 'reason',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  createdAt: 'createdAt',
+  transactionAdminId: 'transactionAdminId'
+};
+
 exports.Prisma.DefaultBoardScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -292,6 +304,29 @@ exports.Prisma.DeletedArticleScalarFieldEnum = {
   boardId: 'boardId'
 };
 
+exports.Prisma.DeletedCommentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  content: 'content',
+  isAnonymous: 'isAnonymous',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  articleId: 'articleId'
+};
+
+exports.Prisma.DeletedReCommentScalarFieldEnum = {
+  id: 'id',
+  articleId: 'articleId',
+  userId: 'userId',
+  content: 'content',
+  isAnonymous: 'isAnonymous',
+  isDeleted: 'isDeleted',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  commentId: 'commentId'
+};
+
 exports.Prisma.BoardRequestScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -300,6 +335,7 @@ exports.Prisma.BoardRequestScalarFieldEnum = {
   schoolId: 'schoolId',
   schoolName: 'schoolName',
   process: 'process',
+  createdAt: 'createdAt',
   message: 'message'
 };
 
@@ -333,6 +369,7 @@ exports.Prisma.ReportScalarFieldEnum = {
   targetType: 'targetType',
   message: 'message',
   targetId: 'targetId',
+  targetUserId: 'targetUserId',
   reportUserName: 'reportUserName',
   process: 'process'
 };
@@ -434,18 +471,18 @@ exports.Process = {
   success: 'success'
 };
 
-exports.BoardRequestProcess = {
-  pending: 'pending',
-  denied: 'denied',
-  success: 'success'
-};
-
 exports.ReportTargetType = {
   user: 'user',
   article: 'article',
   comment: 'comment',
   asked: 'asked',
   recomment: 'recomment'
+};
+
+exports.BoardRequestProcess = {
+  pending: 'pending',
+  denied: 'denied',
+  success: 'success'
 };
 
 exports.ReportProcess = {
@@ -476,8 +513,11 @@ exports.Prisma.ModelName = {
   Board: 'Board',
   BoardManager: 'BoardManager',
   Article: 'Article',
+  UserBlock: 'UserBlock',
   DefaultBoard: 'DefaultBoard',
   DeletedArticle: 'DeletedArticle',
+  DeletedComment: 'DeletedComment',
+  DeletedReComment: 'DeletedReComment',
   BoardRequest: 'BoardRequest',
   Comment: 'Comment',
   ReComment: 'ReComment',
