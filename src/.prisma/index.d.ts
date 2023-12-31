@@ -32,6 +32,8 @@ export type UserPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultAr
     reportBlindArticle: ReportBlindArticlePayload<ExtArgs>[]
     reportBlindUser: ReportBlindUserPayload<ExtArgs>[]
     userBlock: UserBlockPayload<ExtArgs>[]
+    connectionAccount: ConnectionAccountPayload<ExtArgs>[]
+    fightRankingUser: FightRankingUserPayload<ExtArgs>[]
   }
   scalars: $Extensions.GetResult<{
     id: string
@@ -57,6 +59,8 @@ export type SchoolPayload<ExtArgs extends $Extensions.Args = $Extensions.Default
   objects: {
     userSchool: UserSchoolPayload<ExtArgs>[]
     article: ArticlePayload<ExtArgs>[]
+    fightRanking: FightRankingPayload<ExtArgs>[]
+    fightRankingUser: FightRankingUserPayload<ExtArgs>[]
   }
   scalars: $Extensions.GetResult<{
     schoolId: string
@@ -76,6 +80,98 @@ export type SchoolPayload<ExtArgs extends $Extensions.Args = $Extensions.Default
  * 
  */
 export type School = runtime.Types.DefaultSelection<SchoolPayload>
+export type ConnectionAccountPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+  objects: {
+    user: UserPayload<ExtArgs>
+  }
+  scalars: $Extensions.GetResult<{
+    id: string
+    userId: string
+    accountId: string
+    name: string | null
+    accessToken: string
+    refreshToken: string | null
+    provider: string
+    followerCount: number
+    articleCount: number
+  }, ExtArgs["result"]["connectionAccount"]>
+  composites: {}
+}
+
+/**
+ * Model ConnectionAccount
+ * 
+ */
+export type ConnectionAccount = runtime.Types.DefaultSelection<ConnectionAccountPayload>
+export type FightPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+  objects: {
+    fightRanking: FightRankingPayload<ExtArgs>[]
+    fightRankingUser: FightRankingUserPayload<ExtArgs>[]
+  }
+  scalars: $Extensions.GetResult<{
+    id: string
+    startAt: Date
+    endAt: Date | null
+    needTo: string[]
+    title: string
+    description: string | null
+    prize: string | null
+    isVerified: boolean
+    fightAreaType: FightAreaType
+  }, ExtArgs["result"]["fight"]>
+  composites: {}
+}
+
+/**
+ * Model Fight
+ * 
+ */
+export type Fight = runtime.Types.DefaultSelection<FightPayload>
+export type FightRankingPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+  objects: {
+    fightRankingUser: FightRankingUserPayload<ExtArgs>[]
+    school: SchoolPayload<ExtArgs>
+    fight: FightPayload<ExtArgs>
+  }
+  scalars: $Extensions.GetResult<{
+    id: string
+    userId: string
+    fightId: string
+    createdAt: Date
+    schoolId: string
+  }, ExtArgs["result"]["fightRanking"]>
+  composites: {}
+}
+
+/**
+ * Model FightRanking
+ * 
+ */
+export type FightRanking = runtime.Types.DefaultSelection<FightRankingPayload>
+export type FightRankingUserPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+  objects: {
+    school: SchoolPayload<ExtArgs>
+    user: UserPayload<ExtArgs>
+    fight: FightPayload<ExtArgs>
+    fightRanking: FightRankingPayload<ExtArgs>
+  }
+  scalars: $Extensions.GetResult<{
+    id: string
+    userId: string
+    fightId: string
+    fightRankingId: string
+    schoolId: string
+    score: number
+    createdAt: Date
+  }, ExtArgs["result"]["fightRankingUser"]>
+  composites: {}
+}
+
+/**
+ * Model FightRankingUser
+ * 
+ */
+export type FightRankingUser = runtime.Types.DefaultSelection<FightRankingUserPayload>
 export type ImagePayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
   objects: {
     user: UserPayload<ExtArgs>
@@ -765,6 +861,16 @@ export const UserLoginProviderType: {
 export type UserLoginProviderType = (typeof UserLoginProviderType)[keyof typeof UserLoginProviderType]
 
 
+export const FightAreaType: {
+  school: 'school',
+  all: 'all',
+  city: 'city',
+  district: 'district'
+};
+
+export type FightAreaType = (typeof FightAreaType)[keyof typeof FightAreaType]
+
+
 export const SocialLoginProviderType: {
   google: 'google',
   kakao: 'kakao'
@@ -962,6 +1068,46 @@ export class PrismaClient<
     * ```
     */
   get school(): Prisma.SchoolDelegate<GlobalReject, ExtArgs>;
+
+  /**
+   * `prisma.connectionAccount`: Exposes CRUD operations for the **ConnectionAccount** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ConnectionAccounts
+    * const connectionAccounts = await prisma.connectionAccount.findMany()
+    * ```
+    */
+  get connectionAccount(): Prisma.ConnectionAccountDelegate<GlobalReject, ExtArgs>;
+
+  /**
+   * `prisma.fight`: Exposes CRUD operations for the **Fight** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Fights
+    * const fights = await prisma.fight.findMany()
+    * ```
+    */
+  get fight(): Prisma.FightDelegate<GlobalReject, ExtArgs>;
+
+  /**
+   * `prisma.fightRanking`: Exposes CRUD operations for the **FightRanking** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FightRankings
+    * const fightRankings = await prisma.fightRanking.findMany()
+    * ```
+    */
+  get fightRanking(): Prisma.FightRankingDelegate<GlobalReject, ExtArgs>;
+
+  /**
+   * `prisma.fightRankingUser`: Exposes CRUD operations for the **FightRankingUser** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FightRankingUsers
+    * const fightRankingUsers = await prisma.fightRankingUser.findMany()
+    * ```
+    */
+  get fightRankingUser(): Prisma.FightRankingUserDelegate<GlobalReject, ExtArgs>;
 
   /**
    * `prisma.image`: Exposes CRUD operations for the **Image** model.
@@ -1777,6 +1923,10 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     School: 'School',
+    ConnectionAccount: 'ConnectionAccount',
+    Fight: 'Fight',
+    FightRanking: 'FightRanking',
+    FightRankingUser: 'FightRankingUser',
     Image: 'Image',
     PhoneVerifyRequest: 'PhoneVerifyRequest',
     SocialLogin: 'SocialLogin',
@@ -1826,7 +1976,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     meta: {
-      modelProps: 'user' | 'school' | 'image' | 'phoneVerifyRequest' | 'socialLogin' | 'agreement' | 'userSchoolVerify' | 'userSchool' | 'busStation' | 'busRoute' | 'busArrival' | 'askedUser' | 'asked' | 'admin' | 'board' | 'boardManager' | 'article' | 'userBlock' | 'defaultBoard' | 'deletedArticle' | 'deletedComment' | 'deletedReComment' | 'boardRequest' | 'comment' | 'reComment' | 'report' | 'articleLike' | 'commentLike' | 'reCommentLike' | 'hotArticle' | 'advertise' | 'pushDevice' | 'reportBlindArticle' | 'reportBlindUser' | 'meal'
+      modelProps: 'user' | 'school' | 'connectionAccount' | 'fight' | 'fightRanking' | 'fightRankingUser' | 'image' | 'phoneVerifyRequest' | 'socialLogin' | 'agreement' | 'userSchoolVerify' | 'userSchool' | 'busStation' | 'busRoute' | 'busArrival' | 'askedUser' | 'asked' | 'admin' | 'board' | 'boardManager' | 'article' | 'userBlock' | 'defaultBoard' | 'deletedArticle' | 'deletedComment' | 'deletedReComment' | 'boardRequest' | 'comment' | 'reComment' | 'report' | 'articleLike' | 'commentLike' | 'reCommentLike' | 'hotArticle' | 'advertise' | 'pushDevice' | 'reportBlindArticle' | 'reportBlindUser' | 'meal'
       txIsolationLevel: Prisma.TransactionIsolationLevel
     },
     model: {
@@ -1985,6 +2135,322 @@ export namespace Prisma {
             args: Prisma.SchoolCountArgs<ExtArgs>,
             result: $Utils.Optional<SchoolCountAggregateOutputType> | number
             payload: SchoolPayload<ExtArgs>
+          }
+        }
+      }
+      ConnectionAccount: {
+        operations: {
+          findUnique: {
+            args: Prisma.ConnectionAccountFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ConnectionAccountPayload> | null
+            payload: ConnectionAccountPayload<ExtArgs>
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ConnectionAccountFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ConnectionAccountPayload>
+            payload: ConnectionAccountPayload<ExtArgs>
+          }
+          findFirst: {
+            args: Prisma.ConnectionAccountFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ConnectionAccountPayload> | null
+            payload: ConnectionAccountPayload<ExtArgs>
+          }
+          findFirstOrThrow: {
+            args: Prisma.ConnectionAccountFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ConnectionAccountPayload>
+            payload: ConnectionAccountPayload<ExtArgs>
+          }
+          findMany: {
+            args: Prisma.ConnectionAccountFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ConnectionAccountPayload>[]
+            payload: ConnectionAccountPayload<ExtArgs>
+          }
+          create: {
+            args: Prisma.ConnectionAccountCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ConnectionAccountPayload>
+            payload: ConnectionAccountPayload<ExtArgs>
+          }
+          createMany: {
+            args: Prisma.ConnectionAccountCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: ConnectionAccountPayload<ExtArgs>
+          }
+          delete: {
+            args: Prisma.ConnectionAccountDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ConnectionAccountPayload>
+            payload: ConnectionAccountPayload<ExtArgs>
+          }
+          update: {
+            args: Prisma.ConnectionAccountUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ConnectionAccountPayload>
+            payload: ConnectionAccountPayload<ExtArgs>
+          }
+          deleteMany: {
+            args: Prisma.ConnectionAccountDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: ConnectionAccountPayload<ExtArgs>
+          }
+          updateMany: {
+            args: Prisma.ConnectionAccountUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: ConnectionAccountPayload<ExtArgs>
+          }
+          upsert: {
+            args: Prisma.ConnectionAccountUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<ConnectionAccountPayload>
+            payload: ConnectionAccountPayload<ExtArgs>
+          }
+          aggregate: {
+            args: Prisma.ConnectionAccountAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateConnectionAccount>
+            payload: ConnectionAccountPayload<ExtArgs>
+          }
+          groupBy: {
+            args: Prisma.ConnectionAccountGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<ConnectionAccountGroupByOutputType>[]
+            payload: ConnectionAccountPayload<ExtArgs>
+          }
+          count: {
+            args: Prisma.ConnectionAccountCountArgs<ExtArgs>,
+            result: $Utils.Optional<ConnectionAccountCountAggregateOutputType> | number
+            payload: ConnectionAccountPayload<ExtArgs>
+          }
+        }
+      }
+      Fight: {
+        operations: {
+          findUnique: {
+            args: Prisma.FightFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightPayload> | null
+            payload: FightPayload<ExtArgs>
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FightFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightPayload>
+            payload: FightPayload<ExtArgs>
+          }
+          findFirst: {
+            args: Prisma.FightFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightPayload> | null
+            payload: FightPayload<ExtArgs>
+          }
+          findFirstOrThrow: {
+            args: Prisma.FightFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightPayload>
+            payload: FightPayload<ExtArgs>
+          }
+          findMany: {
+            args: Prisma.FightFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightPayload>[]
+            payload: FightPayload<ExtArgs>
+          }
+          create: {
+            args: Prisma.FightCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightPayload>
+            payload: FightPayload<ExtArgs>
+          }
+          createMany: {
+            args: Prisma.FightCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: FightPayload<ExtArgs>
+          }
+          delete: {
+            args: Prisma.FightDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightPayload>
+            payload: FightPayload<ExtArgs>
+          }
+          update: {
+            args: Prisma.FightUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightPayload>
+            payload: FightPayload<ExtArgs>
+          }
+          deleteMany: {
+            args: Prisma.FightDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: FightPayload<ExtArgs>
+          }
+          updateMany: {
+            args: Prisma.FightUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: FightPayload<ExtArgs>
+          }
+          upsert: {
+            args: Prisma.FightUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightPayload>
+            payload: FightPayload<ExtArgs>
+          }
+          aggregate: {
+            args: Prisma.FightAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateFight>
+            payload: FightPayload<ExtArgs>
+          }
+          groupBy: {
+            args: Prisma.FightGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<FightGroupByOutputType>[]
+            payload: FightPayload<ExtArgs>
+          }
+          count: {
+            args: Prisma.FightCountArgs<ExtArgs>,
+            result: $Utils.Optional<FightCountAggregateOutputType> | number
+            payload: FightPayload<ExtArgs>
+          }
+        }
+      }
+      FightRanking: {
+        operations: {
+          findUnique: {
+            args: Prisma.FightRankingFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingPayload> | null
+            payload: FightRankingPayload<ExtArgs>
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FightRankingFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingPayload>
+            payload: FightRankingPayload<ExtArgs>
+          }
+          findFirst: {
+            args: Prisma.FightRankingFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingPayload> | null
+            payload: FightRankingPayload<ExtArgs>
+          }
+          findFirstOrThrow: {
+            args: Prisma.FightRankingFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingPayload>
+            payload: FightRankingPayload<ExtArgs>
+          }
+          findMany: {
+            args: Prisma.FightRankingFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingPayload>[]
+            payload: FightRankingPayload<ExtArgs>
+          }
+          create: {
+            args: Prisma.FightRankingCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingPayload>
+            payload: FightRankingPayload<ExtArgs>
+          }
+          createMany: {
+            args: Prisma.FightRankingCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: FightRankingPayload<ExtArgs>
+          }
+          delete: {
+            args: Prisma.FightRankingDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingPayload>
+            payload: FightRankingPayload<ExtArgs>
+          }
+          update: {
+            args: Prisma.FightRankingUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingPayload>
+            payload: FightRankingPayload<ExtArgs>
+          }
+          deleteMany: {
+            args: Prisma.FightRankingDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: FightRankingPayload<ExtArgs>
+          }
+          updateMany: {
+            args: Prisma.FightRankingUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: FightRankingPayload<ExtArgs>
+          }
+          upsert: {
+            args: Prisma.FightRankingUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingPayload>
+            payload: FightRankingPayload<ExtArgs>
+          }
+          aggregate: {
+            args: Prisma.FightRankingAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateFightRanking>
+            payload: FightRankingPayload<ExtArgs>
+          }
+          groupBy: {
+            args: Prisma.FightRankingGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<FightRankingGroupByOutputType>[]
+            payload: FightRankingPayload<ExtArgs>
+          }
+          count: {
+            args: Prisma.FightRankingCountArgs<ExtArgs>,
+            result: $Utils.Optional<FightRankingCountAggregateOutputType> | number
+            payload: FightRankingPayload<ExtArgs>
+          }
+        }
+      }
+      FightRankingUser: {
+        operations: {
+          findUnique: {
+            args: Prisma.FightRankingUserFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingUserPayload> | null
+            payload: FightRankingUserPayload<ExtArgs>
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FightRankingUserFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingUserPayload>
+            payload: FightRankingUserPayload<ExtArgs>
+          }
+          findFirst: {
+            args: Prisma.FightRankingUserFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingUserPayload> | null
+            payload: FightRankingUserPayload<ExtArgs>
+          }
+          findFirstOrThrow: {
+            args: Prisma.FightRankingUserFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingUserPayload>
+            payload: FightRankingUserPayload<ExtArgs>
+          }
+          findMany: {
+            args: Prisma.FightRankingUserFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingUserPayload>[]
+            payload: FightRankingUserPayload<ExtArgs>
+          }
+          create: {
+            args: Prisma.FightRankingUserCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingUserPayload>
+            payload: FightRankingUserPayload<ExtArgs>
+          }
+          createMany: {
+            args: Prisma.FightRankingUserCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: FightRankingUserPayload<ExtArgs>
+          }
+          delete: {
+            args: Prisma.FightRankingUserDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingUserPayload>
+            payload: FightRankingUserPayload<ExtArgs>
+          }
+          update: {
+            args: Prisma.FightRankingUserUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingUserPayload>
+            payload: FightRankingUserPayload<ExtArgs>
+          }
+          deleteMany: {
+            args: Prisma.FightRankingUserDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: FightRankingUserPayload<ExtArgs>
+          }
+          updateMany: {
+            args: Prisma.FightRankingUserUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+            payload: FightRankingUserPayload<ExtArgs>
+          }
+          upsert: {
+            args: Prisma.FightRankingUserUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<FightRankingUserPayload>
+            payload: FightRankingUserPayload<ExtArgs>
+          }
+          aggregate: {
+            args: Prisma.FightRankingUserAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateFightRankingUser>
+            payload: FightRankingUserPayload<ExtArgs>
+          }
+          groupBy: {
+            args: Prisma.FightRankingUserGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<FightRankingUserGroupByOutputType>[]
+            payload: FightRankingUserPayload<ExtArgs>
+          }
+          count: {
+            args: Prisma.FightRankingUserCountArgs<ExtArgs>,
+            result: $Utils.Optional<FightRankingUserCountAggregateOutputType> | number
+            payload: FightRankingUserPayload<ExtArgs>
           }
         }
       }
@@ -4794,6 +5260,8 @@ export namespace Prisma {
     reportBlindArticle: number
     reportBlindUser: number
     userBlock: number
+    connectionAccount: number
+    fightRankingUser: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
@@ -4811,6 +5279,8 @@ export namespace Prisma {
     reportBlindArticle?: boolean | UserCountOutputTypeCountReportBlindArticleArgs
     reportBlindUser?: boolean | UserCountOutputTypeCountReportBlindUserArgs
     userBlock?: boolean | UserCountOutputTypeCountUserBlockArgs
+    connectionAccount?: boolean | UserCountOutputTypeCountConnectionAccountArgs
+    fightRankingUser?: boolean | UserCountOutputTypeCountFightRankingUserArgs
   }
 
   // Custom InputTypes
@@ -4938,6 +5408,22 @@ export namespace Prisma {
   }
 
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountConnectionAccountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: ConnectionAccountWhereInput
+  }
+
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFightRankingUserArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: FightRankingUserWhereInput
+  }
+
+
 
   /**
    * Count Type SchoolCountOutputType
@@ -4947,11 +5433,15 @@ export namespace Prisma {
   export type SchoolCountOutputType = {
     userSchool: number
     article: number
+    fightRanking: number
+    fightRankingUser: number
   }
 
   export type SchoolCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     userSchool?: boolean | SchoolCountOutputTypeCountUserSchoolArgs
     article?: boolean | SchoolCountOutputTypeCountArticleArgs
+    fightRanking?: boolean | SchoolCountOutputTypeCountFightRankingArgs
+    fightRankingUser?: boolean | SchoolCountOutputTypeCountFightRankingUserArgs
   }
 
   // Custom InputTypes
@@ -4980,6 +5470,102 @@ export namespace Prisma {
    */
   export type SchoolCountOutputTypeCountArticleArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     where?: ArticleWhereInput
+  }
+
+
+  /**
+   * SchoolCountOutputType without action
+   */
+  export type SchoolCountOutputTypeCountFightRankingArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: FightRankingWhereInput
+  }
+
+
+  /**
+   * SchoolCountOutputType without action
+   */
+  export type SchoolCountOutputTypeCountFightRankingUserArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: FightRankingUserWhereInput
+  }
+
+
+
+  /**
+   * Count Type FightCountOutputType
+   */
+
+
+  export type FightCountOutputType = {
+    fightRanking: number
+    fightRankingUser: number
+  }
+
+  export type FightCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    fightRanking?: boolean | FightCountOutputTypeCountFightRankingArgs
+    fightRankingUser?: boolean | FightCountOutputTypeCountFightRankingUserArgs
+  }
+
+  // Custom InputTypes
+
+  /**
+   * FightCountOutputType without action
+   */
+  export type FightCountOutputTypeArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightCountOutputType
+     */
+    select?: FightCountOutputTypeSelect<ExtArgs> | null
+  }
+
+
+  /**
+   * FightCountOutputType without action
+   */
+  export type FightCountOutputTypeCountFightRankingArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: FightRankingWhereInput
+  }
+
+
+  /**
+   * FightCountOutputType without action
+   */
+  export type FightCountOutputTypeCountFightRankingUserArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: FightRankingUserWhereInput
+  }
+
+
+
+  /**
+   * Count Type FightRankingCountOutputType
+   */
+
+
+  export type FightRankingCountOutputType = {
+    fightRankingUser: number
+  }
+
+  export type FightRankingCountOutputTypeSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    fightRankingUser?: boolean | FightRankingCountOutputTypeCountFightRankingUserArgs
+  }
+
+  // Custom InputTypes
+
+  /**
+   * FightRankingCountOutputType without action
+   */
+  export type FightRankingCountOutputTypeArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRankingCountOutputType
+     */
+    select?: FightRankingCountOutputTypeSelect<ExtArgs> | null
+  }
+
+
+  /**
+   * FightRankingCountOutputType without action
+   */
+  export type FightRankingCountOutputTypeCountFightRankingUserArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: FightRankingUserWhereInput
   }
 
 
@@ -5517,6 +6103,8 @@ export namespace Prisma {
     reportBlindArticle?: boolean | User$reportBlindArticleArgs<ExtArgs>
     reportBlindUser?: boolean | User$reportBlindUserArgs<ExtArgs>
     userBlock?: boolean | User$userBlockArgs<ExtArgs>
+    connectionAccount?: boolean | User$connectionAccountArgs<ExtArgs>
+    fightRankingUser?: boolean | User$fightRankingUserArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -5552,6 +6140,8 @@ export namespace Prisma {
     reportBlindArticle?: boolean | User$reportBlindArticleArgs<ExtArgs>
     reportBlindUser?: boolean | User$reportBlindUserArgs<ExtArgs>
     userBlock?: boolean | User$userBlockArgs<ExtArgs>
+    connectionAccount?: boolean | User$connectionAccountArgs<ExtArgs>
+    fightRankingUser?: boolean | User$fightRankingUserArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeArgs<ExtArgs>
   }
 
@@ -5960,6 +6550,10 @@ export namespace Prisma {
     reportBlindUser<T extends User$reportBlindUserArgs<ExtArgs> = {}>(args?: Subset<T, User$reportBlindUserArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<ReportBlindUserPayload<ExtArgs>, T, 'findMany', never>| Null>;
 
     userBlock<T extends User$userBlockArgs<ExtArgs> = {}>(args?: Subset<T, User$userBlockArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<UserBlockPayload<ExtArgs>, T, 'findMany', never>| Null>;
+
+    connectionAccount<T extends User$connectionAccountArgs<ExtArgs> = {}>(args?: Subset<T, User$connectionAccountArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<ConnectionAccountPayload<ExtArgs>, T, 'findMany', never>| Null>;
+
+    fightRankingUser<T extends User$fightRankingUserArgs<ExtArgs> = {}>(args?: Subset<T, User$fightRankingUserArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<FightRankingUserPayload<ExtArgs>, T, 'findMany', never>| Null>;
 
     private get _document();
     /**
@@ -6611,6 +7205,48 @@ export namespace Prisma {
 
 
   /**
+   * User.connectionAccount
+   */
+  export type User$connectionAccountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectionAccount
+     */
+    select?: ConnectionAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ConnectionAccountInclude<ExtArgs> | null
+    where?: ConnectionAccountWhereInput
+    orderBy?: Enumerable<ConnectionAccountOrderByWithRelationInput>
+    cursor?: ConnectionAccountWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<ConnectionAccountScalarFieldEnum>
+  }
+
+
+  /**
+   * User.fightRankingUser
+   */
+  export type User$fightRankingUserArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRankingUser
+     */
+    select?: FightRankingUserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingUserInclude<ExtArgs> | null
+    where?: FightRankingUserWhereInput
+    orderBy?: Enumerable<FightRankingUserOrderByWithRelationInput>
+    cursor?: FightRankingUserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<FightRankingUserScalarFieldEnum>
+  }
+
+
+  /**
    * User without action
    */
   export type UserArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
@@ -6856,6 +7492,8 @@ export namespace Prisma {
     type?: boolean
     userSchool?: boolean | School$userSchoolArgs<ExtArgs>
     article?: boolean | School$articleArgs<ExtArgs>
+    fightRanking?: boolean | School$fightRankingArgs<ExtArgs>
+    fightRankingUser?: boolean | School$fightRankingUserArgs<ExtArgs>
     _count?: boolean | SchoolCountOutputTypeArgs<ExtArgs>
   }, ExtArgs["result"]["school"]>
 
@@ -6873,6 +7511,8 @@ export namespace Prisma {
   export type SchoolInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
     userSchool?: boolean | School$userSchoolArgs<ExtArgs>
     article?: boolean | School$articleArgs<ExtArgs>
+    fightRanking?: boolean | School$fightRankingArgs<ExtArgs>
+    fightRankingUser?: boolean | School$fightRankingUserArgs<ExtArgs>
     _count?: boolean | SchoolCountOutputTypeArgs<ExtArgs>
   }
 
@@ -7249,6 +7889,10 @@ export namespace Prisma {
     userSchool<T extends School$userSchoolArgs<ExtArgs> = {}>(args?: Subset<T, School$userSchoolArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<UserSchoolPayload<ExtArgs>, T, 'findMany', never>| Null>;
 
     article<T extends School$articleArgs<ExtArgs> = {}>(args?: Subset<T, School$articleArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<ArticlePayload<ExtArgs>, T, 'findMany', never>| Null>;
+
+    fightRanking<T extends School$fightRankingArgs<ExtArgs> = {}>(args?: Subset<T, School$fightRankingArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<FightRankingPayload<ExtArgs>, T, 'findMany', never>| Null>;
+
+    fightRankingUser<T extends School$fightRankingUserArgs<ExtArgs> = {}>(args?: Subset<T, School$fightRankingUserArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<FightRankingUserPayload<ExtArgs>, T, 'findMany', never>| Null>;
 
     private get _document();
     /**
@@ -7648,6 +8292,48 @@ export namespace Prisma {
 
 
   /**
+   * School.fightRanking
+   */
+  export type School$fightRankingArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRanking
+     */
+    select?: FightRankingSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingInclude<ExtArgs> | null
+    where?: FightRankingWhereInput
+    orderBy?: Enumerable<FightRankingOrderByWithRelationInput>
+    cursor?: FightRankingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<FightRankingScalarFieldEnum>
+  }
+
+
+  /**
+   * School.fightRankingUser
+   */
+  export type School$fightRankingUserArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRankingUser
+     */
+    select?: FightRankingUserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingUserInclude<ExtArgs> | null
+    where?: FightRankingUserWhereInput
+    orderBy?: Enumerable<FightRankingUserOrderByWithRelationInput>
+    cursor?: FightRankingUserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<FightRankingUserScalarFieldEnum>
+  }
+
+
+  /**
    * School without action
    */
   export type SchoolArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
@@ -7659,6 +8345,3951 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well.
      */
     include?: SchoolInclude<ExtArgs> | null
+  }
+
+
+
+  /**
+   * Model ConnectionAccount
+   */
+
+
+  export type AggregateConnectionAccount = {
+    _count: ConnectionAccountCountAggregateOutputType | null
+    _avg: ConnectionAccountAvgAggregateOutputType | null
+    _sum: ConnectionAccountSumAggregateOutputType | null
+    _min: ConnectionAccountMinAggregateOutputType | null
+    _max: ConnectionAccountMaxAggregateOutputType | null
+  }
+
+  export type ConnectionAccountAvgAggregateOutputType = {
+    followerCount: number | null
+    articleCount: number | null
+  }
+
+  export type ConnectionAccountSumAggregateOutputType = {
+    followerCount: number | null
+    articleCount: number | null
+  }
+
+  export type ConnectionAccountMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    accountId: string | null
+    name: string | null
+    accessToken: string | null
+    refreshToken: string | null
+    provider: string | null
+    followerCount: number | null
+    articleCount: number | null
+  }
+
+  export type ConnectionAccountMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    accountId: string | null
+    name: string | null
+    accessToken: string | null
+    refreshToken: string | null
+    provider: string | null
+    followerCount: number | null
+    articleCount: number | null
+  }
+
+  export type ConnectionAccountCountAggregateOutputType = {
+    id: number
+    userId: number
+    accountId: number
+    name: number
+    accessToken: number
+    refreshToken: number
+    provider: number
+    followerCount: number
+    articleCount: number
+    _all: number
+  }
+
+
+  export type ConnectionAccountAvgAggregateInputType = {
+    followerCount?: true
+    articleCount?: true
+  }
+
+  export type ConnectionAccountSumAggregateInputType = {
+    followerCount?: true
+    articleCount?: true
+  }
+
+  export type ConnectionAccountMinAggregateInputType = {
+    id?: true
+    userId?: true
+    accountId?: true
+    name?: true
+    accessToken?: true
+    refreshToken?: true
+    provider?: true
+    followerCount?: true
+    articleCount?: true
+  }
+
+  export type ConnectionAccountMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    accountId?: true
+    name?: true
+    accessToken?: true
+    refreshToken?: true
+    provider?: true
+    followerCount?: true
+    articleCount?: true
+  }
+
+  export type ConnectionAccountCountAggregateInputType = {
+    id?: true
+    userId?: true
+    accountId?: true
+    name?: true
+    accessToken?: true
+    refreshToken?: true
+    provider?: true
+    followerCount?: true
+    articleCount?: true
+    _all?: true
+  }
+
+  export type ConnectionAccountAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConnectionAccount to aggregate.
+     */
+    where?: ConnectionAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConnectionAccounts to fetch.
+     */
+    orderBy?: Enumerable<ConnectionAccountOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ConnectionAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConnectionAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConnectionAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ConnectionAccounts
+    **/
+    _count?: true | ConnectionAccountCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ConnectionAccountAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ConnectionAccountSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ConnectionAccountMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ConnectionAccountMaxAggregateInputType
+  }
+
+  export type GetConnectionAccountAggregateType<T extends ConnectionAccountAggregateArgs> = {
+        [P in keyof T & keyof AggregateConnectionAccount]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateConnectionAccount[P]>
+      : GetScalarType<T[P], AggregateConnectionAccount[P]>
+  }
+
+
+
+
+  export type ConnectionAccountGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: ConnectionAccountWhereInput
+    orderBy?: Enumerable<ConnectionAccountOrderByWithAggregationInput>
+    by: ConnectionAccountScalarFieldEnum[]
+    having?: ConnectionAccountScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ConnectionAccountCountAggregateInputType | true
+    _avg?: ConnectionAccountAvgAggregateInputType
+    _sum?: ConnectionAccountSumAggregateInputType
+    _min?: ConnectionAccountMinAggregateInputType
+    _max?: ConnectionAccountMaxAggregateInputType
+  }
+
+
+  export type ConnectionAccountGroupByOutputType = {
+    id: string
+    userId: string
+    accountId: string
+    name: string | null
+    accessToken: string
+    refreshToken: string | null
+    provider: string
+    followerCount: number
+    articleCount: number
+    _count: ConnectionAccountCountAggregateOutputType | null
+    _avg: ConnectionAccountAvgAggregateOutputType | null
+    _sum: ConnectionAccountSumAggregateOutputType | null
+    _min: ConnectionAccountMinAggregateOutputType | null
+    _max: ConnectionAccountMaxAggregateOutputType | null
+  }
+
+  type GetConnectionAccountGroupByPayload<T extends ConnectionAccountGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<ConnectionAccountGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ConnectionAccountGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ConnectionAccountGroupByOutputType[P]>
+            : GetScalarType<T[P], ConnectionAccountGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ConnectionAccountSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    accountId?: boolean
+    name?: boolean
+    accessToken?: boolean
+    refreshToken?: boolean
+    provider?: boolean
+    followerCount?: boolean
+    articleCount?: boolean
+    user?: boolean | UserArgs<ExtArgs>
+  }, ExtArgs["result"]["connectionAccount"]>
+
+  export type ConnectionAccountSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    accountId?: boolean
+    name?: boolean
+    accessToken?: boolean
+    refreshToken?: boolean
+    provider?: boolean
+    followerCount?: boolean
+    articleCount?: boolean
+  }
+
+  export type ConnectionAccountInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    user?: boolean | UserArgs<ExtArgs>
+  }
+
+
+  type ConnectionAccountGetPayload<S extends boolean | null | undefined | ConnectionAccountArgs> = $Types.GetResult<ConnectionAccountPayload, S>
+
+  type ConnectionAccountCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
+    Omit<ConnectionAccountFindManyArgs, 'select' | 'include'> & {
+      select?: ConnectionAccountCountAggregateInputType | true
+    }
+
+  export interface ConnectionAccountDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ConnectionAccount'], meta: { name: 'ConnectionAccount' } }
+    /**
+     * Find zero or one ConnectionAccount that matches the filter.
+     * @param {ConnectionAccountFindUniqueArgs} args - Arguments to find a ConnectionAccount
+     * @example
+     * // Get one ConnectionAccount
+     * const connectionAccount = await prisma.connectionAccount.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends ConnectionAccountFindUniqueArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, ConnectionAccountFindUniqueArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'ConnectionAccount'> extends True ? Prisma__ConnectionAccountClient<$Types.GetResult<ConnectionAccountPayload<ExtArgs>, T, 'findUnique', never>, never, ExtArgs> : Prisma__ConnectionAccountClient<$Types.GetResult<ConnectionAccountPayload<ExtArgs>, T, 'findUnique', never> | null, null, ExtArgs>
+
+    /**
+     * Find one ConnectionAccount that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {ConnectionAccountFindUniqueOrThrowArgs} args - Arguments to find a ConnectionAccount
+     * @example
+     * // Get one ConnectionAccount
+     * const connectionAccount = await prisma.connectionAccount.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends ConnectionAccountFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, ConnectionAccountFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__ConnectionAccountClient<$Types.GetResult<ConnectionAccountPayload<ExtArgs>, T, 'findUniqueOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find the first ConnectionAccount that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectionAccountFindFirstArgs} args - Arguments to find a ConnectionAccount
+     * @example
+     * // Get one ConnectionAccount
+     * const connectionAccount = await prisma.connectionAccount.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends ConnectionAccountFindFirstArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, ConnectionAccountFindFirstArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'ConnectionAccount'> extends True ? Prisma__ConnectionAccountClient<$Types.GetResult<ConnectionAccountPayload<ExtArgs>, T, 'findFirst', never>, never, ExtArgs> : Prisma__ConnectionAccountClient<$Types.GetResult<ConnectionAccountPayload<ExtArgs>, T, 'findFirst', never> | null, null, ExtArgs>
+
+    /**
+     * Find the first ConnectionAccount that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectionAccountFindFirstOrThrowArgs} args - Arguments to find a ConnectionAccount
+     * @example
+     * // Get one ConnectionAccount
+     * const connectionAccount = await prisma.connectionAccount.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends ConnectionAccountFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, ConnectionAccountFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__ConnectionAccountClient<$Types.GetResult<ConnectionAccountPayload<ExtArgs>, T, 'findFirstOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find zero or more ConnectionAccounts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectionAccountFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ConnectionAccounts
+     * const connectionAccounts = await prisma.connectionAccount.findMany()
+     * 
+     * // Get first 10 ConnectionAccounts
+     * const connectionAccounts = await prisma.connectionAccount.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const connectionAccountWithIdOnly = await prisma.connectionAccount.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends ConnectionAccountFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, ConnectionAccountFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Types.GetResult<ConnectionAccountPayload<ExtArgs>, T, 'findMany', never>>
+
+    /**
+     * Create a ConnectionAccount.
+     * @param {ConnectionAccountCreateArgs} args - Arguments to create a ConnectionAccount.
+     * @example
+     * // Create one ConnectionAccount
+     * const ConnectionAccount = await prisma.connectionAccount.create({
+     *   data: {
+     *     // ... data to create a ConnectionAccount
+     *   }
+     * })
+     * 
+    **/
+    create<T extends ConnectionAccountCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, ConnectionAccountCreateArgs<ExtArgs>>
+    ): Prisma__ConnectionAccountClient<$Types.GetResult<ConnectionAccountPayload<ExtArgs>, T, 'create', never>, never, ExtArgs>
+
+    /**
+     * Create many ConnectionAccounts.
+     *     @param {ConnectionAccountCreateManyArgs} args - Arguments to create many ConnectionAccounts.
+     *     @example
+     *     // Create many ConnectionAccounts
+     *     const connectionAccount = await prisma.connectionAccount.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends ConnectionAccountCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, ConnectionAccountCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a ConnectionAccount.
+     * @param {ConnectionAccountDeleteArgs} args - Arguments to delete one ConnectionAccount.
+     * @example
+     * // Delete one ConnectionAccount
+     * const ConnectionAccount = await prisma.connectionAccount.delete({
+     *   where: {
+     *     // ... filter to delete one ConnectionAccount
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends ConnectionAccountDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, ConnectionAccountDeleteArgs<ExtArgs>>
+    ): Prisma__ConnectionAccountClient<$Types.GetResult<ConnectionAccountPayload<ExtArgs>, T, 'delete', never>, never, ExtArgs>
+
+    /**
+     * Update one ConnectionAccount.
+     * @param {ConnectionAccountUpdateArgs} args - Arguments to update one ConnectionAccount.
+     * @example
+     * // Update one ConnectionAccount
+     * const connectionAccount = await prisma.connectionAccount.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends ConnectionAccountUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, ConnectionAccountUpdateArgs<ExtArgs>>
+    ): Prisma__ConnectionAccountClient<$Types.GetResult<ConnectionAccountPayload<ExtArgs>, T, 'update', never>, never, ExtArgs>
+
+    /**
+     * Delete zero or more ConnectionAccounts.
+     * @param {ConnectionAccountDeleteManyArgs} args - Arguments to filter ConnectionAccounts to delete.
+     * @example
+     * // Delete a few ConnectionAccounts
+     * const { count } = await prisma.connectionAccount.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends ConnectionAccountDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, ConnectionAccountDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConnectionAccounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectionAccountUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ConnectionAccounts
+     * const connectionAccount = await prisma.connectionAccount.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends ConnectionAccountUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, ConnectionAccountUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ConnectionAccount.
+     * @param {ConnectionAccountUpsertArgs} args - Arguments to update or create a ConnectionAccount.
+     * @example
+     * // Update or create a ConnectionAccount
+     * const connectionAccount = await prisma.connectionAccount.upsert({
+     *   create: {
+     *     // ... data to create a ConnectionAccount
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ConnectionAccount we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends ConnectionAccountUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, ConnectionAccountUpsertArgs<ExtArgs>>
+    ): Prisma__ConnectionAccountClient<$Types.GetResult<ConnectionAccountPayload<ExtArgs>, T, 'upsert', never>, never, ExtArgs>
+
+    /**
+     * Count the number of ConnectionAccounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectionAccountCountArgs} args - Arguments to filter ConnectionAccounts to count.
+     * @example
+     * // Count the number of ConnectionAccounts
+     * const count = await prisma.connectionAccount.count({
+     *   where: {
+     *     // ... the filter for the ConnectionAccounts we want to count
+     *   }
+     * })
+    **/
+    count<T extends ConnectionAccountCountArgs>(
+      args?: Subset<T, ConnectionAccountCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ConnectionAccountCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ConnectionAccount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectionAccountAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ConnectionAccountAggregateArgs>(args: Subset<T, ConnectionAccountAggregateArgs>): Prisma.PrismaPromise<GetConnectionAccountAggregateType<T>>
+
+    /**
+     * Group by ConnectionAccount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectionAccountGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ConnectionAccountGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ConnectionAccountGroupByArgs['orderBy'] }
+        : { orderBy?: ConnectionAccountGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ConnectionAccountGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetConnectionAccountGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ConnectionAccount.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__ConnectionAccountClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    user<T extends UserArgs<ExtArgs> = {}>(args?: Subset<T, UserArgs<ExtArgs>>): Prisma__UserClient<$Types.GetResult<UserPayload<ExtArgs>, T, 'findUnique', never> | Null, never, ExtArgs>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * ConnectionAccount base type for findUnique actions
+   */
+  export type ConnectionAccountFindUniqueArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectionAccount
+     */
+    select?: ConnectionAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ConnectionAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which ConnectionAccount to fetch.
+     */
+    where: ConnectionAccountWhereUniqueInput
+  }
+
+  /**
+   * ConnectionAccount findUnique
+   */
+  export interface ConnectionAccountFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends ConnectionAccountFindUniqueArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * ConnectionAccount findUniqueOrThrow
+   */
+  export type ConnectionAccountFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectionAccount
+     */
+    select?: ConnectionAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ConnectionAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which ConnectionAccount to fetch.
+     */
+    where: ConnectionAccountWhereUniqueInput
+  }
+
+
+  /**
+   * ConnectionAccount base type for findFirst actions
+   */
+  export type ConnectionAccountFindFirstArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectionAccount
+     */
+    select?: ConnectionAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ConnectionAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which ConnectionAccount to fetch.
+     */
+    where?: ConnectionAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConnectionAccounts to fetch.
+     */
+    orderBy?: Enumerable<ConnectionAccountOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConnectionAccounts.
+     */
+    cursor?: ConnectionAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConnectionAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConnectionAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConnectionAccounts.
+     */
+    distinct?: Enumerable<ConnectionAccountScalarFieldEnum>
+  }
+
+  /**
+   * ConnectionAccount findFirst
+   */
+  export interface ConnectionAccountFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends ConnectionAccountFindFirstArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * ConnectionAccount findFirstOrThrow
+   */
+  export type ConnectionAccountFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectionAccount
+     */
+    select?: ConnectionAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ConnectionAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which ConnectionAccount to fetch.
+     */
+    where?: ConnectionAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConnectionAccounts to fetch.
+     */
+    orderBy?: Enumerable<ConnectionAccountOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConnectionAccounts.
+     */
+    cursor?: ConnectionAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConnectionAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConnectionAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConnectionAccounts.
+     */
+    distinct?: Enumerable<ConnectionAccountScalarFieldEnum>
+  }
+
+
+  /**
+   * ConnectionAccount findMany
+   */
+  export type ConnectionAccountFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectionAccount
+     */
+    select?: ConnectionAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ConnectionAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which ConnectionAccounts to fetch.
+     */
+    where?: ConnectionAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConnectionAccounts to fetch.
+     */
+    orderBy?: Enumerable<ConnectionAccountOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ConnectionAccounts.
+     */
+    cursor?: ConnectionAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConnectionAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConnectionAccounts.
+     */
+    skip?: number
+    distinct?: Enumerable<ConnectionAccountScalarFieldEnum>
+  }
+
+
+  /**
+   * ConnectionAccount create
+   */
+  export type ConnectionAccountCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectionAccount
+     */
+    select?: ConnectionAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ConnectionAccountInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ConnectionAccount.
+     */
+    data: XOR<ConnectionAccountCreateInput, ConnectionAccountUncheckedCreateInput>
+  }
+
+
+  /**
+   * ConnectionAccount createMany
+   */
+  export type ConnectionAccountCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ConnectionAccounts.
+     */
+    data: Enumerable<ConnectionAccountCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * ConnectionAccount update
+   */
+  export type ConnectionAccountUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectionAccount
+     */
+    select?: ConnectionAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ConnectionAccountInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ConnectionAccount.
+     */
+    data: XOR<ConnectionAccountUpdateInput, ConnectionAccountUncheckedUpdateInput>
+    /**
+     * Choose, which ConnectionAccount to update.
+     */
+    where: ConnectionAccountWhereUniqueInput
+  }
+
+
+  /**
+   * ConnectionAccount updateMany
+   */
+  export type ConnectionAccountUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ConnectionAccounts.
+     */
+    data: XOR<ConnectionAccountUpdateManyMutationInput, ConnectionAccountUncheckedUpdateManyInput>
+    /**
+     * Filter which ConnectionAccounts to update
+     */
+    where?: ConnectionAccountWhereInput
+  }
+
+
+  /**
+   * ConnectionAccount upsert
+   */
+  export type ConnectionAccountUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectionAccount
+     */
+    select?: ConnectionAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ConnectionAccountInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ConnectionAccount to update in case it exists.
+     */
+    where: ConnectionAccountWhereUniqueInput
+    /**
+     * In case the ConnectionAccount found by the `where` argument doesn't exist, create a new ConnectionAccount with this data.
+     */
+    create: XOR<ConnectionAccountCreateInput, ConnectionAccountUncheckedCreateInput>
+    /**
+     * In case the ConnectionAccount was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ConnectionAccountUpdateInput, ConnectionAccountUncheckedUpdateInput>
+  }
+
+
+  /**
+   * ConnectionAccount delete
+   */
+  export type ConnectionAccountDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectionAccount
+     */
+    select?: ConnectionAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ConnectionAccountInclude<ExtArgs> | null
+    /**
+     * Filter which ConnectionAccount to delete.
+     */
+    where: ConnectionAccountWhereUniqueInput
+  }
+
+
+  /**
+   * ConnectionAccount deleteMany
+   */
+  export type ConnectionAccountDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConnectionAccounts to delete
+     */
+    where?: ConnectionAccountWhereInput
+  }
+
+
+  /**
+   * ConnectionAccount without action
+   */
+  export type ConnectionAccountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConnectionAccount
+     */
+    select?: ConnectionAccountSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ConnectionAccountInclude<ExtArgs> | null
+  }
+
+
+
+  /**
+   * Model Fight
+   */
+
+
+  export type AggregateFight = {
+    _count: FightCountAggregateOutputType | null
+    _min: FightMinAggregateOutputType | null
+    _max: FightMaxAggregateOutputType | null
+  }
+
+  export type FightMinAggregateOutputType = {
+    id: string | null
+    startAt: Date | null
+    endAt: Date | null
+    title: string | null
+    description: string | null
+    prize: string | null
+    isVerified: boolean | null
+    fightAreaType: FightAreaType | null
+  }
+
+  export type FightMaxAggregateOutputType = {
+    id: string | null
+    startAt: Date | null
+    endAt: Date | null
+    title: string | null
+    description: string | null
+    prize: string | null
+    isVerified: boolean | null
+    fightAreaType: FightAreaType | null
+  }
+
+  export type FightCountAggregateOutputType = {
+    id: number
+    startAt: number
+    endAt: number
+    needTo: number
+    title: number
+    description: number
+    prize: number
+    isVerified: number
+    fightAreaType: number
+    _all: number
+  }
+
+
+  export type FightMinAggregateInputType = {
+    id?: true
+    startAt?: true
+    endAt?: true
+    title?: true
+    description?: true
+    prize?: true
+    isVerified?: true
+    fightAreaType?: true
+  }
+
+  export type FightMaxAggregateInputType = {
+    id?: true
+    startAt?: true
+    endAt?: true
+    title?: true
+    description?: true
+    prize?: true
+    isVerified?: true
+    fightAreaType?: true
+  }
+
+  export type FightCountAggregateInputType = {
+    id?: true
+    startAt?: true
+    endAt?: true
+    needTo?: true
+    title?: true
+    description?: true
+    prize?: true
+    isVerified?: true
+    fightAreaType?: true
+    _all?: true
+  }
+
+  export type FightAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Fight to aggregate.
+     */
+    where?: FightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Fights to fetch.
+     */
+    orderBy?: Enumerable<FightOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Fights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Fights.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Fights
+    **/
+    _count?: true | FightCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FightMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FightMaxAggregateInputType
+  }
+
+  export type GetFightAggregateType<T extends FightAggregateArgs> = {
+        [P in keyof T & keyof AggregateFight]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFight[P]>
+      : GetScalarType<T[P], AggregateFight[P]>
+  }
+
+
+
+
+  export type FightGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: FightWhereInput
+    orderBy?: Enumerable<FightOrderByWithAggregationInput>
+    by: FightScalarFieldEnum[]
+    having?: FightScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FightCountAggregateInputType | true
+    _min?: FightMinAggregateInputType
+    _max?: FightMaxAggregateInputType
+  }
+
+
+  export type FightGroupByOutputType = {
+    id: string
+    startAt: Date
+    endAt: Date | null
+    needTo: string[]
+    title: string
+    description: string | null
+    prize: string | null
+    isVerified: boolean
+    fightAreaType: FightAreaType
+    _count: FightCountAggregateOutputType | null
+    _min: FightMinAggregateOutputType | null
+    _max: FightMaxAggregateOutputType | null
+  }
+
+  type GetFightGroupByPayload<T extends FightGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<FightGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FightGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FightGroupByOutputType[P]>
+            : GetScalarType<T[P], FightGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FightSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    startAt?: boolean
+    endAt?: boolean
+    needTo?: boolean
+    title?: boolean
+    description?: boolean
+    prize?: boolean
+    isVerified?: boolean
+    fightAreaType?: boolean
+    fightRanking?: boolean | Fight$fightRankingArgs<ExtArgs>
+    fightRankingUser?: boolean | Fight$fightRankingUserArgs<ExtArgs>
+    _count?: boolean | FightCountOutputTypeArgs<ExtArgs>
+  }, ExtArgs["result"]["fight"]>
+
+  export type FightSelectScalar = {
+    id?: boolean
+    startAt?: boolean
+    endAt?: boolean
+    needTo?: boolean
+    title?: boolean
+    description?: boolean
+    prize?: boolean
+    isVerified?: boolean
+    fightAreaType?: boolean
+  }
+
+  export type FightInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    fightRanking?: boolean | Fight$fightRankingArgs<ExtArgs>
+    fightRankingUser?: boolean | Fight$fightRankingUserArgs<ExtArgs>
+    _count?: boolean | FightCountOutputTypeArgs<ExtArgs>
+  }
+
+
+  type FightGetPayload<S extends boolean | null | undefined | FightArgs> = $Types.GetResult<FightPayload, S>
+
+  type FightCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
+    Omit<FightFindManyArgs, 'select' | 'include'> & {
+      select?: FightCountAggregateInputType | true
+    }
+
+  export interface FightDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Fight'], meta: { name: 'Fight' } }
+    /**
+     * Find zero or one Fight that matches the filter.
+     * @param {FightFindUniqueArgs} args - Arguments to find a Fight
+     * @example
+     * // Get one Fight
+     * const fight = await prisma.fight.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends FightFindUniqueArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, FightFindUniqueArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Fight'> extends True ? Prisma__FightClient<$Types.GetResult<FightPayload<ExtArgs>, T, 'findUnique', never>, never, ExtArgs> : Prisma__FightClient<$Types.GetResult<FightPayload<ExtArgs>, T, 'findUnique', never> | null, null, ExtArgs>
+
+    /**
+     * Find one Fight that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {FightFindUniqueOrThrowArgs} args - Arguments to find a Fight
+     * @example
+     * // Get one Fight
+     * const fight = await prisma.fight.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends FightFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, FightFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__FightClient<$Types.GetResult<FightPayload<ExtArgs>, T, 'findUniqueOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find the first Fight that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightFindFirstArgs} args - Arguments to find a Fight
+     * @example
+     * // Get one Fight
+     * const fight = await prisma.fight.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends FightFindFirstArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, FightFindFirstArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Fight'> extends True ? Prisma__FightClient<$Types.GetResult<FightPayload<ExtArgs>, T, 'findFirst', never>, never, ExtArgs> : Prisma__FightClient<$Types.GetResult<FightPayload<ExtArgs>, T, 'findFirst', never> | null, null, ExtArgs>
+
+    /**
+     * Find the first Fight that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightFindFirstOrThrowArgs} args - Arguments to find a Fight
+     * @example
+     * // Get one Fight
+     * const fight = await prisma.fight.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends FightFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, FightFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__FightClient<$Types.GetResult<FightPayload<ExtArgs>, T, 'findFirstOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find zero or more Fights that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Fights
+     * const fights = await prisma.fight.findMany()
+     * 
+     * // Get first 10 Fights
+     * const fights = await prisma.fight.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const fightWithIdOnly = await prisma.fight.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends FightFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, FightFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Types.GetResult<FightPayload<ExtArgs>, T, 'findMany', never>>
+
+    /**
+     * Create a Fight.
+     * @param {FightCreateArgs} args - Arguments to create a Fight.
+     * @example
+     * // Create one Fight
+     * const Fight = await prisma.fight.create({
+     *   data: {
+     *     // ... data to create a Fight
+     *   }
+     * })
+     * 
+    **/
+    create<T extends FightCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, FightCreateArgs<ExtArgs>>
+    ): Prisma__FightClient<$Types.GetResult<FightPayload<ExtArgs>, T, 'create', never>, never, ExtArgs>
+
+    /**
+     * Create many Fights.
+     *     @param {FightCreateManyArgs} args - Arguments to create many Fights.
+     *     @example
+     *     // Create many Fights
+     *     const fight = await prisma.fight.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends FightCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, FightCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Fight.
+     * @param {FightDeleteArgs} args - Arguments to delete one Fight.
+     * @example
+     * // Delete one Fight
+     * const Fight = await prisma.fight.delete({
+     *   where: {
+     *     // ... filter to delete one Fight
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends FightDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, FightDeleteArgs<ExtArgs>>
+    ): Prisma__FightClient<$Types.GetResult<FightPayload<ExtArgs>, T, 'delete', never>, never, ExtArgs>
+
+    /**
+     * Update one Fight.
+     * @param {FightUpdateArgs} args - Arguments to update one Fight.
+     * @example
+     * // Update one Fight
+     * const fight = await prisma.fight.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends FightUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, FightUpdateArgs<ExtArgs>>
+    ): Prisma__FightClient<$Types.GetResult<FightPayload<ExtArgs>, T, 'update', never>, never, ExtArgs>
+
+    /**
+     * Delete zero or more Fights.
+     * @param {FightDeleteManyArgs} args - Arguments to filter Fights to delete.
+     * @example
+     * // Delete a few Fights
+     * const { count } = await prisma.fight.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends FightDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, FightDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Fights.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Fights
+     * const fight = await prisma.fight.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends FightUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, FightUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Fight.
+     * @param {FightUpsertArgs} args - Arguments to update or create a Fight.
+     * @example
+     * // Update or create a Fight
+     * const fight = await prisma.fight.upsert({
+     *   create: {
+     *     // ... data to create a Fight
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Fight we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends FightUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, FightUpsertArgs<ExtArgs>>
+    ): Prisma__FightClient<$Types.GetResult<FightPayload<ExtArgs>, T, 'upsert', never>, never, ExtArgs>
+
+    /**
+     * Count the number of Fights.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightCountArgs} args - Arguments to filter Fights to count.
+     * @example
+     * // Count the number of Fights
+     * const count = await prisma.fight.count({
+     *   where: {
+     *     // ... the filter for the Fights we want to count
+     *   }
+     * })
+    **/
+    count<T extends FightCountArgs>(
+      args?: Subset<T, FightCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FightCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Fight.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FightAggregateArgs>(args: Subset<T, FightAggregateArgs>): Prisma.PrismaPromise<GetFightAggregateType<T>>
+
+    /**
+     * Group by Fight.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FightGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FightGroupByArgs['orderBy'] }
+        : { orderBy?: FightGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FightGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFightGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Fight.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__FightClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    fightRanking<T extends Fight$fightRankingArgs<ExtArgs> = {}>(args?: Subset<T, Fight$fightRankingArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<FightRankingPayload<ExtArgs>, T, 'findMany', never>| Null>;
+
+    fightRankingUser<T extends Fight$fightRankingUserArgs<ExtArgs> = {}>(args?: Subset<T, Fight$fightRankingUserArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<FightRankingUserPayload<ExtArgs>, T, 'findMany', never>| Null>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * Fight base type for findUnique actions
+   */
+  export type FightFindUniqueArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fight
+     */
+    select?: FightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightInclude<ExtArgs> | null
+    /**
+     * Filter, which Fight to fetch.
+     */
+    where: FightWhereUniqueInput
+  }
+
+  /**
+   * Fight findUnique
+   */
+  export interface FightFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends FightFindUniqueArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * Fight findUniqueOrThrow
+   */
+  export type FightFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fight
+     */
+    select?: FightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightInclude<ExtArgs> | null
+    /**
+     * Filter, which Fight to fetch.
+     */
+    where: FightWhereUniqueInput
+  }
+
+
+  /**
+   * Fight base type for findFirst actions
+   */
+  export type FightFindFirstArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fight
+     */
+    select?: FightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightInclude<ExtArgs> | null
+    /**
+     * Filter, which Fight to fetch.
+     */
+    where?: FightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Fights to fetch.
+     */
+    orderBy?: Enumerable<FightOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Fights.
+     */
+    cursor?: FightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Fights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Fights.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Fights.
+     */
+    distinct?: Enumerable<FightScalarFieldEnum>
+  }
+
+  /**
+   * Fight findFirst
+   */
+  export interface FightFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends FightFindFirstArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * Fight findFirstOrThrow
+   */
+  export type FightFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fight
+     */
+    select?: FightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightInclude<ExtArgs> | null
+    /**
+     * Filter, which Fight to fetch.
+     */
+    where?: FightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Fights to fetch.
+     */
+    orderBy?: Enumerable<FightOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Fights.
+     */
+    cursor?: FightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Fights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Fights.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Fights.
+     */
+    distinct?: Enumerable<FightScalarFieldEnum>
+  }
+
+
+  /**
+   * Fight findMany
+   */
+  export type FightFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fight
+     */
+    select?: FightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightInclude<ExtArgs> | null
+    /**
+     * Filter, which Fights to fetch.
+     */
+    where?: FightWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Fights to fetch.
+     */
+    orderBy?: Enumerable<FightOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Fights.
+     */
+    cursor?: FightWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Fights from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Fights.
+     */
+    skip?: number
+    distinct?: Enumerable<FightScalarFieldEnum>
+  }
+
+
+  /**
+   * Fight create
+   */
+  export type FightCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fight
+     */
+    select?: FightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Fight.
+     */
+    data: XOR<FightCreateInput, FightUncheckedCreateInput>
+  }
+
+
+  /**
+   * Fight createMany
+   */
+  export type FightCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Fights.
+     */
+    data: Enumerable<FightCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * Fight update
+   */
+  export type FightUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fight
+     */
+    select?: FightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Fight.
+     */
+    data: XOR<FightUpdateInput, FightUncheckedUpdateInput>
+    /**
+     * Choose, which Fight to update.
+     */
+    where: FightWhereUniqueInput
+  }
+
+
+  /**
+   * Fight updateMany
+   */
+  export type FightUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Fights.
+     */
+    data: XOR<FightUpdateManyMutationInput, FightUncheckedUpdateManyInput>
+    /**
+     * Filter which Fights to update
+     */
+    where?: FightWhereInput
+  }
+
+
+  /**
+   * Fight upsert
+   */
+  export type FightUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fight
+     */
+    select?: FightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Fight to update in case it exists.
+     */
+    where: FightWhereUniqueInput
+    /**
+     * In case the Fight found by the `where` argument doesn't exist, create a new Fight with this data.
+     */
+    create: XOR<FightCreateInput, FightUncheckedCreateInput>
+    /**
+     * In case the Fight was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FightUpdateInput, FightUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Fight delete
+   */
+  export type FightDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fight
+     */
+    select?: FightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightInclude<ExtArgs> | null
+    /**
+     * Filter which Fight to delete.
+     */
+    where: FightWhereUniqueInput
+  }
+
+
+  /**
+   * Fight deleteMany
+   */
+  export type FightDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Fights to delete
+     */
+    where?: FightWhereInput
+  }
+
+
+  /**
+   * Fight.fightRanking
+   */
+  export type Fight$fightRankingArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRanking
+     */
+    select?: FightRankingSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingInclude<ExtArgs> | null
+    where?: FightRankingWhereInput
+    orderBy?: Enumerable<FightRankingOrderByWithRelationInput>
+    cursor?: FightRankingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<FightRankingScalarFieldEnum>
+  }
+
+
+  /**
+   * Fight.fightRankingUser
+   */
+  export type Fight$fightRankingUserArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRankingUser
+     */
+    select?: FightRankingUserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingUserInclude<ExtArgs> | null
+    where?: FightRankingUserWhereInput
+    orderBy?: Enumerable<FightRankingUserOrderByWithRelationInput>
+    cursor?: FightRankingUserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<FightRankingUserScalarFieldEnum>
+  }
+
+
+  /**
+   * Fight without action
+   */
+  export type FightArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Fight
+     */
+    select?: FightSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightInclude<ExtArgs> | null
+  }
+
+
+
+  /**
+   * Model FightRanking
+   */
+
+
+  export type AggregateFightRanking = {
+    _count: FightRankingCountAggregateOutputType | null
+    _min: FightRankingMinAggregateOutputType | null
+    _max: FightRankingMaxAggregateOutputType | null
+  }
+
+  export type FightRankingMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    fightId: string | null
+    createdAt: Date | null
+    schoolId: string | null
+  }
+
+  export type FightRankingMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    fightId: string | null
+    createdAt: Date | null
+    schoolId: string | null
+  }
+
+  export type FightRankingCountAggregateOutputType = {
+    id: number
+    userId: number
+    fightId: number
+    createdAt: number
+    schoolId: number
+    _all: number
+  }
+
+
+  export type FightRankingMinAggregateInputType = {
+    id?: true
+    userId?: true
+    fightId?: true
+    createdAt?: true
+    schoolId?: true
+  }
+
+  export type FightRankingMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    fightId?: true
+    createdAt?: true
+    schoolId?: true
+  }
+
+  export type FightRankingCountAggregateInputType = {
+    id?: true
+    userId?: true
+    fightId?: true
+    createdAt?: true
+    schoolId?: true
+    _all?: true
+  }
+
+  export type FightRankingAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FightRanking to aggregate.
+     */
+    where?: FightRankingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FightRankings to fetch.
+     */
+    orderBy?: Enumerable<FightRankingOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FightRankingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FightRankings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FightRankings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FightRankings
+    **/
+    _count?: true | FightRankingCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FightRankingMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FightRankingMaxAggregateInputType
+  }
+
+  export type GetFightRankingAggregateType<T extends FightRankingAggregateArgs> = {
+        [P in keyof T & keyof AggregateFightRanking]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFightRanking[P]>
+      : GetScalarType<T[P], AggregateFightRanking[P]>
+  }
+
+
+
+
+  export type FightRankingGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: FightRankingWhereInput
+    orderBy?: Enumerable<FightRankingOrderByWithAggregationInput>
+    by: FightRankingScalarFieldEnum[]
+    having?: FightRankingScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FightRankingCountAggregateInputType | true
+    _min?: FightRankingMinAggregateInputType
+    _max?: FightRankingMaxAggregateInputType
+  }
+
+
+  export type FightRankingGroupByOutputType = {
+    id: string
+    userId: string
+    fightId: string
+    createdAt: Date
+    schoolId: string
+    _count: FightRankingCountAggregateOutputType | null
+    _min: FightRankingMinAggregateOutputType | null
+    _max: FightRankingMaxAggregateOutputType | null
+  }
+
+  type GetFightRankingGroupByPayload<T extends FightRankingGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<FightRankingGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FightRankingGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FightRankingGroupByOutputType[P]>
+            : GetScalarType<T[P], FightRankingGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FightRankingSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    fightId?: boolean
+    createdAt?: boolean
+    schoolId?: boolean
+    fightRankingUser?: boolean | FightRanking$fightRankingUserArgs<ExtArgs>
+    school?: boolean | SchoolArgs<ExtArgs>
+    fight?: boolean | FightArgs<ExtArgs>
+    _count?: boolean | FightRankingCountOutputTypeArgs<ExtArgs>
+  }, ExtArgs["result"]["fightRanking"]>
+
+  export type FightRankingSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    fightId?: boolean
+    createdAt?: boolean
+    schoolId?: boolean
+  }
+
+  export type FightRankingInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    fightRankingUser?: boolean | FightRanking$fightRankingUserArgs<ExtArgs>
+    school?: boolean | SchoolArgs<ExtArgs>
+    fight?: boolean | FightArgs<ExtArgs>
+    _count?: boolean | FightRankingCountOutputTypeArgs<ExtArgs>
+  }
+
+
+  type FightRankingGetPayload<S extends boolean | null | undefined | FightRankingArgs> = $Types.GetResult<FightRankingPayload, S>
+
+  type FightRankingCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
+    Omit<FightRankingFindManyArgs, 'select' | 'include'> & {
+      select?: FightRankingCountAggregateInputType | true
+    }
+
+  export interface FightRankingDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FightRanking'], meta: { name: 'FightRanking' } }
+    /**
+     * Find zero or one FightRanking that matches the filter.
+     * @param {FightRankingFindUniqueArgs} args - Arguments to find a FightRanking
+     * @example
+     * // Get one FightRanking
+     * const fightRanking = await prisma.fightRanking.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends FightRankingFindUniqueArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, FightRankingFindUniqueArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'FightRanking'> extends True ? Prisma__FightRankingClient<$Types.GetResult<FightRankingPayload<ExtArgs>, T, 'findUnique', never>, never, ExtArgs> : Prisma__FightRankingClient<$Types.GetResult<FightRankingPayload<ExtArgs>, T, 'findUnique', never> | null, null, ExtArgs>
+
+    /**
+     * Find one FightRanking that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {FightRankingFindUniqueOrThrowArgs} args - Arguments to find a FightRanking
+     * @example
+     * // Get one FightRanking
+     * const fightRanking = await prisma.fightRanking.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends FightRankingFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, FightRankingFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__FightRankingClient<$Types.GetResult<FightRankingPayload<ExtArgs>, T, 'findUniqueOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find the first FightRanking that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightRankingFindFirstArgs} args - Arguments to find a FightRanking
+     * @example
+     * // Get one FightRanking
+     * const fightRanking = await prisma.fightRanking.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends FightRankingFindFirstArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, FightRankingFindFirstArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'FightRanking'> extends True ? Prisma__FightRankingClient<$Types.GetResult<FightRankingPayload<ExtArgs>, T, 'findFirst', never>, never, ExtArgs> : Prisma__FightRankingClient<$Types.GetResult<FightRankingPayload<ExtArgs>, T, 'findFirst', never> | null, null, ExtArgs>
+
+    /**
+     * Find the first FightRanking that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightRankingFindFirstOrThrowArgs} args - Arguments to find a FightRanking
+     * @example
+     * // Get one FightRanking
+     * const fightRanking = await prisma.fightRanking.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends FightRankingFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, FightRankingFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__FightRankingClient<$Types.GetResult<FightRankingPayload<ExtArgs>, T, 'findFirstOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find zero or more FightRankings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightRankingFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FightRankings
+     * const fightRankings = await prisma.fightRanking.findMany()
+     * 
+     * // Get first 10 FightRankings
+     * const fightRankings = await prisma.fightRanking.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const fightRankingWithIdOnly = await prisma.fightRanking.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends FightRankingFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, FightRankingFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Types.GetResult<FightRankingPayload<ExtArgs>, T, 'findMany', never>>
+
+    /**
+     * Create a FightRanking.
+     * @param {FightRankingCreateArgs} args - Arguments to create a FightRanking.
+     * @example
+     * // Create one FightRanking
+     * const FightRanking = await prisma.fightRanking.create({
+     *   data: {
+     *     // ... data to create a FightRanking
+     *   }
+     * })
+     * 
+    **/
+    create<T extends FightRankingCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, FightRankingCreateArgs<ExtArgs>>
+    ): Prisma__FightRankingClient<$Types.GetResult<FightRankingPayload<ExtArgs>, T, 'create', never>, never, ExtArgs>
+
+    /**
+     * Create many FightRankings.
+     *     @param {FightRankingCreateManyArgs} args - Arguments to create many FightRankings.
+     *     @example
+     *     // Create many FightRankings
+     *     const fightRanking = await prisma.fightRanking.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends FightRankingCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, FightRankingCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a FightRanking.
+     * @param {FightRankingDeleteArgs} args - Arguments to delete one FightRanking.
+     * @example
+     * // Delete one FightRanking
+     * const FightRanking = await prisma.fightRanking.delete({
+     *   where: {
+     *     // ... filter to delete one FightRanking
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends FightRankingDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, FightRankingDeleteArgs<ExtArgs>>
+    ): Prisma__FightRankingClient<$Types.GetResult<FightRankingPayload<ExtArgs>, T, 'delete', never>, never, ExtArgs>
+
+    /**
+     * Update one FightRanking.
+     * @param {FightRankingUpdateArgs} args - Arguments to update one FightRanking.
+     * @example
+     * // Update one FightRanking
+     * const fightRanking = await prisma.fightRanking.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends FightRankingUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, FightRankingUpdateArgs<ExtArgs>>
+    ): Prisma__FightRankingClient<$Types.GetResult<FightRankingPayload<ExtArgs>, T, 'update', never>, never, ExtArgs>
+
+    /**
+     * Delete zero or more FightRankings.
+     * @param {FightRankingDeleteManyArgs} args - Arguments to filter FightRankings to delete.
+     * @example
+     * // Delete a few FightRankings
+     * const { count } = await prisma.fightRanking.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends FightRankingDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, FightRankingDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FightRankings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightRankingUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FightRankings
+     * const fightRanking = await prisma.fightRanking.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends FightRankingUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, FightRankingUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one FightRanking.
+     * @param {FightRankingUpsertArgs} args - Arguments to update or create a FightRanking.
+     * @example
+     * // Update or create a FightRanking
+     * const fightRanking = await prisma.fightRanking.upsert({
+     *   create: {
+     *     // ... data to create a FightRanking
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FightRanking we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends FightRankingUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, FightRankingUpsertArgs<ExtArgs>>
+    ): Prisma__FightRankingClient<$Types.GetResult<FightRankingPayload<ExtArgs>, T, 'upsert', never>, never, ExtArgs>
+
+    /**
+     * Count the number of FightRankings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightRankingCountArgs} args - Arguments to filter FightRankings to count.
+     * @example
+     * // Count the number of FightRankings
+     * const count = await prisma.fightRanking.count({
+     *   where: {
+     *     // ... the filter for the FightRankings we want to count
+     *   }
+     * })
+    **/
+    count<T extends FightRankingCountArgs>(
+      args?: Subset<T, FightRankingCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FightRankingCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FightRanking.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightRankingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FightRankingAggregateArgs>(args: Subset<T, FightRankingAggregateArgs>): Prisma.PrismaPromise<GetFightRankingAggregateType<T>>
+
+    /**
+     * Group by FightRanking.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightRankingGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FightRankingGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FightRankingGroupByArgs['orderBy'] }
+        : { orderBy?: FightRankingGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FightRankingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFightRankingGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FightRanking.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__FightRankingClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    fightRankingUser<T extends FightRanking$fightRankingUserArgs<ExtArgs> = {}>(args?: Subset<T, FightRanking$fightRankingUserArgs<ExtArgs>>): Prisma.PrismaPromise<$Types.GetResult<FightRankingUserPayload<ExtArgs>, T, 'findMany', never>| Null>;
+
+    school<T extends SchoolArgs<ExtArgs> = {}>(args?: Subset<T, SchoolArgs<ExtArgs>>): Prisma__SchoolClient<$Types.GetResult<SchoolPayload<ExtArgs>, T, 'findUnique', never> | Null, never, ExtArgs>;
+
+    fight<T extends FightArgs<ExtArgs> = {}>(args?: Subset<T, FightArgs<ExtArgs>>): Prisma__FightClient<$Types.GetResult<FightPayload<ExtArgs>, T, 'findUnique', never> | Null, never, ExtArgs>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * FightRanking base type for findUnique actions
+   */
+  export type FightRankingFindUniqueArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRanking
+     */
+    select?: FightRankingSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingInclude<ExtArgs> | null
+    /**
+     * Filter, which FightRanking to fetch.
+     */
+    where: FightRankingWhereUniqueInput
+  }
+
+  /**
+   * FightRanking findUnique
+   */
+  export interface FightRankingFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends FightRankingFindUniqueArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * FightRanking findUniqueOrThrow
+   */
+  export type FightRankingFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRanking
+     */
+    select?: FightRankingSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingInclude<ExtArgs> | null
+    /**
+     * Filter, which FightRanking to fetch.
+     */
+    where: FightRankingWhereUniqueInput
+  }
+
+
+  /**
+   * FightRanking base type for findFirst actions
+   */
+  export type FightRankingFindFirstArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRanking
+     */
+    select?: FightRankingSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingInclude<ExtArgs> | null
+    /**
+     * Filter, which FightRanking to fetch.
+     */
+    where?: FightRankingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FightRankings to fetch.
+     */
+    orderBy?: Enumerable<FightRankingOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FightRankings.
+     */
+    cursor?: FightRankingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FightRankings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FightRankings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FightRankings.
+     */
+    distinct?: Enumerable<FightRankingScalarFieldEnum>
+  }
+
+  /**
+   * FightRanking findFirst
+   */
+  export interface FightRankingFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends FightRankingFindFirstArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * FightRanking findFirstOrThrow
+   */
+  export type FightRankingFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRanking
+     */
+    select?: FightRankingSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingInclude<ExtArgs> | null
+    /**
+     * Filter, which FightRanking to fetch.
+     */
+    where?: FightRankingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FightRankings to fetch.
+     */
+    orderBy?: Enumerable<FightRankingOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FightRankings.
+     */
+    cursor?: FightRankingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FightRankings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FightRankings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FightRankings.
+     */
+    distinct?: Enumerable<FightRankingScalarFieldEnum>
+  }
+
+
+  /**
+   * FightRanking findMany
+   */
+  export type FightRankingFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRanking
+     */
+    select?: FightRankingSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingInclude<ExtArgs> | null
+    /**
+     * Filter, which FightRankings to fetch.
+     */
+    where?: FightRankingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FightRankings to fetch.
+     */
+    orderBy?: Enumerable<FightRankingOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FightRankings.
+     */
+    cursor?: FightRankingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FightRankings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FightRankings.
+     */
+    skip?: number
+    distinct?: Enumerable<FightRankingScalarFieldEnum>
+  }
+
+
+  /**
+   * FightRanking create
+   */
+  export type FightRankingCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRanking
+     */
+    select?: FightRankingSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FightRanking.
+     */
+    data: XOR<FightRankingCreateInput, FightRankingUncheckedCreateInput>
+  }
+
+
+  /**
+   * FightRanking createMany
+   */
+  export type FightRankingCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FightRankings.
+     */
+    data: Enumerable<FightRankingCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * FightRanking update
+   */
+  export type FightRankingUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRanking
+     */
+    select?: FightRankingSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FightRanking.
+     */
+    data: XOR<FightRankingUpdateInput, FightRankingUncheckedUpdateInput>
+    /**
+     * Choose, which FightRanking to update.
+     */
+    where: FightRankingWhereUniqueInput
+  }
+
+
+  /**
+   * FightRanking updateMany
+   */
+  export type FightRankingUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FightRankings.
+     */
+    data: XOR<FightRankingUpdateManyMutationInput, FightRankingUncheckedUpdateManyInput>
+    /**
+     * Filter which FightRankings to update
+     */
+    where?: FightRankingWhereInput
+  }
+
+
+  /**
+   * FightRanking upsert
+   */
+  export type FightRankingUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRanking
+     */
+    select?: FightRankingSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FightRanking to update in case it exists.
+     */
+    where: FightRankingWhereUniqueInput
+    /**
+     * In case the FightRanking found by the `where` argument doesn't exist, create a new FightRanking with this data.
+     */
+    create: XOR<FightRankingCreateInput, FightRankingUncheckedCreateInput>
+    /**
+     * In case the FightRanking was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FightRankingUpdateInput, FightRankingUncheckedUpdateInput>
+  }
+
+
+  /**
+   * FightRanking delete
+   */
+  export type FightRankingDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRanking
+     */
+    select?: FightRankingSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingInclude<ExtArgs> | null
+    /**
+     * Filter which FightRanking to delete.
+     */
+    where: FightRankingWhereUniqueInput
+  }
+
+
+  /**
+   * FightRanking deleteMany
+   */
+  export type FightRankingDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FightRankings to delete
+     */
+    where?: FightRankingWhereInput
+  }
+
+
+  /**
+   * FightRanking.fightRankingUser
+   */
+  export type FightRanking$fightRankingUserArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRankingUser
+     */
+    select?: FightRankingUserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingUserInclude<ExtArgs> | null
+    where?: FightRankingUserWhereInput
+    orderBy?: Enumerable<FightRankingUserOrderByWithRelationInput>
+    cursor?: FightRankingUserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Enumerable<FightRankingUserScalarFieldEnum>
+  }
+
+
+  /**
+   * FightRanking without action
+   */
+  export type FightRankingArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRanking
+     */
+    select?: FightRankingSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingInclude<ExtArgs> | null
+  }
+
+
+
+  /**
+   * Model FightRankingUser
+   */
+
+
+  export type AggregateFightRankingUser = {
+    _count: FightRankingUserCountAggregateOutputType | null
+    _avg: FightRankingUserAvgAggregateOutputType | null
+    _sum: FightRankingUserSumAggregateOutputType | null
+    _min: FightRankingUserMinAggregateOutputType | null
+    _max: FightRankingUserMaxAggregateOutputType | null
+  }
+
+  export type FightRankingUserAvgAggregateOutputType = {
+    score: number | null
+  }
+
+  export type FightRankingUserSumAggregateOutputType = {
+    score: number | null
+  }
+
+  export type FightRankingUserMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    fightId: string | null
+    fightRankingId: string | null
+    schoolId: string | null
+    score: number | null
+    createdAt: Date | null
+  }
+
+  export type FightRankingUserMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    fightId: string | null
+    fightRankingId: string | null
+    schoolId: string | null
+    score: number | null
+    createdAt: Date | null
+  }
+
+  export type FightRankingUserCountAggregateOutputType = {
+    id: number
+    userId: number
+    fightId: number
+    fightRankingId: number
+    schoolId: number
+    score: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type FightRankingUserAvgAggregateInputType = {
+    score?: true
+  }
+
+  export type FightRankingUserSumAggregateInputType = {
+    score?: true
+  }
+
+  export type FightRankingUserMinAggregateInputType = {
+    id?: true
+    userId?: true
+    fightId?: true
+    fightRankingId?: true
+    schoolId?: true
+    score?: true
+    createdAt?: true
+  }
+
+  export type FightRankingUserMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    fightId?: true
+    fightRankingId?: true
+    schoolId?: true
+    score?: true
+    createdAt?: true
+  }
+
+  export type FightRankingUserCountAggregateInputType = {
+    id?: true
+    userId?: true
+    fightId?: true
+    fightRankingId?: true
+    schoolId?: true
+    score?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type FightRankingUserAggregateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FightRankingUser to aggregate.
+     */
+    where?: FightRankingUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FightRankingUsers to fetch.
+     */
+    orderBy?: Enumerable<FightRankingUserOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FightRankingUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FightRankingUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FightRankingUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FightRankingUsers
+    **/
+    _count?: true | FightRankingUserCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: FightRankingUserAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: FightRankingUserSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FightRankingUserMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FightRankingUserMaxAggregateInputType
+  }
+
+  export type GetFightRankingUserAggregateType<T extends FightRankingUserAggregateArgs> = {
+        [P in keyof T & keyof AggregateFightRankingUser]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFightRankingUser[P]>
+      : GetScalarType<T[P], AggregateFightRankingUser[P]>
+  }
+
+
+
+
+  export type FightRankingUserGroupByArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    where?: FightRankingUserWhereInput
+    orderBy?: Enumerable<FightRankingUserOrderByWithAggregationInput>
+    by: FightRankingUserScalarFieldEnum[]
+    having?: FightRankingUserScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FightRankingUserCountAggregateInputType | true
+    _avg?: FightRankingUserAvgAggregateInputType
+    _sum?: FightRankingUserSumAggregateInputType
+    _min?: FightRankingUserMinAggregateInputType
+    _max?: FightRankingUserMaxAggregateInputType
+  }
+
+
+  export type FightRankingUserGroupByOutputType = {
+    id: string
+    userId: string
+    fightId: string
+    fightRankingId: string
+    schoolId: string
+    score: number
+    createdAt: Date
+    _count: FightRankingUserCountAggregateOutputType | null
+    _avg: FightRankingUserAvgAggregateOutputType | null
+    _sum: FightRankingUserSumAggregateOutputType | null
+    _min: FightRankingUserMinAggregateOutputType | null
+    _max: FightRankingUserMaxAggregateOutputType | null
+  }
+
+  type GetFightRankingUserGroupByPayload<T extends FightRankingUserGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<FightRankingUserGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FightRankingUserGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FightRankingUserGroupByOutputType[P]>
+            : GetScalarType<T[P], FightRankingUserGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FightRankingUserSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    fightId?: boolean
+    fightRankingId?: boolean
+    schoolId?: boolean
+    score?: boolean
+    createdAt?: boolean
+    school?: boolean | SchoolArgs<ExtArgs>
+    user?: boolean | UserArgs<ExtArgs>
+    fight?: boolean | FightArgs<ExtArgs>
+    fightRanking?: boolean | FightRankingArgs<ExtArgs>
+  }, ExtArgs["result"]["fightRankingUser"]>
+
+  export type FightRankingUserSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    fightId?: boolean
+    fightRankingId?: boolean
+    schoolId?: boolean
+    score?: boolean
+    createdAt?: boolean
+  }
+
+  export type FightRankingUserInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    school?: boolean | SchoolArgs<ExtArgs>
+    user?: boolean | UserArgs<ExtArgs>
+    fight?: boolean | FightArgs<ExtArgs>
+    fightRanking?: boolean | FightRankingArgs<ExtArgs>
+  }
+
+
+  type FightRankingUserGetPayload<S extends boolean | null | undefined | FightRankingUserArgs> = $Types.GetResult<FightRankingUserPayload, S>
+
+  type FightRankingUserCountArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = 
+    Omit<FightRankingUserFindManyArgs, 'select' | 'include'> & {
+      select?: FightRankingUserCountAggregateInputType | true
+    }
+
+  export interface FightRankingUserDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FightRankingUser'], meta: { name: 'FightRankingUser' } }
+    /**
+     * Find zero or one FightRankingUser that matches the filter.
+     * @param {FightRankingUserFindUniqueArgs} args - Arguments to find a FightRankingUser
+     * @example
+     * // Get one FightRankingUser
+     * const fightRankingUser = await prisma.fightRankingUser.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends FightRankingUserFindUniqueArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, FightRankingUserFindUniqueArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'FightRankingUser'> extends True ? Prisma__FightRankingUserClient<$Types.GetResult<FightRankingUserPayload<ExtArgs>, T, 'findUnique', never>, never, ExtArgs> : Prisma__FightRankingUserClient<$Types.GetResult<FightRankingUserPayload<ExtArgs>, T, 'findUnique', never> | null, null, ExtArgs>
+
+    /**
+     * Find one FightRankingUser that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {FightRankingUserFindUniqueOrThrowArgs} args - Arguments to find a FightRankingUser
+     * @example
+     * // Get one FightRankingUser
+     * const fightRankingUser = await prisma.fightRankingUser.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends FightRankingUserFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, FightRankingUserFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__FightRankingUserClient<$Types.GetResult<FightRankingUserPayload<ExtArgs>, T, 'findUniqueOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find the first FightRankingUser that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightRankingUserFindFirstArgs} args - Arguments to find a FightRankingUser
+     * @example
+     * // Get one FightRankingUser
+     * const fightRankingUser = await prisma.fightRankingUser.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends FightRankingUserFindFirstArgs<ExtArgs>, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, FightRankingUserFindFirstArgs<ExtArgs>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'FightRankingUser'> extends True ? Prisma__FightRankingUserClient<$Types.GetResult<FightRankingUserPayload<ExtArgs>, T, 'findFirst', never>, never, ExtArgs> : Prisma__FightRankingUserClient<$Types.GetResult<FightRankingUserPayload<ExtArgs>, T, 'findFirst', never> | null, null, ExtArgs>
+
+    /**
+     * Find the first FightRankingUser that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightRankingUserFindFirstOrThrowArgs} args - Arguments to find a FightRankingUser
+     * @example
+     * // Get one FightRankingUser
+     * const fightRankingUser = await prisma.fightRankingUser.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends FightRankingUserFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, FightRankingUserFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__FightRankingUserClient<$Types.GetResult<FightRankingUserPayload<ExtArgs>, T, 'findFirstOrThrow', never>, never, ExtArgs>
+
+    /**
+     * Find zero or more FightRankingUsers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightRankingUserFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FightRankingUsers
+     * const fightRankingUsers = await prisma.fightRankingUser.findMany()
+     * 
+     * // Get first 10 FightRankingUsers
+     * const fightRankingUsers = await prisma.fightRankingUser.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const fightRankingUserWithIdOnly = await prisma.fightRankingUser.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends FightRankingUserFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, FightRankingUserFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Types.GetResult<FightRankingUserPayload<ExtArgs>, T, 'findMany', never>>
+
+    /**
+     * Create a FightRankingUser.
+     * @param {FightRankingUserCreateArgs} args - Arguments to create a FightRankingUser.
+     * @example
+     * // Create one FightRankingUser
+     * const FightRankingUser = await prisma.fightRankingUser.create({
+     *   data: {
+     *     // ... data to create a FightRankingUser
+     *   }
+     * })
+     * 
+    **/
+    create<T extends FightRankingUserCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, FightRankingUserCreateArgs<ExtArgs>>
+    ): Prisma__FightRankingUserClient<$Types.GetResult<FightRankingUserPayload<ExtArgs>, T, 'create', never>, never, ExtArgs>
+
+    /**
+     * Create many FightRankingUsers.
+     *     @param {FightRankingUserCreateManyArgs} args - Arguments to create many FightRankingUsers.
+     *     @example
+     *     // Create many FightRankingUsers
+     *     const fightRankingUser = await prisma.fightRankingUser.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends FightRankingUserCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, FightRankingUserCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a FightRankingUser.
+     * @param {FightRankingUserDeleteArgs} args - Arguments to delete one FightRankingUser.
+     * @example
+     * // Delete one FightRankingUser
+     * const FightRankingUser = await prisma.fightRankingUser.delete({
+     *   where: {
+     *     // ... filter to delete one FightRankingUser
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends FightRankingUserDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, FightRankingUserDeleteArgs<ExtArgs>>
+    ): Prisma__FightRankingUserClient<$Types.GetResult<FightRankingUserPayload<ExtArgs>, T, 'delete', never>, never, ExtArgs>
+
+    /**
+     * Update one FightRankingUser.
+     * @param {FightRankingUserUpdateArgs} args - Arguments to update one FightRankingUser.
+     * @example
+     * // Update one FightRankingUser
+     * const fightRankingUser = await prisma.fightRankingUser.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends FightRankingUserUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, FightRankingUserUpdateArgs<ExtArgs>>
+    ): Prisma__FightRankingUserClient<$Types.GetResult<FightRankingUserPayload<ExtArgs>, T, 'update', never>, never, ExtArgs>
+
+    /**
+     * Delete zero or more FightRankingUsers.
+     * @param {FightRankingUserDeleteManyArgs} args - Arguments to filter FightRankingUsers to delete.
+     * @example
+     * // Delete a few FightRankingUsers
+     * const { count } = await prisma.fightRankingUser.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends FightRankingUserDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, FightRankingUserDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FightRankingUsers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightRankingUserUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FightRankingUsers
+     * const fightRankingUser = await prisma.fightRankingUser.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends FightRankingUserUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, FightRankingUserUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one FightRankingUser.
+     * @param {FightRankingUserUpsertArgs} args - Arguments to update or create a FightRankingUser.
+     * @example
+     * // Update or create a FightRankingUser
+     * const fightRankingUser = await prisma.fightRankingUser.upsert({
+     *   create: {
+     *     // ... data to create a FightRankingUser
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FightRankingUser we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends FightRankingUserUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, FightRankingUserUpsertArgs<ExtArgs>>
+    ): Prisma__FightRankingUserClient<$Types.GetResult<FightRankingUserPayload<ExtArgs>, T, 'upsert', never>, never, ExtArgs>
+
+    /**
+     * Count the number of FightRankingUsers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightRankingUserCountArgs} args - Arguments to filter FightRankingUsers to count.
+     * @example
+     * // Count the number of FightRankingUsers
+     * const count = await prisma.fightRankingUser.count({
+     *   where: {
+     *     // ... the filter for the FightRankingUsers we want to count
+     *   }
+     * })
+    **/
+    count<T extends FightRankingUserCountArgs>(
+      args?: Subset<T, FightRankingUserCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FightRankingUserCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FightRankingUser.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightRankingUserAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FightRankingUserAggregateArgs>(args: Subset<T, FightRankingUserAggregateArgs>): Prisma.PrismaPromise<GetFightRankingUserAggregateType<T>>
+
+    /**
+     * Group by FightRankingUser.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FightRankingUserGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FightRankingUserGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FightRankingUserGroupByArgs['orderBy'] }
+        : { orderBy?: FightRankingUserGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FightRankingUserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFightRankingUserGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FightRankingUser.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__FightRankingUserClient<T, Null = never, ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+    school<T extends SchoolArgs<ExtArgs> = {}>(args?: Subset<T, SchoolArgs<ExtArgs>>): Prisma__SchoolClient<$Types.GetResult<SchoolPayload<ExtArgs>, T, 'findUnique', never> | Null, never, ExtArgs>;
+
+    user<T extends UserArgs<ExtArgs> = {}>(args?: Subset<T, UserArgs<ExtArgs>>): Prisma__UserClient<$Types.GetResult<UserPayload<ExtArgs>, T, 'findUnique', never> | Null, never, ExtArgs>;
+
+    fight<T extends FightArgs<ExtArgs> = {}>(args?: Subset<T, FightArgs<ExtArgs>>): Prisma__FightClient<$Types.GetResult<FightPayload<ExtArgs>, T, 'findUnique', never> | Null, never, ExtArgs>;
+
+    fightRanking<T extends FightRankingArgs<ExtArgs> = {}>(args?: Subset<T, FightRankingArgs<ExtArgs>>): Prisma__FightRankingClient<$Types.GetResult<FightRankingPayload<ExtArgs>, T, 'findUnique', never> | Null, never, ExtArgs>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * FightRankingUser base type for findUnique actions
+   */
+  export type FightRankingUserFindUniqueArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRankingUser
+     */
+    select?: FightRankingUserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingUserInclude<ExtArgs> | null
+    /**
+     * Filter, which FightRankingUser to fetch.
+     */
+    where: FightRankingUserWhereUniqueInput
+  }
+
+  /**
+   * FightRankingUser findUnique
+   */
+  export interface FightRankingUserFindUniqueArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends FightRankingUserFindUniqueArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * FightRankingUser findUniqueOrThrow
+   */
+  export type FightRankingUserFindUniqueOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRankingUser
+     */
+    select?: FightRankingUserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingUserInclude<ExtArgs> | null
+    /**
+     * Filter, which FightRankingUser to fetch.
+     */
+    where: FightRankingUserWhereUniqueInput
+  }
+
+
+  /**
+   * FightRankingUser base type for findFirst actions
+   */
+  export type FightRankingUserFindFirstArgsBase<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRankingUser
+     */
+    select?: FightRankingUserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingUserInclude<ExtArgs> | null
+    /**
+     * Filter, which FightRankingUser to fetch.
+     */
+    where?: FightRankingUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FightRankingUsers to fetch.
+     */
+    orderBy?: Enumerable<FightRankingUserOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FightRankingUsers.
+     */
+    cursor?: FightRankingUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FightRankingUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FightRankingUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FightRankingUsers.
+     */
+    distinct?: Enumerable<FightRankingUserScalarFieldEnum>
+  }
+
+  /**
+   * FightRankingUser findFirst
+   */
+  export interface FightRankingUserFindFirstArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> extends FightRankingUserFindFirstArgsBase<ExtArgs> {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * FightRankingUser findFirstOrThrow
+   */
+  export type FightRankingUserFindFirstOrThrowArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRankingUser
+     */
+    select?: FightRankingUserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingUserInclude<ExtArgs> | null
+    /**
+     * Filter, which FightRankingUser to fetch.
+     */
+    where?: FightRankingUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FightRankingUsers to fetch.
+     */
+    orderBy?: Enumerable<FightRankingUserOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FightRankingUsers.
+     */
+    cursor?: FightRankingUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FightRankingUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FightRankingUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FightRankingUsers.
+     */
+    distinct?: Enumerable<FightRankingUserScalarFieldEnum>
+  }
+
+
+  /**
+   * FightRankingUser findMany
+   */
+  export type FightRankingUserFindManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRankingUser
+     */
+    select?: FightRankingUserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingUserInclude<ExtArgs> | null
+    /**
+     * Filter, which FightRankingUsers to fetch.
+     */
+    where?: FightRankingUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FightRankingUsers to fetch.
+     */
+    orderBy?: Enumerable<FightRankingUserOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FightRankingUsers.
+     */
+    cursor?: FightRankingUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FightRankingUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FightRankingUsers.
+     */
+    skip?: number
+    distinct?: Enumerable<FightRankingUserScalarFieldEnum>
+  }
+
+
+  /**
+   * FightRankingUser create
+   */
+  export type FightRankingUserCreateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRankingUser
+     */
+    select?: FightRankingUserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingUserInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FightRankingUser.
+     */
+    data: XOR<FightRankingUserCreateInput, FightRankingUserUncheckedCreateInput>
+  }
+
+
+  /**
+   * FightRankingUser createMany
+   */
+  export type FightRankingUserCreateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FightRankingUsers.
+     */
+    data: Enumerable<FightRankingUserCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * FightRankingUser update
+   */
+  export type FightRankingUserUpdateArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRankingUser
+     */
+    select?: FightRankingUserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingUserInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FightRankingUser.
+     */
+    data: XOR<FightRankingUserUpdateInput, FightRankingUserUncheckedUpdateInput>
+    /**
+     * Choose, which FightRankingUser to update.
+     */
+    where: FightRankingUserWhereUniqueInput
+  }
+
+
+  /**
+   * FightRankingUser updateMany
+   */
+  export type FightRankingUserUpdateManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FightRankingUsers.
+     */
+    data: XOR<FightRankingUserUpdateManyMutationInput, FightRankingUserUncheckedUpdateManyInput>
+    /**
+     * Filter which FightRankingUsers to update
+     */
+    where?: FightRankingUserWhereInput
+  }
+
+
+  /**
+   * FightRankingUser upsert
+   */
+  export type FightRankingUserUpsertArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRankingUser
+     */
+    select?: FightRankingUserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingUserInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FightRankingUser to update in case it exists.
+     */
+    where: FightRankingUserWhereUniqueInput
+    /**
+     * In case the FightRankingUser found by the `where` argument doesn't exist, create a new FightRankingUser with this data.
+     */
+    create: XOR<FightRankingUserCreateInput, FightRankingUserUncheckedCreateInput>
+    /**
+     * In case the FightRankingUser was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FightRankingUserUpdateInput, FightRankingUserUncheckedUpdateInput>
+  }
+
+
+  /**
+   * FightRankingUser delete
+   */
+  export type FightRankingUserDeleteArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRankingUser
+     */
+    select?: FightRankingUserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingUserInclude<ExtArgs> | null
+    /**
+     * Filter which FightRankingUser to delete.
+     */
+    where: FightRankingUserWhereUniqueInput
+  }
+
+
+  /**
+   * FightRankingUser deleteMany
+   */
+  export type FightRankingUserDeleteManyArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FightRankingUsers to delete
+     */
+    where?: FightRankingUserWhereInput
+  }
+
+
+  /**
+   * FightRankingUser without action
+   */
+  export type FightRankingUserArgs<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FightRankingUser
+     */
+    select?: FightRankingUserSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: FightRankingUserInclude<ExtArgs> | null
   }
 
 
@@ -39160,6 +43791,60 @@ export namespace Prisma {
   export type SchoolScalarFieldEnum = (typeof SchoolScalarFieldEnum)[keyof typeof SchoolScalarFieldEnum]
 
 
+  export const ConnectionAccountScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    accountId: 'accountId',
+    name: 'name',
+    accessToken: 'accessToken',
+    refreshToken: 'refreshToken',
+    provider: 'provider',
+    followerCount: 'followerCount',
+    articleCount: 'articleCount'
+  };
+
+  export type ConnectionAccountScalarFieldEnum = (typeof ConnectionAccountScalarFieldEnum)[keyof typeof ConnectionAccountScalarFieldEnum]
+
+
+  export const FightScalarFieldEnum: {
+    id: 'id',
+    startAt: 'startAt',
+    endAt: 'endAt',
+    needTo: 'needTo',
+    title: 'title',
+    description: 'description',
+    prize: 'prize',
+    isVerified: 'isVerified',
+    fightAreaType: 'fightAreaType'
+  };
+
+  export type FightScalarFieldEnum = (typeof FightScalarFieldEnum)[keyof typeof FightScalarFieldEnum]
+
+
+  export const FightRankingScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    fightId: 'fightId',
+    createdAt: 'createdAt',
+    schoolId: 'schoolId'
+  };
+
+  export type FightRankingScalarFieldEnum = (typeof FightRankingScalarFieldEnum)[keyof typeof FightRankingScalarFieldEnum]
+
+
+  export const FightRankingUserScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    fightId: 'fightId',
+    fightRankingId: 'fightRankingId',
+    schoolId: 'schoolId',
+    score: 'score',
+    createdAt: 'createdAt'
+  };
+
+  export type FightRankingUserScalarFieldEnum = (typeof FightRankingUserScalarFieldEnum)[keyof typeof FightRankingUserScalarFieldEnum]
+
+
   export const ImageScalarFieldEnum: {
     id: 'id',
     key: 'key',
@@ -39632,6 +44317,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleListRelationFilter
     reportBlindUser?: ReportBlindUserListRelationFilter
     userBlock?: UserBlockListRelationFilter
+    connectionAccount?: ConnectionAccountListRelationFilter
+    fightRankingUser?: FightRankingUserListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -39663,6 +44350,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleOrderByRelationAggregateInput
     reportBlindUser?: ReportBlindUserOrderByRelationAggregateInput
     userBlock?: UserBlockOrderByRelationAggregateInput
+    connectionAccount?: ConnectionAccountOrderByRelationAggregateInput
+    fightRankingUser?: FightRankingUserOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = {
@@ -39716,6 +44405,8 @@ export namespace Prisma {
     type?: StringFilter | string
     userSchool?: UserSchoolListRelationFilter
     article?: ArticleListRelationFilter
+    fightRanking?: FightRankingListRelationFilter
+    fightRankingUser?: FightRankingUserListRelationFilter
   }
 
   export type SchoolOrderByWithRelationInput = {
@@ -39729,6 +44420,8 @@ export namespace Prisma {
     type?: SortOrder
     userSchool?: UserSchoolOrderByRelationAggregateInput
     article?: ArticleOrderByRelationAggregateInput
+    fightRanking?: FightRankingOrderByRelationAggregateInput
+    fightRankingUser?: FightRankingUserOrderByRelationAggregateInput
   }
 
   export type SchoolWhereUniqueInput = {
@@ -39763,6 +44456,250 @@ export namespace Prisma {
     defaultName?: StringWithAggregatesFilter | string
     name?: StringNullableWithAggregatesFilter | string | null
     type?: StringWithAggregatesFilter | string
+  }
+
+  export type ConnectionAccountWhereInput = {
+    AND?: Enumerable<ConnectionAccountWhereInput>
+    OR?: Enumerable<ConnectionAccountWhereInput>
+    NOT?: Enumerable<ConnectionAccountWhereInput>
+    id?: StringFilter | string
+    userId?: StringFilter | string
+    accountId?: StringFilter | string
+    name?: StringNullableFilter | string | null
+    accessToken?: StringFilter | string
+    refreshToken?: StringNullableFilter | string | null
+    provider?: StringFilter | string
+    followerCount?: IntFilter | number
+    articleCount?: IntFilter | number
+    user?: XOR<UserRelationFilter, UserWhereInput>
+  }
+
+  export type ConnectionAccountOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    accountId?: SortOrder
+    name?: SortOrderInput | SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrderInput | SortOrder
+    provider?: SortOrder
+    followerCount?: SortOrder
+    articleCount?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type ConnectionAccountWhereUniqueInput = {
+    id?: string
+  }
+
+  export type ConnectionAccountOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    accountId?: SortOrder
+    name?: SortOrderInput | SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrderInput | SortOrder
+    provider?: SortOrder
+    followerCount?: SortOrder
+    articleCount?: SortOrder
+    _count?: ConnectionAccountCountOrderByAggregateInput
+    _avg?: ConnectionAccountAvgOrderByAggregateInput
+    _max?: ConnectionAccountMaxOrderByAggregateInput
+    _min?: ConnectionAccountMinOrderByAggregateInput
+    _sum?: ConnectionAccountSumOrderByAggregateInput
+  }
+
+  export type ConnectionAccountScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<ConnectionAccountScalarWhereWithAggregatesInput>
+    OR?: Enumerable<ConnectionAccountScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<ConnectionAccountScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    userId?: StringWithAggregatesFilter | string
+    accountId?: StringWithAggregatesFilter | string
+    name?: StringNullableWithAggregatesFilter | string | null
+    accessToken?: StringWithAggregatesFilter | string
+    refreshToken?: StringNullableWithAggregatesFilter | string | null
+    provider?: StringWithAggregatesFilter | string
+    followerCount?: IntWithAggregatesFilter | number
+    articleCount?: IntWithAggregatesFilter | number
+  }
+
+  export type FightWhereInput = {
+    AND?: Enumerable<FightWhereInput>
+    OR?: Enumerable<FightWhereInput>
+    NOT?: Enumerable<FightWhereInput>
+    id?: StringFilter | string
+    startAt?: DateTimeFilter | Date | string
+    endAt?: DateTimeNullableFilter | Date | string | null
+    needTo?: StringNullableListFilter
+    title?: StringFilter | string
+    description?: StringNullableFilter | string | null
+    prize?: StringNullableFilter | string | null
+    isVerified?: BoolFilter | boolean
+    fightAreaType?: EnumFightAreaTypeFilter | FightAreaType
+    fightRanking?: FightRankingListRelationFilter
+    fightRankingUser?: FightRankingUserListRelationFilter
+  }
+
+  export type FightOrderByWithRelationInput = {
+    id?: SortOrder
+    startAt?: SortOrder
+    endAt?: SortOrderInput | SortOrder
+    needTo?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    prize?: SortOrderInput | SortOrder
+    isVerified?: SortOrder
+    fightAreaType?: SortOrder
+    fightRanking?: FightRankingOrderByRelationAggregateInput
+    fightRankingUser?: FightRankingUserOrderByRelationAggregateInput
+  }
+
+  export type FightWhereUniqueInput = {
+    id?: string
+  }
+
+  export type FightOrderByWithAggregationInput = {
+    id?: SortOrder
+    startAt?: SortOrder
+    endAt?: SortOrderInput | SortOrder
+    needTo?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    prize?: SortOrderInput | SortOrder
+    isVerified?: SortOrder
+    fightAreaType?: SortOrder
+    _count?: FightCountOrderByAggregateInput
+    _max?: FightMaxOrderByAggregateInput
+    _min?: FightMinOrderByAggregateInput
+  }
+
+  export type FightScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<FightScalarWhereWithAggregatesInput>
+    OR?: Enumerable<FightScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<FightScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    startAt?: DateTimeWithAggregatesFilter | Date | string
+    endAt?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    needTo?: StringNullableListFilter
+    title?: StringWithAggregatesFilter | string
+    description?: StringNullableWithAggregatesFilter | string | null
+    prize?: StringNullableWithAggregatesFilter | string | null
+    isVerified?: BoolWithAggregatesFilter | boolean
+    fightAreaType?: EnumFightAreaTypeWithAggregatesFilter | FightAreaType
+  }
+
+  export type FightRankingWhereInput = {
+    AND?: Enumerable<FightRankingWhereInput>
+    OR?: Enumerable<FightRankingWhereInput>
+    NOT?: Enumerable<FightRankingWhereInput>
+    id?: StringFilter | string
+    userId?: StringFilter | string
+    fightId?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    schoolId?: StringFilter | string
+    fightRankingUser?: FightRankingUserListRelationFilter
+    school?: XOR<SchoolRelationFilter, SchoolWhereInput>
+    fight?: XOR<FightRelationFilter, FightWhereInput>
+  }
+
+  export type FightRankingOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    fightId?: SortOrder
+    createdAt?: SortOrder
+    schoolId?: SortOrder
+    fightRankingUser?: FightRankingUserOrderByRelationAggregateInput
+    school?: SchoolOrderByWithRelationInput
+    fight?: FightOrderByWithRelationInput
+  }
+
+  export type FightRankingWhereUniqueInput = {
+    id?: string
+  }
+
+  export type FightRankingOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    fightId?: SortOrder
+    createdAt?: SortOrder
+    schoolId?: SortOrder
+    _count?: FightRankingCountOrderByAggregateInput
+    _max?: FightRankingMaxOrderByAggregateInput
+    _min?: FightRankingMinOrderByAggregateInput
+  }
+
+  export type FightRankingScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<FightRankingScalarWhereWithAggregatesInput>
+    OR?: Enumerable<FightRankingScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<FightRankingScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    userId?: StringWithAggregatesFilter | string
+    fightId?: StringWithAggregatesFilter | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    schoolId?: StringWithAggregatesFilter | string
+  }
+
+  export type FightRankingUserWhereInput = {
+    AND?: Enumerable<FightRankingUserWhereInput>
+    OR?: Enumerable<FightRankingUserWhereInput>
+    NOT?: Enumerable<FightRankingUserWhereInput>
+    id?: StringFilter | string
+    userId?: StringFilter | string
+    fightId?: StringFilter | string
+    fightRankingId?: StringFilter | string
+    schoolId?: StringFilter | string
+    score?: IntFilter | number
+    createdAt?: DateTimeFilter | Date | string
+    school?: XOR<SchoolRelationFilter, SchoolWhereInput>
+    user?: XOR<UserRelationFilter, UserWhereInput>
+    fight?: XOR<FightRelationFilter, FightWhereInput>
+    fightRanking?: XOR<FightRankingRelationFilter, FightRankingWhereInput>
+  }
+
+  export type FightRankingUserOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    fightId?: SortOrder
+    fightRankingId?: SortOrder
+    schoolId?: SortOrder
+    score?: SortOrder
+    createdAt?: SortOrder
+    school?: SchoolOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+    fight?: FightOrderByWithRelationInput
+    fightRanking?: FightRankingOrderByWithRelationInput
+  }
+
+  export type FightRankingUserWhereUniqueInput = {
+    id?: string
+  }
+
+  export type FightRankingUserOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    fightId?: SortOrder
+    fightRankingId?: SortOrder
+    schoolId?: SortOrder
+    score?: SortOrder
+    createdAt?: SortOrder
+    _count?: FightRankingUserCountOrderByAggregateInput
+    _avg?: FightRankingUserAvgOrderByAggregateInput
+    _max?: FightRankingUserMaxOrderByAggregateInput
+    _min?: FightRankingUserMinOrderByAggregateInput
+    _sum?: FightRankingUserSumOrderByAggregateInput
+  }
+
+  export type FightRankingUserScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<FightRankingUserScalarWhereWithAggregatesInput>
+    OR?: Enumerable<FightRankingUserScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<FightRankingUserScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    userId?: StringWithAggregatesFilter | string
+    fightId?: StringWithAggregatesFilter | string
+    fightRankingId?: StringWithAggregatesFilter | string
+    schoolId?: StringWithAggregatesFilter | string
+    score?: IntWithAggregatesFilter | number
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
   }
 
   export type ImageWhereInput = {
@@ -41604,6 +46541,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -41635,6 +46574,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -41666,6 +46607,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -41697,6 +46640,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -41749,6 +46694,8 @@ export namespace Prisma {
     type: string
     userSchool?: UserSchoolCreateNestedManyWithoutSchoolInput
     article?: ArticleCreateNestedManyWithoutSchoolInput
+    fightRanking?: FightRankingCreateNestedManyWithoutSchoolInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutSchoolInput
   }
 
   export type SchoolUncheckedCreateInput = {
@@ -41762,6 +46709,8 @@ export namespace Prisma {
     type: string
     userSchool?: UserSchoolUncheckedCreateNestedManyWithoutSchoolInput
     article?: ArticleUncheckedCreateNestedManyWithoutSchoolInput
+    fightRanking?: FightRankingUncheckedCreateNestedManyWithoutSchoolInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutSchoolInput
   }
 
   export type SchoolUpdateInput = {
@@ -41775,6 +46724,8 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     userSchool?: UserSchoolUpdateManyWithoutSchoolNestedInput
     article?: ArticleUpdateManyWithoutSchoolNestedInput
+    fightRanking?: FightRankingUpdateManyWithoutSchoolNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutSchoolNestedInput
   }
 
   export type SchoolUncheckedUpdateInput = {
@@ -41788,6 +46739,8 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     userSchool?: UserSchoolUncheckedUpdateManyWithoutSchoolNestedInput
     article?: ArticleUncheckedUpdateManyWithoutSchoolNestedInput
+    fightRanking?: FightRankingUncheckedUpdateManyWithoutSchoolNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutSchoolNestedInput
   }
 
   export type SchoolCreateManyInput = {
@@ -41821,6 +46774,305 @@ export namespace Prisma {
     defaultName?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ConnectionAccountCreateInput = {
+    id?: string
+    accountId: string
+    name?: string | null
+    accessToken: string
+    refreshToken?: string | null
+    provider: string
+    followerCount?: number
+    articleCount?: number
+    user: UserCreateNestedOneWithoutConnectionAccountInput
+  }
+
+  export type ConnectionAccountUncheckedCreateInput = {
+    id?: string
+    userId: string
+    accountId: string
+    name?: string | null
+    accessToken: string
+    refreshToken?: string | null
+    provider: string
+    followerCount?: number
+    articleCount?: number
+  }
+
+  export type ConnectionAccountUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    accountId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: StringFieldUpdateOperationsInput | string
+    followerCount?: IntFieldUpdateOperationsInput | number
+    articleCount?: IntFieldUpdateOperationsInput | number
+    user?: UserUpdateOneRequiredWithoutConnectionAccountNestedInput
+  }
+
+  export type ConnectionAccountUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    accountId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: StringFieldUpdateOperationsInput | string
+    followerCount?: IntFieldUpdateOperationsInput | number
+    articleCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ConnectionAccountCreateManyInput = {
+    id?: string
+    userId: string
+    accountId: string
+    name?: string | null
+    accessToken: string
+    refreshToken?: string | null
+    provider: string
+    followerCount?: number
+    articleCount?: number
+  }
+
+  export type ConnectionAccountUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    accountId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: StringFieldUpdateOperationsInput | string
+    followerCount?: IntFieldUpdateOperationsInput | number
+    articleCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ConnectionAccountUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    accountId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: StringFieldUpdateOperationsInput | string
+    followerCount?: IntFieldUpdateOperationsInput | number
+    articleCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type FightCreateInput = {
+    id?: string
+    startAt?: Date | string
+    endAt?: Date | string | null
+    needTo?: FightCreateneedToInput | Enumerable<string>
+    title: string
+    description?: string | null
+    prize?: string | null
+    isVerified?: boolean
+    fightAreaType: FightAreaType
+    fightRanking?: FightRankingCreateNestedManyWithoutFightInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutFightInput
+  }
+
+  export type FightUncheckedCreateInput = {
+    id?: string
+    startAt?: Date | string
+    endAt?: Date | string | null
+    needTo?: FightCreateneedToInput | Enumerable<string>
+    title: string
+    description?: string | null
+    prize?: string | null
+    isVerified?: boolean
+    fightAreaType: FightAreaType
+    fightRanking?: FightRankingUncheckedCreateNestedManyWithoutFightInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutFightInput
+  }
+
+  export type FightUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    needTo?: FightUpdateneedToInput | Enumerable<string>
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    prize?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    fightAreaType?: EnumFightAreaTypeFieldUpdateOperationsInput | FightAreaType
+    fightRanking?: FightRankingUpdateManyWithoutFightNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutFightNestedInput
+  }
+
+  export type FightUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    needTo?: FightUpdateneedToInput | Enumerable<string>
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    prize?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    fightAreaType?: EnumFightAreaTypeFieldUpdateOperationsInput | FightAreaType
+    fightRanking?: FightRankingUncheckedUpdateManyWithoutFightNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutFightNestedInput
+  }
+
+  export type FightCreateManyInput = {
+    id?: string
+    startAt?: Date | string
+    endAt?: Date | string | null
+    needTo?: FightCreateneedToInput | Enumerable<string>
+    title: string
+    description?: string | null
+    prize?: string | null
+    isVerified?: boolean
+    fightAreaType: FightAreaType
+  }
+
+  export type FightUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    needTo?: FightUpdateneedToInput | Enumerable<string>
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    prize?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    fightAreaType?: EnumFightAreaTypeFieldUpdateOperationsInput | FightAreaType
+  }
+
+  export type FightUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    needTo?: FightUpdateneedToInput | Enumerable<string>
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    prize?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    fightAreaType?: EnumFightAreaTypeFieldUpdateOperationsInput | FightAreaType
+  }
+
+  export type FightRankingCreateInput = {
+    id?: string
+    userId: string
+    createdAt?: Date | string
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutFightRankingInput
+    school: SchoolCreateNestedOneWithoutFightRankingInput
+    fight: FightCreateNestedOneWithoutFightRankingInput
+  }
+
+  export type FightRankingUncheckedCreateInput = {
+    id?: string
+    userId: string
+    fightId: string
+    createdAt?: Date | string
+    schoolId: string
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutFightRankingInput
+  }
+
+  export type FightRankingUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fightRankingUser?: FightRankingUserUpdateManyWithoutFightRankingNestedInput
+    school?: SchoolUpdateOneRequiredWithoutFightRankingNestedInput
+    fight?: FightUpdateOneRequiredWithoutFightRankingNestedInput
+  }
+
+  export type FightRankingUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fightId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolId?: StringFieldUpdateOperationsInput | string
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutFightRankingNestedInput
+  }
+
+  export type FightRankingCreateManyInput = {
+    id?: string
+    userId: string
+    fightId: string
+    createdAt?: Date | string
+    schoolId: string
+  }
+
+  export type FightRankingUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FightRankingUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fightId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FightRankingUserCreateInput = {
+    id?: string
+    score?: number
+    createdAt?: Date | string
+    school: SchoolCreateNestedOneWithoutFightRankingUserInput
+    user: UserCreateNestedOneWithoutFightRankingUserInput
+    fight: FightCreateNestedOneWithoutFightRankingUserInput
+    fightRanking: FightRankingCreateNestedOneWithoutFightRankingUserInput
+  }
+
+  export type FightRankingUserUncheckedCreateInput = {
+    id?: string
+    userId: string
+    fightId: string
+    fightRankingId: string
+    schoolId: string
+    score?: number
+    createdAt?: Date | string
+  }
+
+  export type FightRankingUserUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    school?: SchoolUpdateOneRequiredWithoutFightRankingUserNestedInput
+    user?: UserUpdateOneRequiredWithoutFightRankingUserNestedInput
+    fight?: FightUpdateOneRequiredWithoutFightRankingUserNestedInput
+    fightRanking?: FightRankingUpdateOneRequiredWithoutFightRankingUserNestedInput
+  }
+
+  export type FightRankingUserUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fightId?: StringFieldUpdateOperationsInput | string
+    fightRankingId?: StringFieldUpdateOperationsInput | string
+    schoolId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FightRankingUserCreateManyInput = {
+    id?: string
+    userId: string
+    fightId: string
+    fightRankingId: string
+    schoolId: string
+    score?: number
+    createdAt?: Date | string
+  }
+
+  export type FightRankingUserUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FightRankingUserUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fightId?: StringFieldUpdateOperationsInput | string
+    fightRankingId?: StringFieldUpdateOperationsInput | string
+    schoolId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ImageCreateInput = {
@@ -44156,6 +49408,18 @@ export namespace Prisma {
     none?: UserBlockWhereInput
   }
 
+  export type ConnectionAccountListRelationFilter = {
+    every?: ConnectionAccountWhereInput
+    some?: ConnectionAccountWhereInput
+    none?: ConnectionAccountWhereInput
+  }
+
+  export type FightRankingUserListRelationFilter = {
+    every?: FightRankingUserWhereInput
+    some?: FightRankingUserWhereInput
+    none?: FightRankingUserWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -44214,6 +49478,14 @@ export namespace Prisma {
   }
 
   export type UserBlockOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ConnectionAccountOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FightRankingUserOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -44341,7 +49613,17 @@ export namespace Prisma {
     none?: UserSchoolWhereInput
   }
 
+  export type FightRankingListRelationFilter = {
+    every?: FightRankingWhereInput
+    some?: FightRankingWhereInput
+    none?: FightRankingWhereInput
+  }
+
   export type UserSchoolOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FightRankingOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -44404,9 +49686,243 @@ export namespace Prisma {
     _max?: NestedFloatFilter
   }
 
+  export type IntFilter = {
+    equals?: number
+    in?: Enumerable<number> | number
+    notIn?: Enumerable<number> | number
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntFilter | number
+  }
+
   export type UserRelationFilter = {
     is?: UserWhereInput | null
     isNot?: UserWhereInput | null
+  }
+
+  export type ConnectionAccountCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    accountId?: SortOrder
+    name?: SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrder
+    provider?: SortOrder
+    followerCount?: SortOrder
+    articleCount?: SortOrder
+  }
+
+  export type ConnectionAccountAvgOrderByAggregateInput = {
+    followerCount?: SortOrder
+    articleCount?: SortOrder
+  }
+
+  export type ConnectionAccountMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    accountId?: SortOrder
+    name?: SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrder
+    provider?: SortOrder
+    followerCount?: SortOrder
+    articleCount?: SortOrder
+  }
+
+  export type ConnectionAccountMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    accountId?: SortOrder
+    name?: SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrder
+    provider?: SortOrder
+    followerCount?: SortOrder
+    articleCount?: SortOrder
+  }
+
+  export type ConnectionAccountSumOrderByAggregateInput = {
+    followerCount?: SortOrder
+    articleCount?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter = {
+    equals?: number
+    in?: Enumerable<number> | number
+    notIn?: Enumerable<number> | number
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntWithAggregatesFilter | number
+    _count?: NestedIntFilter
+    _avg?: NestedFloatFilter
+    _sum?: NestedIntFilter
+    _min?: NestedIntFilter
+    _max?: NestedIntFilter
+  }
+
+  export type DateTimeNullableFilter = {
+    equals?: Date | string | null
+    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeNullableFilter | Date | string | null
+  }
+
+  export type StringNullableListFilter = {
+    equals?: Enumerable<string> | null
+    has?: string | null
+    hasEvery?: Enumerable<string>
+    hasSome?: Enumerable<string>
+    isEmpty?: boolean
+  }
+
+  export type EnumFightAreaTypeFilter = {
+    equals?: FightAreaType
+    in?: Enumerable<FightAreaType>
+    notIn?: Enumerable<FightAreaType>
+    not?: NestedEnumFightAreaTypeFilter | FightAreaType
+  }
+
+  export type FightCountOrderByAggregateInput = {
+    id?: SortOrder
+    startAt?: SortOrder
+    endAt?: SortOrder
+    needTo?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    prize?: SortOrder
+    isVerified?: SortOrder
+    fightAreaType?: SortOrder
+  }
+
+  export type FightMaxOrderByAggregateInput = {
+    id?: SortOrder
+    startAt?: SortOrder
+    endAt?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    prize?: SortOrder
+    isVerified?: SortOrder
+    fightAreaType?: SortOrder
+  }
+
+  export type FightMinOrderByAggregateInput = {
+    id?: SortOrder
+    startAt?: SortOrder
+    endAt?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    prize?: SortOrder
+    isVerified?: SortOrder
+    fightAreaType?: SortOrder
+  }
+
+  export type DateTimeNullableWithAggregatesFilter = {
+    equals?: Date | string | null
+    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeNullableWithAggregatesFilter | Date | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedDateTimeNullableFilter
+    _max?: NestedDateTimeNullableFilter
+  }
+
+  export type EnumFightAreaTypeWithAggregatesFilter = {
+    equals?: FightAreaType
+    in?: Enumerable<FightAreaType>
+    notIn?: Enumerable<FightAreaType>
+    not?: NestedEnumFightAreaTypeWithAggregatesFilter | FightAreaType
+    _count?: NestedIntFilter
+    _min?: NestedEnumFightAreaTypeFilter
+    _max?: NestedEnumFightAreaTypeFilter
+  }
+
+  export type SchoolRelationFilter = {
+    is?: SchoolWhereInput | null
+    isNot?: SchoolWhereInput | null
+  }
+
+  export type FightRelationFilter = {
+    is?: FightWhereInput | null
+    isNot?: FightWhereInput | null
+  }
+
+  export type FightRankingCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    fightId?: SortOrder
+    createdAt?: SortOrder
+    schoolId?: SortOrder
+  }
+
+  export type FightRankingMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    fightId?: SortOrder
+    createdAt?: SortOrder
+    schoolId?: SortOrder
+  }
+
+  export type FightRankingMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    fightId?: SortOrder
+    createdAt?: SortOrder
+    schoolId?: SortOrder
+  }
+
+  export type FightRankingRelationFilter = {
+    is?: FightRankingWhereInput | null
+    isNot?: FightRankingWhereInput | null
+  }
+
+  export type FightRankingUserCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    fightId?: SortOrder
+    fightRankingId?: SortOrder
+    schoolId?: SortOrder
+    score?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FightRankingUserAvgOrderByAggregateInput = {
+    score?: SortOrder
+  }
+
+  export type FightRankingUserMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    fightId?: SortOrder
+    fightRankingId?: SortOrder
+    schoolId?: SortOrder
+    score?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FightRankingUserMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    fightId?: SortOrder
+    fightRankingId?: SortOrder
+    schoolId?: SortOrder
+    score?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type FightRankingUserSumOrderByAggregateInput = {
+    score?: SortOrder
   }
 
   export type ImageCountOrderByAggregateInput = {
@@ -44574,11 +50090,6 @@ export namespace Prisma {
     _max?: NestedEnumProcessFilter
   }
 
-  export type SchoolRelationFilter = {
-    is?: SchoolWhereInput | null
-    isNot?: SchoolWhereInput | null
-  }
-
   export type UserSchoolCountOrderByAggregateInput = {
     userId?: SortOrder
     schoolId?: SortOrder
@@ -44709,25 +50220,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type StringNullableListFilter = {
-    equals?: Enumerable<string> | null
-    has?: string | null
-    hasEvery?: Enumerable<string>
-    hasSome?: Enumerable<string>
-    isEmpty?: boolean
-  }
-
-  export type DateTimeNullableFilter = {
-    equals?: Date | string | null
-    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
-    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeNullableFilter | Date | string | null
-  }
-
   export type AskedUserCountOrderByAggregateInput = {
     userId?: SortOrder
     customId?: SortOrder
@@ -44757,20 +50249,6 @@ export namespace Prisma {
     receiveAnonymous?: SortOrder
     receiveOtherSchool?: SortOrder
     lastUpdateCustomId?: SortOrder
-  }
-
-  export type DateTimeNullableWithAggregatesFilter = {
-    equals?: Date | string | null
-    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
-    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeNullableWithAggregatesFilter | Date | string | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedDateTimeNullableFilter
-    _max?: NestedDateTimeNullableFilter
   }
 
   export type AskedCountOrderByAggregateInput = {
@@ -44809,17 +50287,6 @@ export namespace Prisma {
     isAnonymous?: SortOrder
   }
 
-  export type IntFilter = {
-    equals?: number
-    in?: Enumerable<number> | number
-    notIn?: Enumerable<number> | number
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntFilter | number
-  }
-
   export type AdminCountOrderByAggregateInput = {
     id?: SortOrder
     loginId?: SortOrder
@@ -44847,22 +50314,6 @@ export namespace Prisma {
 
   export type AdminSumOrderByAggregateInput = {
     flags?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter = {
-    equals?: number
-    in?: Enumerable<number> | number
-    notIn?: Enumerable<number> | number
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntWithAggregatesFilter | number
-    _count?: NestedIntFilter
-    _avg?: NestedFloatFilter
-    _sum?: NestedIntFilter
-    _min?: NestedIntFilter
-    _max?: NestedIntFilter
   }
 
   export type IntNullableFilter = {
@@ -45885,6 +51336,20 @@ export namespace Prisma {
     connect?: Enumerable<UserBlockWhereUniqueInput>
   }
 
+  export type ConnectionAccountCreateNestedManyWithoutUserInput = {
+    create?: XOR<Enumerable<ConnectionAccountCreateWithoutUserInput>, Enumerable<ConnectionAccountUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<ConnectionAccountCreateOrConnectWithoutUserInput>
+    createMany?: ConnectionAccountCreateManyUserInputEnvelope
+    connect?: Enumerable<ConnectionAccountWhereUniqueInput>
+  }
+
+  export type FightRankingUserCreateNestedManyWithoutUserInput = {
+    create?: XOR<Enumerable<FightRankingUserCreateWithoutUserInput>, Enumerable<FightRankingUserUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<FightRankingUserCreateOrConnectWithoutUserInput>
+    createMany?: FightRankingUserCreateManyUserInputEnvelope
+    connect?: Enumerable<FightRankingUserWhereUniqueInput>
+  }
+
   export type AgreementUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<AgreementCreateWithoutUserInput, AgreementUncheckedCreateWithoutUserInput>
     connectOrCreate?: AgreementCreateOrConnectWithoutUserInput
@@ -46005,6 +51470,20 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<UserBlockCreateOrConnectWithoutUserInput>
     createMany?: UserBlockCreateManyUserInputEnvelope
     connect?: Enumerable<UserBlockWhereUniqueInput>
+  }
+
+  export type ConnectionAccountUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<Enumerable<ConnectionAccountCreateWithoutUserInput>, Enumerable<ConnectionAccountUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<ConnectionAccountCreateOrConnectWithoutUserInput>
+    createMany?: ConnectionAccountCreateManyUserInputEnvelope
+    connect?: Enumerable<ConnectionAccountWhereUniqueInput>
+  }
+
+  export type FightRankingUserUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<Enumerable<FightRankingUserCreateWithoutUserInput>, Enumerable<FightRankingUserUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<FightRankingUserCreateOrConnectWithoutUserInput>
+    createMany?: FightRankingUserCreateManyUserInputEnvelope
+    connect?: Enumerable<FightRankingUserWhereUniqueInput>
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -46263,6 +51742,34 @@ export namespace Prisma {
     deleteMany?: Enumerable<UserBlockScalarWhereInput>
   }
 
+  export type ConnectionAccountUpdateManyWithoutUserNestedInput = {
+    create?: XOR<Enumerable<ConnectionAccountCreateWithoutUserInput>, Enumerable<ConnectionAccountUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<ConnectionAccountCreateOrConnectWithoutUserInput>
+    upsert?: Enumerable<ConnectionAccountUpsertWithWhereUniqueWithoutUserInput>
+    createMany?: ConnectionAccountCreateManyUserInputEnvelope
+    set?: Enumerable<ConnectionAccountWhereUniqueInput>
+    disconnect?: Enumerable<ConnectionAccountWhereUniqueInput>
+    delete?: Enumerable<ConnectionAccountWhereUniqueInput>
+    connect?: Enumerable<ConnectionAccountWhereUniqueInput>
+    update?: Enumerable<ConnectionAccountUpdateWithWhereUniqueWithoutUserInput>
+    updateMany?: Enumerable<ConnectionAccountUpdateManyWithWhereWithoutUserInput>
+    deleteMany?: Enumerable<ConnectionAccountScalarWhereInput>
+  }
+
+  export type FightRankingUserUpdateManyWithoutUserNestedInput = {
+    create?: XOR<Enumerable<FightRankingUserCreateWithoutUserInput>, Enumerable<FightRankingUserUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<FightRankingUserCreateOrConnectWithoutUserInput>
+    upsert?: Enumerable<FightRankingUserUpsertWithWhereUniqueWithoutUserInput>
+    createMany?: FightRankingUserCreateManyUserInputEnvelope
+    set?: Enumerable<FightRankingUserWhereUniqueInput>
+    disconnect?: Enumerable<FightRankingUserWhereUniqueInput>
+    delete?: Enumerable<FightRankingUserWhereUniqueInput>
+    connect?: Enumerable<FightRankingUserWhereUniqueInput>
+    update?: Enumerable<FightRankingUserUpdateWithWhereUniqueWithoutUserInput>
+    updateMany?: Enumerable<FightRankingUserUpdateManyWithWhereWithoutUserInput>
+    deleteMany?: Enumerable<FightRankingUserScalarWhereInput>
+  }
+
   export type AgreementUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<AgreementCreateWithoutUserInput, AgreementUncheckedCreateWithoutUserInput>
     connectOrCreate?: AgreementCreateOrConnectWithoutUserInput
@@ -46499,6 +52006,34 @@ export namespace Prisma {
     deleteMany?: Enumerable<UserBlockScalarWhereInput>
   }
 
+  export type ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<Enumerable<ConnectionAccountCreateWithoutUserInput>, Enumerable<ConnectionAccountUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<ConnectionAccountCreateOrConnectWithoutUserInput>
+    upsert?: Enumerable<ConnectionAccountUpsertWithWhereUniqueWithoutUserInput>
+    createMany?: ConnectionAccountCreateManyUserInputEnvelope
+    set?: Enumerable<ConnectionAccountWhereUniqueInput>
+    disconnect?: Enumerable<ConnectionAccountWhereUniqueInput>
+    delete?: Enumerable<ConnectionAccountWhereUniqueInput>
+    connect?: Enumerable<ConnectionAccountWhereUniqueInput>
+    update?: Enumerable<ConnectionAccountUpdateWithWhereUniqueWithoutUserInput>
+    updateMany?: Enumerable<ConnectionAccountUpdateManyWithWhereWithoutUserInput>
+    deleteMany?: Enumerable<ConnectionAccountScalarWhereInput>
+  }
+
+  export type FightRankingUserUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<Enumerable<FightRankingUserCreateWithoutUserInput>, Enumerable<FightRankingUserUncheckedCreateWithoutUserInput>>
+    connectOrCreate?: Enumerable<FightRankingUserCreateOrConnectWithoutUserInput>
+    upsert?: Enumerable<FightRankingUserUpsertWithWhereUniqueWithoutUserInput>
+    createMany?: FightRankingUserCreateManyUserInputEnvelope
+    set?: Enumerable<FightRankingUserWhereUniqueInput>
+    disconnect?: Enumerable<FightRankingUserWhereUniqueInput>
+    delete?: Enumerable<FightRankingUserWhereUniqueInput>
+    connect?: Enumerable<FightRankingUserWhereUniqueInput>
+    update?: Enumerable<FightRankingUserUpdateWithWhereUniqueWithoutUserInput>
+    updateMany?: Enumerable<FightRankingUserUpdateManyWithWhereWithoutUserInput>
+    deleteMany?: Enumerable<FightRankingUserScalarWhereInput>
+  }
+
   export type UserSchoolCreateNestedManyWithoutSchoolInput = {
     create?: XOR<Enumerable<UserSchoolCreateWithoutSchoolInput>, Enumerable<UserSchoolUncheckedCreateWithoutSchoolInput>>
     connectOrCreate?: Enumerable<UserSchoolCreateOrConnectWithoutSchoolInput>
@@ -46513,6 +52048,20 @@ export namespace Prisma {
     connect?: Enumerable<ArticleWhereUniqueInput>
   }
 
+  export type FightRankingCreateNestedManyWithoutSchoolInput = {
+    create?: XOR<Enumerable<FightRankingCreateWithoutSchoolInput>, Enumerable<FightRankingUncheckedCreateWithoutSchoolInput>>
+    connectOrCreate?: Enumerable<FightRankingCreateOrConnectWithoutSchoolInput>
+    createMany?: FightRankingCreateManySchoolInputEnvelope
+    connect?: Enumerable<FightRankingWhereUniqueInput>
+  }
+
+  export type FightRankingUserCreateNestedManyWithoutSchoolInput = {
+    create?: XOR<Enumerable<FightRankingUserCreateWithoutSchoolInput>, Enumerable<FightRankingUserUncheckedCreateWithoutSchoolInput>>
+    connectOrCreate?: Enumerable<FightRankingUserCreateOrConnectWithoutSchoolInput>
+    createMany?: FightRankingUserCreateManySchoolInputEnvelope
+    connect?: Enumerable<FightRankingUserWhereUniqueInput>
+  }
+
   export type UserSchoolUncheckedCreateNestedManyWithoutSchoolInput = {
     create?: XOR<Enumerable<UserSchoolCreateWithoutSchoolInput>, Enumerable<UserSchoolUncheckedCreateWithoutSchoolInput>>
     connectOrCreate?: Enumerable<UserSchoolCreateOrConnectWithoutSchoolInput>
@@ -46525,6 +52074,20 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<ArticleCreateOrConnectWithoutSchoolInput>
     createMany?: ArticleCreateManySchoolInputEnvelope
     connect?: Enumerable<ArticleWhereUniqueInput>
+  }
+
+  export type FightRankingUncheckedCreateNestedManyWithoutSchoolInput = {
+    create?: XOR<Enumerable<FightRankingCreateWithoutSchoolInput>, Enumerable<FightRankingUncheckedCreateWithoutSchoolInput>>
+    connectOrCreate?: Enumerable<FightRankingCreateOrConnectWithoutSchoolInput>
+    createMany?: FightRankingCreateManySchoolInputEnvelope
+    connect?: Enumerable<FightRankingWhereUniqueInput>
+  }
+
+  export type FightRankingUserUncheckedCreateNestedManyWithoutSchoolInput = {
+    create?: XOR<Enumerable<FightRankingUserCreateWithoutSchoolInput>, Enumerable<FightRankingUserUncheckedCreateWithoutSchoolInput>>
+    connectOrCreate?: Enumerable<FightRankingUserCreateOrConnectWithoutSchoolInput>
+    createMany?: FightRankingUserCreateManySchoolInputEnvelope
+    connect?: Enumerable<FightRankingUserWhereUniqueInput>
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -46563,6 +52126,34 @@ export namespace Prisma {
     deleteMany?: Enumerable<ArticleScalarWhereInput>
   }
 
+  export type FightRankingUpdateManyWithoutSchoolNestedInput = {
+    create?: XOR<Enumerable<FightRankingCreateWithoutSchoolInput>, Enumerable<FightRankingUncheckedCreateWithoutSchoolInput>>
+    connectOrCreate?: Enumerable<FightRankingCreateOrConnectWithoutSchoolInput>
+    upsert?: Enumerable<FightRankingUpsertWithWhereUniqueWithoutSchoolInput>
+    createMany?: FightRankingCreateManySchoolInputEnvelope
+    set?: Enumerable<FightRankingWhereUniqueInput>
+    disconnect?: Enumerable<FightRankingWhereUniqueInput>
+    delete?: Enumerable<FightRankingWhereUniqueInput>
+    connect?: Enumerable<FightRankingWhereUniqueInput>
+    update?: Enumerable<FightRankingUpdateWithWhereUniqueWithoutSchoolInput>
+    updateMany?: Enumerable<FightRankingUpdateManyWithWhereWithoutSchoolInput>
+    deleteMany?: Enumerable<FightRankingScalarWhereInput>
+  }
+
+  export type FightRankingUserUpdateManyWithoutSchoolNestedInput = {
+    create?: XOR<Enumerable<FightRankingUserCreateWithoutSchoolInput>, Enumerable<FightRankingUserUncheckedCreateWithoutSchoolInput>>
+    connectOrCreate?: Enumerable<FightRankingUserCreateOrConnectWithoutSchoolInput>
+    upsert?: Enumerable<FightRankingUserUpsertWithWhereUniqueWithoutSchoolInput>
+    createMany?: FightRankingUserCreateManySchoolInputEnvelope
+    set?: Enumerable<FightRankingUserWhereUniqueInput>
+    disconnect?: Enumerable<FightRankingUserWhereUniqueInput>
+    delete?: Enumerable<FightRankingUserWhereUniqueInput>
+    connect?: Enumerable<FightRankingUserWhereUniqueInput>
+    update?: Enumerable<FightRankingUserUpdateWithWhereUniqueWithoutSchoolInput>
+    updateMany?: Enumerable<FightRankingUserUpdateManyWithWhereWithoutSchoolInput>
+    deleteMany?: Enumerable<FightRankingUserScalarWhereInput>
+  }
+
   export type UserSchoolUncheckedUpdateManyWithoutSchoolNestedInput = {
     create?: XOR<Enumerable<UserSchoolCreateWithoutSchoolInput>, Enumerable<UserSchoolUncheckedCreateWithoutSchoolInput>>
     connectOrCreate?: Enumerable<UserSchoolCreateOrConnectWithoutSchoolInput>
@@ -46589,6 +52180,283 @@ export namespace Prisma {
     update?: Enumerable<ArticleUpdateWithWhereUniqueWithoutSchoolInput>
     updateMany?: Enumerable<ArticleUpdateManyWithWhereWithoutSchoolInput>
     deleteMany?: Enumerable<ArticleScalarWhereInput>
+  }
+
+  export type FightRankingUncheckedUpdateManyWithoutSchoolNestedInput = {
+    create?: XOR<Enumerable<FightRankingCreateWithoutSchoolInput>, Enumerable<FightRankingUncheckedCreateWithoutSchoolInput>>
+    connectOrCreate?: Enumerable<FightRankingCreateOrConnectWithoutSchoolInput>
+    upsert?: Enumerable<FightRankingUpsertWithWhereUniqueWithoutSchoolInput>
+    createMany?: FightRankingCreateManySchoolInputEnvelope
+    set?: Enumerable<FightRankingWhereUniqueInput>
+    disconnect?: Enumerable<FightRankingWhereUniqueInput>
+    delete?: Enumerable<FightRankingWhereUniqueInput>
+    connect?: Enumerable<FightRankingWhereUniqueInput>
+    update?: Enumerable<FightRankingUpdateWithWhereUniqueWithoutSchoolInput>
+    updateMany?: Enumerable<FightRankingUpdateManyWithWhereWithoutSchoolInput>
+    deleteMany?: Enumerable<FightRankingScalarWhereInput>
+  }
+
+  export type FightRankingUserUncheckedUpdateManyWithoutSchoolNestedInput = {
+    create?: XOR<Enumerable<FightRankingUserCreateWithoutSchoolInput>, Enumerable<FightRankingUserUncheckedCreateWithoutSchoolInput>>
+    connectOrCreate?: Enumerable<FightRankingUserCreateOrConnectWithoutSchoolInput>
+    upsert?: Enumerable<FightRankingUserUpsertWithWhereUniqueWithoutSchoolInput>
+    createMany?: FightRankingUserCreateManySchoolInputEnvelope
+    set?: Enumerable<FightRankingUserWhereUniqueInput>
+    disconnect?: Enumerable<FightRankingUserWhereUniqueInput>
+    delete?: Enumerable<FightRankingUserWhereUniqueInput>
+    connect?: Enumerable<FightRankingUserWhereUniqueInput>
+    update?: Enumerable<FightRankingUserUpdateWithWhereUniqueWithoutSchoolInput>
+    updateMany?: Enumerable<FightRankingUserUpdateManyWithWhereWithoutSchoolInput>
+    deleteMany?: Enumerable<FightRankingUserScalarWhereInput>
+  }
+
+  export type UserCreateNestedOneWithoutConnectionAccountInput = {
+    create?: XOR<UserCreateWithoutConnectionAccountInput, UserUncheckedCreateWithoutConnectionAccountInput>
+    connectOrCreate?: UserCreateOrConnectWithoutConnectionAccountInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type UserUpdateOneRequiredWithoutConnectionAccountNestedInput = {
+    create?: XOR<UserCreateWithoutConnectionAccountInput, UserUncheckedCreateWithoutConnectionAccountInput>
+    connectOrCreate?: UserCreateOrConnectWithoutConnectionAccountInput
+    upsert?: UserUpsertWithoutConnectionAccountInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<UserUpdateWithoutConnectionAccountInput, UserUncheckedUpdateWithoutConnectionAccountInput>
+  }
+
+  export type FightCreateneedToInput = {
+    set: Enumerable<string>
+  }
+
+  export type FightRankingCreateNestedManyWithoutFightInput = {
+    create?: XOR<Enumerable<FightRankingCreateWithoutFightInput>, Enumerable<FightRankingUncheckedCreateWithoutFightInput>>
+    connectOrCreate?: Enumerable<FightRankingCreateOrConnectWithoutFightInput>
+    createMany?: FightRankingCreateManyFightInputEnvelope
+    connect?: Enumerable<FightRankingWhereUniqueInput>
+  }
+
+  export type FightRankingUserCreateNestedManyWithoutFightInput = {
+    create?: XOR<Enumerable<FightRankingUserCreateWithoutFightInput>, Enumerable<FightRankingUserUncheckedCreateWithoutFightInput>>
+    connectOrCreate?: Enumerable<FightRankingUserCreateOrConnectWithoutFightInput>
+    createMany?: FightRankingUserCreateManyFightInputEnvelope
+    connect?: Enumerable<FightRankingUserWhereUniqueInput>
+  }
+
+  export type FightRankingUncheckedCreateNestedManyWithoutFightInput = {
+    create?: XOR<Enumerable<FightRankingCreateWithoutFightInput>, Enumerable<FightRankingUncheckedCreateWithoutFightInput>>
+    connectOrCreate?: Enumerable<FightRankingCreateOrConnectWithoutFightInput>
+    createMany?: FightRankingCreateManyFightInputEnvelope
+    connect?: Enumerable<FightRankingWhereUniqueInput>
+  }
+
+  export type FightRankingUserUncheckedCreateNestedManyWithoutFightInput = {
+    create?: XOR<Enumerable<FightRankingUserCreateWithoutFightInput>, Enumerable<FightRankingUserUncheckedCreateWithoutFightInput>>
+    connectOrCreate?: Enumerable<FightRankingUserCreateOrConnectWithoutFightInput>
+    createMany?: FightRankingUserCreateManyFightInputEnvelope
+    connect?: Enumerable<FightRankingUserWhereUniqueInput>
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type FightUpdateneedToInput = {
+    set?: Enumerable<string>
+    push?: string | Enumerable<string>
+  }
+
+  export type EnumFightAreaTypeFieldUpdateOperationsInput = {
+    set?: FightAreaType
+  }
+
+  export type FightRankingUpdateManyWithoutFightNestedInput = {
+    create?: XOR<Enumerable<FightRankingCreateWithoutFightInput>, Enumerable<FightRankingUncheckedCreateWithoutFightInput>>
+    connectOrCreate?: Enumerable<FightRankingCreateOrConnectWithoutFightInput>
+    upsert?: Enumerable<FightRankingUpsertWithWhereUniqueWithoutFightInput>
+    createMany?: FightRankingCreateManyFightInputEnvelope
+    set?: Enumerable<FightRankingWhereUniqueInput>
+    disconnect?: Enumerable<FightRankingWhereUniqueInput>
+    delete?: Enumerable<FightRankingWhereUniqueInput>
+    connect?: Enumerable<FightRankingWhereUniqueInput>
+    update?: Enumerable<FightRankingUpdateWithWhereUniqueWithoutFightInput>
+    updateMany?: Enumerable<FightRankingUpdateManyWithWhereWithoutFightInput>
+    deleteMany?: Enumerable<FightRankingScalarWhereInput>
+  }
+
+  export type FightRankingUserUpdateManyWithoutFightNestedInput = {
+    create?: XOR<Enumerable<FightRankingUserCreateWithoutFightInput>, Enumerable<FightRankingUserUncheckedCreateWithoutFightInput>>
+    connectOrCreate?: Enumerable<FightRankingUserCreateOrConnectWithoutFightInput>
+    upsert?: Enumerable<FightRankingUserUpsertWithWhereUniqueWithoutFightInput>
+    createMany?: FightRankingUserCreateManyFightInputEnvelope
+    set?: Enumerable<FightRankingUserWhereUniqueInput>
+    disconnect?: Enumerable<FightRankingUserWhereUniqueInput>
+    delete?: Enumerable<FightRankingUserWhereUniqueInput>
+    connect?: Enumerable<FightRankingUserWhereUniqueInput>
+    update?: Enumerable<FightRankingUserUpdateWithWhereUniqueWithoutFightInput>
+    updateMany?: Enumerable<FightRankingUserUpdateManyWithWhereWithoutFightInput>
+    deleteMany?: Enumerable<FightRankingUserScalarWhereInput>
+  }
+
+  export type FightRankingUncheckedUpdateManyWithoutFightNestedInput = {
+    create?: XOR<Enumerable<FightRankingCreateWithoutFightInput>, Enumerable<FightRankingUncheckedCreateWithoutFightInput>>
+    connectOrCreate?: Enumerable<FightRankingCreateOrConnectWithoutFightInput>
+    upsert?: Enumerable<FightRankingUpsertWithWhereUniqueWithoutFightInput>
+    createMany?: FightRankingCreateManyFightInputEnvelope
+    set?: Enumerable<FightRankingWhereUniqueInput>
+    disconnect?: Enumerable<FightRankingWhereUniqueInput>
+    delete?: Enumerable<FightRankingWhereUniqueInput>
+    connect?: Enumerable<FightRankingWhereUniqueInput>
+    update?: Enumerable<FightRankingUpdateWithWhereUniqueWithoutFightInput>
+    updateMany?: Enumerable<FightRankingUpdateManyWithWhereWithoutFightInput>
+    deleteMany?: Enumerable<FightRankingScalarWhereInput>
+  }
+
+  export type FightRankingUserUncheckedUpdateManyWithoutFightNestedInput = {
+    create?: XOR<Enumerable<FightRankingUserCreateWithoutFightInput>, Enumerable<FightRankingUserUncheckedCreateWithoutFightInput>>
+    connectOrCreate?: Enumerable<FightRankingUserCreateOrConnectWithoutFightInput>
+    upsert?: Enumerable<FightRankingUserUpsertWithWhereUniqueWithoutFightInput>
+    createMany?: FightRankingUserCreateManyFightInputEnvelope
+    set?: Enumerable<FightRankingUserWhereUniqueInput>
+    disconnect?: Enumerable<FightRankingUserWhereUniqueInput>
+    delete?: Enumerable<FightRankingUserWhereUniqueInput>
+    connect?: Enumerable<FightRankingUserWhereUniqueInput>
+    update?: Enumerable<FightRankingUserUpdateWithWhereUniqueWithoutFightInput>
+    updateMany?: Enumerable<FightRankingUserUpdateManyWithWhereWithoutFightInput>
+    deleteMany?: Enumerable<FightRankingUserScalarWhereInput>
+  }
+
+  export type FightRankingUserCreateNestedManyWithoutFightRankingInput = {
+    create?: XOR<Enumerable<FightRankingUserCreateWithoutFightRankingInput>, Enumerable<FightRankingUserUncheckedCreateWithoutFightRankingInput>>
+    connectOrCreate?: Enumerable<FightRankingUserCreateOrConnectWithoutFightRankingInput>
+    createMany?: FightRankingUserCreateManyFightRankingInputEnvelope
+    connect?: Enumerable<FightRankingUserWhereUniqueInput>
+  }
+
+  export type SchoolCreateNestedOneWithoutFightRankingInput = {
+    create?: XOR<SchoolCreateWithoutFightRankingInput, SchoolUncheckedCreateWithoutFightRankingInput>
+    connectOrCreate?: SchoolCreateOrConnectWithoutFightRankingInput
+    connect?: SchoolWhereUniqueInput
+  }
+
+  export type FightCreateNestedOneWithoutFightRankingInput = {
+    create?: XOR<FightCreateWithoutFightRankingInput, FightUncheckedCreateWithoutFightRankingInput>
+    connectOrCreate?: FightCreateOrConnectWithoutFightRankingInput
+    connect?: FightWhereUniqueInput
+  }
+
+  export type FightRankingUserUncheckedCreateNestedManyWithoutFightRankingInput = {
+    create?: XOR<Enumerable<FightRankingUserCreateWithoutFightRankingInput>, Enumerable<FightRankingUserUncheckedCreateWithoutFightRankingInput>>
+    connectOrCreate?: Enumerable<FightRankingUserCreateOrConnectWithoutFightRankingInput>
+    createMany?: FightRankingUserCreateManyFightRankingInputEnvelope
+    connect?: Enumerable<FightRankingUserWhereUniqueInput>
+  }
+
+  export type FightRankingUserUpdateManyWithoutFightRankingNestedInput = {
+    create?: XOR<Enumerable<FightRankingUserCreateWithoutFightRankingInput>, Enumerable<FightRankingUserUncheckedCreateWithoutFightRankingInput>>
+    connectOrCreate?: Enumerable<FightRankingUserCreateOrConnectWithoutFightRankingInput>
+    upsert?: Enumerable<FightRankingUserUpsertWithWhereUniqueWithoutFightRankingInput>
+    createMany?: FightRankingUserCreateManyFightRankingInputEnvelope
+    set?: Enumerable<FightRankingUserWhereUniqueInput>
+    disconnect?: Enumerable<FightRankingUserWhereUniqueInput>
+    delete?: Enumerable<FightRankingUserWhereUniqueInput>
+    connect?: Enumerable<FightRankingUserWhereUniqueInput>
+    update?: Enumerable<FightRankingUserUpdateWithWhereUniqueWithoutFightRankingInput>
+    updateMany?: Enumerable<FightRankingUserUpdateManyWithWhereWithoutFightRankingInput>
+    deleteMany?: Enumerable<FightRankingUserScalarWhereInput>
+  }
+
+  export type SchoolUpdateOneRequiredWithoutFightRankingNestedInput = {
+    create?: XOR<SchoolCreateWithoutFightRankingInput, SchoolUncheckedCreateWithoutFightRankingInput>
+    connectOrCreate?: SchoolCreateOrConnectWithoutFightRankingInput
+    upsert?: SchoolUpsertWithoutFightRankingInput
+    connect?: SchoolWhereUniqueInput
+    update?: XOR<SchoolUpdateWithoutFightRankingInput, SchoolUncheckedUpdateWithoutFightRankingInput>
+  }
+
+  export type FightUpdateOneRequiredWithoutFightRankingNestedInput = {
+    create?: XOR<FightCreateWithoutFightRankingInput, FightUncheckedCreateWithoutFightRankingInput>
+    connectOrCreate?: FightCreateOrConnectWithoutFightRankingInput
+    upsert?: FightUpsertWithoutFightRankingInput
+    connect?: FightWhereUniqueInput
+    update?: XOR<FightUpdateWithoutFightRankingInput, FightUncheckedUpdateWithoutFightRankingInput>
+  }
+
+  export type FightRankingUserUncheckedUpdateManyWithoutFightRankingNestedInput = {
+    create?: XOR<Enumerable<FightRankingUserCreateWithoutFightRankingInput>, Enumerable<FightRankingUserUncheckedCreateWithoutFightRankingInput>>
+    connectOrCreate?: Enumerable<FightRankingUserCreateOrConnectWithoutFightRankingInput>
+    upsert?: Enumerable<FightRankingUserUpsertWithWhereUniqueWithoutFightRankingInput>
+    createMany?: FightRankingUserCreateManyFightRankingInputEnvelope
+    set?: Enumerable<FightRankingUserWhereUniqueInput>
+    disconnect?: Enumerable<FightRankingUserWhereUniqueInput>
+    delete?: Enumerable<FightRankingUserWhereUniqueInput>
+    connect?: Enumerable<FightRankingUserWhereUniqueInput>
+    update?: Enumerable<FightRankingUserUpdateWithWhereUniqueWithoutFightRankingInput>
+    updateMany?: Enumerable<FightRankingUserUpdateManyWithWhereWithoutFightRankingInput>
+    deleteMany?: Enumerable<FightRankingUserScalarWhereInput>
+  }
+
+  export type SchoolCreateNestedOneWithoutFightRankingUserInput = {
+    create?: XOR<SchoolCreateWithoutFightRankingUserInput, SchoolUncheckedCreateWithoutFightRankingUserInput>
+    connectOrCreate?: SchoolCreateOrConnectWithoutFightRankingUserInput
+    connect?: SchoolWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutFightRankingUserInput = {
+    create?: XOR<UserCreateWithoutFightRankingUserInput, UserUncheckedCreateWithoutFightRankingUserInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFightRankingUserInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type FightCreateNestedOneWithoutFightRankingUserInput = {
+    create?: XOR<FightCreateWithoutFightRankingUserInput, FightUncheckedCreateWithoutFightRankingUserInput>
+    connectOrCreate?: FightCreateOrConnectWithoutFightRankingUserInput
+    connect?: FightWhereUniqueInput
+  }
+
+  export type FightRankingCreateNestedOneWithoutFightRankingUserInput = {
+    create?: XOR<FightRankingCreateWithoutFightRankingUserInput, FightRankingUncheckedCreateWithoutFightRankingUserInput>
+    connectOrCreate?: FightRankingCreateOrConnectWithoutFightRankingUserInput
+    connect?: FightRankingWhereUniqueInput
+  }
+
+  export type SchoolUpdateOneRequiredWithoutFightRankingUserNestedInput = {
+    create?: XOR<SchoolCreateWithoutFightRankingUserInput, SchoolUncheckedCreateWithoutFightRankingUserInput>
+    connectOrCreate?: SchoolCreateOrConnectWithoutFightRankingUserInput
+    upsert?: SchoolUpsertWithoutFightRankingUserInput
+    connect?: SchoolWhereUniqueInput
+    update?: XOR<SchoolUpdateWithoutFightRankingUserInput, SchoolUncheckedUpdateWithoutFightRankingUserInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutFightRankingUserNestedInput = {
+    create?: XOR<UserCreateWithoutFightRankingUserInput, UserUncheckedCreateWithoutFightRankingUserInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFightRankingUserInput
+    upsert?: UserUpsertWithoutFightRankingUserInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<UserUpdateWithoutFightRankingUserInput, UserUncheckedUpdateWithoutFightRankingUserInput>
+  }
+
+  export type FightUpdateOneRequiredWithoutFightRankingUserNestedInput = {
+    create?: XOR<FightCreateWithoutFightRankingUserInput, FightUncheckedCreateWithoutFightRankingUserInput>
+    connectOrCreate?: FightCreateOrConnectWithoutFightRankingUserInput
+    upsert?: FightUpsertWithoutFightRankingUserInput
+    connect?: FightWhereUniqueInput
+    update?: XOR<FightUpdateWithoutFightRankingUserInput, FightUncheckedUpdateWithoutFightRankingUserInput>
+  }
+
+  export type FightRankingUpdateOneRequiredWithoutFightRankingUserNestedInput = {
+    create?: XOR<FightRankingCreateWithoutFightRankingUserInput, FightRankingUncheckedCreateWithoutFightRankingUserInput>
+    connectOrCreate?: FightRankingCreateOrConnectWithoutFightRankingUserInput
+    upsert?: FightRankingUpsertWithoutFightRankingUserInput
+    connect?: FightRankingWhereUniqueInput
+    update?: XOR<FightRankingUpdateWithoutFightRankingUserInput, FightRankingUncheckedUpdateWithoutFightRankingUserInput>
   }
 
   export type UserCreateNestedOneWithoutImageInput = {
@@ -46768,10 +52636,6 @@ export namespace Prisma {
     push?: string | Enumerable<string>
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
   export type AskedUpdateManyWithoutAskedUserNestedInput = {
     create?: XOR<Enumerable<AskedCreateWithoutAskedUserInput>, Enumerable<AskedUncheckedCreateWithoutAskedUserInput>>
     connectOrCreate?: Enumerable<AskedCreateOrConnectWithoutAskedUserInput>
@@ -46848,14 +52712,6 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<UserBlockCreateOrConnectWithoutTransactionAdminInput>
     createMany?: UserBlockCreateManyTransactionAdminInputEnvelope
     connect?: Enumerable<UserBlockWhereUniqueInput>
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type UserBlockUpdateManyWithoutTransactionAdminNestedInput = {
@@ -47847,6 +53703,64 @@ export namespace Prisma {
     _max?: NestedFloatFilter
   }
 
+  export type NestedIntWithAggregatesFilter = {
+    equals?: number
+    in?: Enumerable<number> | number
+    notIn?: Enumerable<number> | number
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntWithAggregatesFilter | number
+    _count?: NestedIntFilter
+    _avg?: NestedFloatFilter
+    _sum?: NestedIntFilter
+    _min?: NestedIntFilter
+    _max?: NestedIntFilter
+  }
+
+  export type NestedDateTimeNullableFilter = {
+    equals?: Date | string | null
+    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeNullableFilter | Date | string | null
+  }
+
+  export type NestedEnumFightAreaTypeFilter = {
+    equals?: FightAreaType
+    in?: Enumerable<FightAreaType>
+    notIn?: Enumerable<FightAreaType>
+    not?: NestedEnumFightAreaTypeFilter | FightAreaType
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter = {
+    equals?: Date | string | null
+    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeNullableWithAggregatesFilter | Date | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedDateTimeNullableFilter
+    _max?: NestedDateTimeNullableFilter
+  }
+
+  export type NestedEnumFightAreaTypeWithAggregatesFilter = {
+    equals?: FightAreaType
+    in?: Enumerable<FightAreaType>
+    notIn?: Enumerable<FightAreaType>
+    not?: NestedEnumFightAreaTypeWithAggregatesFilter | FightAreaType
+    _count?: NestedIntFilter
+    _min?: NestedEnumFightAreaTypeFilter
+    _max?: NestedEnumFightAreaTypeFilter
+  }
+
   export type NestedEnumSocialLoginProviderTypeFilter = {
     equals?: SocialLoginProviderType
     in?: Enumerable<SocialLoginProviderType>
@@ -47879,47 +53793,6 @@ export namespace Prisma {
     _count?: NestedIntFilter
     _min?: NestedEnumProcessFilter
     _max?: NestedEnumProcessFilter
-  }
-
-  export type NestedDateTimeNullableFilter = {
-    equals?: Date | string | null
-    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
-    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeNullableFilter | Date | string | null
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter = {
-    equals?: Date | string | null
-    in?: Enumerable<Date> | Enumerable<string> | Date | string | null
-    notIn?: Enumerable<Date> | Enumerable<string> | Date | string | null
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeNullableWithAggregatesFilter | Date | string | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedDateTimeNullableFilter
-    _max?: NestedDateTimeNullableFilter
-  }
-
-  export type NestedIntWithAggregatesFilter = {
-    equals?: number
-    in?: Enumerable<number> | number
-    notIn?: Enumerable<number> | number
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntWithAggregatesFilter | number
-    _count?: NestedIntFilter
-    _avg?: NestedFloatFilter
-    _sum?: NestedIntFilter
-    _min?: NestedIntFilter
-    _max?: NestedIntFilter
   }
 
   export type NestedIntNullableWithAggregatesFilter = {
@@ -48484,6 +54357,66 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ConnectionAccountCreateWithoutUserInput = {
+    id?: string
+    accountId: string
+    name?: string | null
+    accessToken: string
+    refreshToken?: string | null
+    provider: string
+    followerCount?: number
+    articleCount?: number
+  }
+
+  export type ConnectionAccountUncheckedCreateWithoutUserInput = {
+    id?: string
+    accountId: string
+    name?: string | null
+    accessToken: string
+    refreshToken?: string | null
+    provider: string
+    followerCount?: number
+    articleCount?: number
+  }
+
+  export type ConnectionAccountCreateOrConnectWithoutUserInput = {
+    where: ConnectionAccountWhereUniqueInput
+    create: XOR<ConnectionAccountCreateWithoutUserInput, ConnectionAccountUncheckedCreateWithoutUserInput>
+  }
+
+  export type ConnectionAccountCreateManyUserInputEnvelope = {
+    data: Enumerable<ConnectionAccountCreateManyUserInput>
+    skipDuplicates?: boolean
+  }
+
+  export type FightRankingUserCreateWithoutUserInput = {
+    id?: string
+    score?: number
+    createdAt?: Date | string
+    school: SchoolCreateNestedOneWithoutFightRankingUserInput
+    fight: FightCreateNestedOneWithoutFightRankingUserInput
+    fightRanking: FightRankingCreateNestedOneWithoutFightRankingUserInput
+  }
+
+  export type FightRankingUserUncheckedCreateWithoutUserInput = {
+    id?: string
+    fightId: string
+    fightRankingId: string
+    schoolId: string
+    score?: number
+    createdAt?: Date | string
+  }
+
+  export type FightRankingUserCreateOrConnectWithoutUserInput = {
+    where: FightRankingUserWhereUniqueInput
+    create: XOR<FightRankingUserCreateWithoutUserInput, FightRankingUserUncheckedCreateWithoutUserInput>
+  }
+
+  export type FightRankingUserCreateManyUserInputEnvelope = {
+    data: Enumerable<FightRankingUserCreateManyUserInput>
+    skipDuplicates?: boolean
+  }
+
   export type AgreementUpsertWithoutUserInput = {
     update: XOR<AgreementUpdateWithoutUserInput, AgreementUncheckedUpdateWithoutUserInput>
     create: XOR<AgreementCreateWithoutUserInput, AgreementUncheckedCreateWithoutUserInput>
@@ -48961,6 +54894,66 @@ export namespace Prisma {
     transactionAdminId?: StringFilter | string
   }
 
+  export type ConnectionAccountUpsertWithWhereUniqueWithoutUserInput = {
+    where: ConnectionAccountWhereUniqueInput
+    update: XOR<ConnectionAccountUpdateWithoutUserInput, ConnectionAccountUncheckedUpdateWithoutUserInput>
+    create: XOR<ConnectionAccountCreateWithoutUserInput, ConnectionAccountUncheckedCreateWithoutUserInput>
+  }
+
+  export type ConnectionAccountUpdateWithWhereUniqueWithoutUserInput = {
+    where: ConnectionAccountWhereUniqueInput
+    data: XOR<ConnectionAccountUpdateWithoutUserInput, ConnectionAccountUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ConnectionAccountUpdateManyWithWhereWithoutUserInput = {
+    where: ConnectionAccountScalarWhereInput
+    data: XOR<ConnectionAccountUpdateManyMutationInput, ConnectionAccountUncheckedUpdateManyWithoutConnectionAccountInput>
+  }
+
+  export type ConnectionAccountScalarWhereInput = {
+    AND?: Enumerable<ConnectionAccountScalarWhereInput>
+    OR?: Enumerable<ConnectionAccountScalarWhereInput>
+    NOT?: Enumerable<ConnectionAccountScalarWhereInput>
+    id?: StringFilter | string
+    userId?: StringFilter | string
+    accountId?: StringFilter | string
+    name?: StringNullableFilter | string | null
+    accessToken?: StringFilter | string
+    refreshToken?: StringNullableFilter | string | null
+    provider?: StringFilter | string
+    followerCount?: IntFilter | number
+    articleCount?: IntFilter | number
+  }
+
+  export type FightRankingUserUpsertWithWhereUniqueWithoutUserInput = {
+    where: FightRankingUserWhereUniqueInput
+    update: XOR<FightRankingUserUpdateWithoutUserInput, FightRankingUserUncheckedUpdateWithoutUserInput>
+    create: XOR<FightRankingUserCreateWithoutUserInput, FightRankingUserUncheckedCreateWithoutUserInput>
+  }
+
+  export type FightRankingUserUpdateWithWhereUniqueWithoutUserInput = {
+    where: FightRankingUserWhereUniqueInput
+    data: XOR<FightRankingUserUpdateWithoutUserInput, FightRankingUserUncheckedUpdateWithoutUserInput>
+  }
+
+  export type FightRankingUserUpdateManyWithWhereWithoutUserInput = {
+    where: FightRankingUserScalarWhereInput
+    data: XOR<FightRankingUserUpdateManyMutationInput, FightRankingUserUncheckedUpdateManyWithoutFightRankingUserInput>
+  }
+
+  export type FightRankingUserScalarWhereInput = {
+    AND?: Enumerable<FightRankingUserScalarWhereInput>
+    OR?: Enumerable<FightRankingUserScalarWhereInput>
+    NOT?: Enumerable<FightRankingUserScalarWhereInput>
+    id?: StringFilter | string
+    userId?: StringFilter | string
+    fightId?: StringFilter | string
+    fightRankingId?: StringFilter | string
+    schoolId?: StringFilter | string
+    score?: IntFilter | number
+    createdAt?: DateTimeFilter | Date | string
+  }
+
   export type UserSchoolCreateWithoutSchoolInput = {
     dept?: string | null
     grade: string
@@ -49028,6 +55021,60 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type FightRankingCreateWithoutSchoolInput = {
+    id?: string
+    userId: string
+    createdAt?: Date | string
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutFightRankingInput
+    fight: FightCreateNestedOneWithoutFightRankingInput
+  }
+
+  export type FightRankingUncheckedCreateWithoutSchoolInput = {
+    id?: string
+    userId: string
+    fightId: string
+    createdAt?: Date | string
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutFightRankingInput
+  }
+
+  export type FightRankingCreateOrConnectWithoutSchoolInput = {
+    where: FightRankingWhereUniqueInput
+    create: XOR<FightRankingCreateWithoutSchoolInput, FightRankingUncheckedCreateWithoutSchoolInput>
+  }
+
+  export type FightRankingCreateManySchoolInputEnvelope = {
+    data: Enumerable<FightRankingCreateManySchoolInput>
+    skipDuplicates?: boolean
+  }
+
+  export type FightRankingUserCreateWithoutSchoolInput = {
+    id?: string
+    score?: number
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutFightRankingUserInput
+    fight: FightCreateNestedOneWithoutFightRankingUserInput
+    fightRanking: FightRankingCreateNestedOneWithoutFightRankingUserInput
+  }
+
+  export type FightRankingUserUncheckedCreateWithoutSchoolInput = {
+    id?: string
+    userId: string
+    fightId: string
+    fightRankingId: string
+    score?: number
+    createdAt?: Date | string
+  }
+
+  export type FightRankingUserCreateOrConnectWithoutSchoolInput = {
+    where: FightRankingUserWhereUniqueInput
+    create: XOR<FightRankingUserCreateWithoutSchoolInput, FightRankingUserUncheckedCreateWithoutSchoolInput>
+  }
+
+  export type FightRankingUserCreateManySchoolInputEnvelope = {
+    data: Enumerable<FightRankingUserCreateManySchoolInput>
+    skipDuplicates?: boolean
+  }
+
   export type UserSchoolUpsertWithWhereUniqueWithoutSchoolInput = {
     where: UserSchoolWhereUniqueInput
     update: XOR<UserSchoolUpdateWithoutSchoolInput, UserSchoolUncheckedUpdateWithoutSchoolInput>
@@ -49071,6 +55118,753 @@ export namespace Prisma {
     data: XOR<ArticleUpdateManyMutationInput, ArticleUncheckedUpdateManyWithoutArticleInput>
   }
 
+  export type FightRankingUpsertWithWhereUniqueWithoutSchoolInput = {
+    where: FightRankingWhereUniqueInput
+    update: XOR<FightRankingUpdateWithoutSchoolInput, FightRankingUncheckedUpdateWithoutSchoolInput>
+    create: XOR<FightRankingCreateWithoutSchoolInput, FightRankingUncheckedCreateWithoutSchoolInput>
+  }
+
+  export type FightRankingUpdateWithWhereUniqueWithoutSchoolInput = {
+    where: FightRankingWhereUniqueInput
+    data: XOR<FightRankingUpdateWithoutSchoolInput, FightRankingUncheckedUpdateWithoutSchoolInput>
+  }
+
+  export type FightRankingUpdateManyWithWhereWithoutSchoolInput = {
+    where: FightRankingScalarWhereInput
+    data: XOR<FightRankingUpdateManyMutationInput, FightRankingUncheckedUpdateManyWithoutFightRankingInput>
+  }
+
+  export type FightRankingScalarWhereInput = {
+    AND?: Enumerable<FightRankingScalarWhereInput>
+    OR?: Enumerable<FightRankingScalarWhereInput>
+    NOT?: Enumerable<FightRankingScalarWhereInput>
+    id?: StringFilter | string
+    userId?: StringFilter | string
+    fightId?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    schoolId?: StringFilter | string
+  }
+
+  export type FightRankingUserUpsertWithWhereUniqueWithoutSchoolInput = {
+    where: FightRankingUserWhereUniqueInput
+    update: XOR<FightRankingUserUpdateWithoutSchoolInput, FightRankingUserUncheckedUpdateWithoutSchoolInput>
+    create: XOR<FightRankingUserCreateWithoutSchoolInput, FightRankingUserUncheckedCreateWithoutSchoolInput>
+  }
+
+  export type FightRankingUserUpdateWithWhereUniqueWithoutSchoolInput = {
+    where: FightRankingUserWhereUniqueInput
+    data: XOR<FightRankingUserUpdateWithoutSchoolInput, FightRankingUserUncheckedUpdateWithoutSchoolInput>
+  }
+
+  export type FightRankingUserUpdateManyWithWhereWithoutSchoolInput = {
+    where: FightRankingUserScalarWhereInput
+    data: XOR<FightRankingUserUpdateManyMutationInput, FightRankingUserUncheckedUpdateManyWithoutFightRankingUserInput>
+  }
+
+  export type UserCreateWithoutConnectionAccountInput = {
+    id?: string
+    email?: string | null
+    password?: string | null
+    name: string
+    profile?: string | null
+    isVerified?: boolean
+    phone?: string | null
+    createdAt?: Date | string
+    provider: UserLoginProviderType
+    userSchoolId?: string | null
+    agreement?: AgreementCreateNestedOneWithoutUserInput
+    article?: ArticleCreateNestedManyWithoutUserInput
+    asked?: AskedCreateNestedManyWithoutQuestionUserInput
+    askedUser?: AskedUserCreateNestedOneWithoutUserInput
+    boardOrganizations?: BoardManagerCreateNestedManyWithoutUserInput
+    comment?: CommentCreateNestedManyWithoutUserInput
+    image?: ImageCreateNestedManyWithoutUserInput
+    articleLike?: ArticleLikeCreateNestedManyWithoutUserInput
+    commentLike?: CommentLikeCreateNestedManyWithoutUserInput
+    reCommentLike?: ReCommentLikeCreateNestedManyWithoutUserInput
+    reComment?: ReCommentCreateNestedManyWithoutUserInput
+    socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
+    userSchool?: UserSchoolCreateNestedOneWithoutUserInput
+    userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutConnectionAccountInput = {
+    id?: string
+    email?: string | null
+    password?: string | null
+    name: string
+    profile?: string | null
+    isVerified?: boolean
+    phone?: string | null
+    createdAt?: Date | string
+    provider: UserLoginProviderType
+    userSchoolId?: string | null
+    agreement?: AgreementUncheckedCreateNestedOneWithoutUserInput
+    article?: ArticleUncheckedCreateNestedManyWithoutUserInput
+    asked?: AskedUncheckedCreateNestedManyWithoutQuestionUserInput
+    askedUser?: AskedUserUncheckedCreateNestedOneWithoutUserInput
+    boardOrganizations?: BoardManagerUncheckedCreateNestedManyWithoutUserInput
+    comment?: CommentUncheckedCreateNestedManyWithoutUserInput
+    image?: ImageUncheckedCreateNestedManyWithoutUserInput
+    articleLike?: ArticleLikeUncheckedCreateNestedManyWithoutUserInput
+    commentLike?: CommentLikeUncheckedCreateNestedManyWithoutUserInput
+    reCommentLike?: ReCommentLikeUncheckedCreateNestedManyWithoutUserInput
+    reComment?: ReCommentUncheckedCreateNestedManyWithoutUserInput
+    socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
+    userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
+    userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutConnectionAccountInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutConnectionAccountInput, UserUncheckedCreateWithoutConnectionAccountInput>
+  }
+
+  export type UserUpsertWithoutConnectionAccountInput = {
+    update: XOR<UserUpdateWithoutConnectionAccountInput, UserUncheckedUpdateWithoutConnectionAccountInput>
+    create: XOR<UserCreateWithoutConnectionAccountInput, UserUncheckedCreateWithoutConnectionAccountInput>
+  }
+
+  export type UserUpdateWithoutConnectionAccountInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    provider?: EnumUserLoginProviderTypeFieldUpdateOperationsInput | UserLoginProviderType
+    userSchoolId?: NullableStringFieldUpdateOperationsInput | string | null
+    agreement?: AgreementUpdateOneWithoutUserNestedInput
+    article?: ArticleUpdateManyWithoutUserNestedInput
+    asked?: AskedUpdateManyWithoutQuestionUserNestedInput
+    askedUser?: AskedUserUpdateOneWithoutUserNestedInput
+    boardOrganizations?: BoardManagerUpdateManyWithoutUserNestedInput
+    comment?: CommentUpdateManyWithoutUserNestedInput
+    image?: ImageUpdateManyWithoutUserNestedInput
+    articleLike?: ArticleLikeUpdateManyWithoutUserNestedInput
+    commentLike?: CommentLikeUpdateManyWithoutUserNestedInput
+    reCommentLike?: ReCommentLikeUpdateManyWithoutUserNestedInput
+    reComment?: ReCommentUpdateManyWithoutUserNestedInput
+    socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
+    userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
+    userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutConnectionAccountInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    provider?: EnumUserLoginProviderTypeFieldUpdateOperationsInput | UserLoginProviderType
+    userSchoolId?: NullableStringFieldUpdateOperationsInput | string | null
+    agreement?: AgreementUncheckedUpdateOneWithoutUserNestedInput
+    article?: ArticleUncheckedUpdateManyWithoutUserNestedInput
+    asked?: AskedUncheckedUpdateManyWithoutQuestionUserNestedInput
+    askedUser?: AskedUserUncheckedUpdateOneWithoutUserNestedInput
+    boardOrganizations?: BoardManagerUncheckedUpdateManyWithoutUserNestedInput
+    comment?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    image?: ImageUncheckedUpdateManyWithoutUserNestedInput
+    articleLike?: ArticleLikeUncheckedUpdateManyWithoutUserNestedInput
+    commentLike?: CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+    reCommentLike?: ReCommentLikeUncheckedUpdateManyWithoutUserNestedInput
+    reComment?: ReCommentUncheckedUpdateManyWithoutUserNestedInput
+    socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
+    userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
+    userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type FightRankingCreateWithoutFightInput = {
+    id?: string
+    userId: string
+    createdAt?: Date | string
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutFightRankingInput
+    school: SchoolCreateNestedOneWithoutFightRankingInput
+  }
+
+  export type FightRankingUncheckedCreateWithoutFightInput = {
+    id?: string
+    userId: string
+    createdAt?: Date | string
+    schoolId: string
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutFightRankingInput
+  }
+
+  export type FightRankingCreateOrConnectWithoutFightInput = {
+    where: FightRankingWhereUniqueInput
+    create: XOR<FightRankingCreateWithoutFightInput, FightRankingUncheckedCreateWithoutFightInput>
+  }
+
+  export type FightRankingCreateManyFightInputEnvelope = {
+    data: Enumerable<FightRankingCreateManyFightInput>
+    skipDuplicates?: boolean
+  }
+
+  export type FightRankingUserCreateWithoutFightInput = {
+    id?: string
+    score?: number
+    createdAt?: Date | string
+    school: SchoolCreateNestedOneWithoutFightRankingUserInput
+    user: UserCreateNestedOneWithoutFightRankingUserInput
+    fightRanking: FightRankingCreateNestedOneWithoutFightRankingUserInput
+  }
+
+  export type FightRankingUserUncheckedCreateWithoutFightInput = {
+    id?: string
+    userId: string
+    fightRankingId: string
+    schoolId: string
+    score?: number
+    createdAt?: Date | string
+  }
+
+  export type FightRankingUserCreateOrConnectWithoutFightInput = {
+    where: FightRankingUserWhereUniqueInput
+    create: XOR<FightRankingUserCreateWithoutFightInput, FightRankingUserUncheckedCreateWithoutFightInput>
+  }
+
+  export type FightRankingUserCreateManyFightInputEnvelope = {
+    data: Enumerable<FightRankingUserCreateManyFightInput>
+    skipDuplicates?: boolean
+  }
+
+  export type FightRankingUpsertWithWhereUniqueWithoutFightInput = {
+    where: FightRankingWhereUniqueInput
+    update: XOR<FightRankingUpdateWithoutFightInput, FightRankingUncheckedUpdateWithoutFightInput>
+    create: XOR<FightRankingCreateWithoutFightInput, FightRankingUncheckedCreateWithoutFightInput>
+  }
+
+  export type FightRankingUpdateWithWhereUniqueWithoutFightInput = {
+    where: FightRankingWhereUniqueInput
+    data: XOR<FightRankingUpdateWithoutFightInput, FightRankingUncheckedUpdateWithoutFightInput>
+  }
+
+  export type FightRankingUpdateManyWithWhereWithoutFightInput = {
+    where: FightRankingScalarWhereInput
+    data: XOR<FightRankingUpdateManyMutationInput, FightRankingUncheckedUpdateManyWithoutFightRankingInput>
+  }
+
+  export type FightRankingUserUpsertWithWhereUniqueWithoutFightInput = {
+    where: FightRankingUserWhereUniqueInput
+    update: XOR<FightRankingUserUpdateWithoutFightInput, FightRankingUserUncheckedUpdateWithoutFightInput>
+    create: XOR<FightRankingUserCreateWithoutFightInput, FightRankingUserUncheckedCreateWithoutFightInput>
+  }
+
+  export type FightRankingUserUpdateWithWhereUniqueWithoutFightInput = {
+    where: FightRankingUserWhereUniqueInput
+    data: XOR<FightRankingUserUpdateWithoutFightInput, FightRankingUserUncheckedUpdateWithoutFightInput>
+  }
+
+  export type FightRankingUserUpdateManyWithWhereWithoutFightInput = {
+    where: FightRankingUserScalarWhereInput
+    data: XOR<FightRankingUserUpdateManyMutationInput, FightRankingUserUncheckedUpdateManyWithoutFightRankingUserInput>
+  }
+
+  export type FightRankingUserCreateWithoutFightRankingInput = {
+    id?: string
+    score?: number
+    createdAt?: Date | string
+    school: SchoolCreateNestedOneWithoutFightRankingUserInput
+    user: UserCreateNestedOneWithoutFightRankingUserInput
+    fight: FightCreateNestedOneWithoutFightRankingUserInput
+  }
+
+  export type FightRankingUserUncheckedCreateWithoutFightRankingInput = {
+    id?: string
+    userId: string
+    fightId: string
+    schoolId: string
+    score?: number
+    createdAt?: Date | string
+  }
+
+  export type FightRankingUserCreateOrConnectWithoutFightRankingInput = {
+    where: FightRankingUserWhereUniqueInput
+    create: XOR<FightRankingUserCreateWithoutFightRankingInput, FightRankingUserUncheckedCreateWithoutFightRankingInput>
+  }
+
+  export type FightRankingUserCreateManyFightRankingInputEnvelope = {
+    data: Enumerable<FightRankingUserCreateManyFightRankingInput>
+    skipDuplicates?: boolean
+  }
+
+  export type SchoolCreateWithoutFightRankingInput = {
+    schoolId: string
+    org: string
+    x: number
+    y: number
+    atptCode: string
+    defaultName: string
+    name?: string | null
+    type: string
+    userSchool?: UserSchoolCreateNestedManyWithoutSchoolInput
+    article?: ArticleCreateNestedManyWithoutSchoolInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutSchoolInput
+  }
+
+  export type SchoolUncheckedCreateWithoutFightRankingInput = {
+    schoolId: string
+    org: string
+    x: number
+    y: number
+    atptCode: string
+    defaultName: string
+    name?: string | null
+    type: string
+    userSchool?: UserSchoolUncheckedCreateNestedManyWithoutSchoolInput
+    article?: ArticleUncheckedCreateNestedManyWithoutSchoolInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutSchoolInput
+  }
+
+  export type SchoolCreateOrConnectWithoutFightRankingInput = {
+    where: SchoolWhereUniqueInput
+    create: XOR<SchoolCreateWithoutFightRankingInput, SchoolUncheckedCreateWithoutFightRankingInput>
+  }
+
+  export type FightCreateWithoutFightRankingInput = {
+    id?: string
+    startAt?: Date | string
+    endAt?: Date | string | null
+    needTo?: FightCreateneedToInput | Enumerable<string>
+    title: string
+    description?: string | null
+    prize?: string | null
+    isVerified?: boolean
+    fightAreaType: FightAreaType
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutFightInput
+  }
+
+  export type FightUncheckedCreateWithoutFightRankingInput = {
+    id?: string
+    startAt?: Date | string
+    endAt?: Date | string | null
+    needTo?: FightCreateneedToInput | Enumerable<string>
+    title: string
+    description?: string | null
+    prize?: string | null
+    isVerified?: boolean
+    fightAreaType: FightAreaType
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutFightInput
+  }
+
+  export type FightCreateOrConnectWithoutFightRankingInput = {
+    where: FightWhereUniqueInput
+    create: XOR<FightCreateWithoutFightRankingInput, FightUncheckedCreateWithoutFightRankingInput>
+  }
+
+  export type FightRankingUserUpsertWithWhereUniqueWithoutFightRankingInput = {
+    where: FightRankingUserWhereUniqueInput
+    update: XOR<FightRankingUserUpdateWithoutFightRankingInput, FightRankingUserUncheckedUpdateWithoutFightRankingInput>
+    create: XOR<FightRankingUserCreateWithoutFightRankingInput, FightRankingUserUncheckedCreateWithoutFightRankingInput>
+  }
+
+  export type FightRankingUserUpdateWithWhereUniqueWithoutFightRankingInput = {
+    where: FightRankingUserWhereUniqueInput
+    data: XOR<FightRankingUserUpdateWithoutFightRankingInput, FightRankingUserUncheckedUpdateWithoutFightRankingInput>
+  }
+
+  export type FightRankingUserUpdateManyWithWhereWithoutFightRankingInput = {
+    where: FightRankingUserScalarWhereInput
+    data: XOR<FightRankingUserUpdateManyMutationInput, FightRankingUserUncheckedUpdateManyWithoutFightRankingUserInput>
+  }
+
+  export type SchoolUpsertWithoutFightRankingInput = {
+    update: XOR<SchoolUpdateWithoutFightRankingInput, SchoolUncheckedUpdateWithoutFightRankingInput>
+    create: XOR<SchoolCreateWithoutFightRankingInput, SchoolUncheckedCreateWithoutFightRankingInput>
+  }
+
+  export type SchoolUpdateWithoutFightRankingInput = {
+    schoolId?: StringFieldUpdateOperationsInput | string
+    org?: StringFieldUpdateOperationsInput | string
+    x?: FloatFieldUpdateOperationsInput | number
+    y?: FloatFieldUpdateOperationsInput | number
+    atptCode?: StringFieldUpdateOperationsInput | string
+    defaultName?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    userSchool?: UserSchoolUpdateManyWithoutSchoolNestedInput
+    article?: ArticleUpdateManyWithoutSchoolNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutSchoolNestedInput
+  }
+
+  export type SchoolUncheckedUpdateWithoutFightRankingInput = {
+    schoolId?: StringFieldUpdateOperationsInput | string
+    org?: StringFieldUpdateOperationsInput | string
+    x?: FloatFieldUpdateOperationsInput | number
+    y?: FloatFieldUpdateOperationsInput | number
+    atptCode?: StringFieldUpdateOperationsInput | string
+    defaultName?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    userSchool?: UserSchoolUncheckedUpdateManyWithoutSchoolNestedInput
+    article?: ArticleUncheckedUpdateManyWithoutSchoolNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutSchoolNestedInput
+  }
+
+  export type FightUpsertWithoutFightRankingInput = {
+    update: XOR<FightUpdateWithoutFightRankingInput, FightUncheckedUpdateWithoutFightRankingInput>
+    create: XOR<FightCreateWithoutFightRankingInput, FightUncheckedCreateWithoutFightRankingInput>
+  }
+
+  export type FightUpdateWithoutFightRankingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    needTo?: FightUpdateneedToInput | Enumerable<string>
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    prize?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    fightAreaType?: EnumFightAreaTypeFieldUpdateOperationsInput | FightAreaType
+    fightRankingUser?: FightRankingUserUpdateManyWithoutFightNestedInput
+  }
+
+  export type FightUncheckedUpdateWithoutFightRankingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    needTo?: FightUpdateneedToInput | Enumerable<string>
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    prize?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    fightAreaType?: EnumFightAreaTypeFieldUpdateOperationsInput | FightAreaType
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutFightNestedInput
+  }
+
+  export type SchoolCreateWithoutFightRankingUserInput = {
+    schoolId: string
+    org: string
+    x: number
+    y: number
+    atptCode: string
+    defaultName: string
+    name?: string | null
+    type: string
+    userSchool?: UserSchoolCreateNestedManyWithoutSchoolInput
+    article?: ArticleCreateNestedManyWithoutSchoolInput
+    fightRanking?: FightRankingCreateNestedManyWithoutSchoolInput
+  }
+
+  export type SchoolUncheckedCreateWithoutFightRankingUserInput = {
+    schoolId: string
+    org: string
+    x: number
+    y: number
+    atptCode: string
+    defaultName: string
+    name?: string | null
+    type: string
+    userSchool?: UserSchoolUncheckedCreateNestedManyWithoutSchoolInput
+    article?: ArticleUncheckedCreateNestedManyWithoutSchoolInput
+    fightRanking?: FightRankingUncheckedCreateNestedManyWithoutSchoolInput
+  }
+
+  export type SchoolCreateOrConnectWithoutFightRankingUserInput = {
+    where: SchoolWhereUniqueInput
+    create: XOR<SchoolCreateWithoutFightRankingUserInput, SchoolUncheckedCreateWithoutFightRankingUserInput>
+  }
+
+  export type UserCreateWithoutFightRankingUserInput = {
+    id?: string
+    email?: string | null
+    password?: string | null
+    name: string
+    profile?: string | null
+    isVerified?: boolean
+    phone?: string | null
+    createdAt?: Date | string
+    provider: UserLoginProviderType
+    userSchoolId?: string | null
+    agreement?: AgreementCreateNestedOneWithoutUserInput
+    article?: ArticleCreateNestedManyWithoutUserInput
+    asked?: AskedCreateNestedManyWithoutQuestionUserInput
+    askedUser?: AskedUserCreateNestedOneWithoutUserInput
+    boardOrganizations?: BoardManagerCreateNestedManyWithoutUserInput
+    comment?: CommentCreateNestedManyWithoutUserInput
+    image?: ImageCreateNestedManyWithoutUserInput
+    articleLike?: ArticleLikeCreateNestedManyWithoutUserInput
+    commentLike?: CommentLikeCreateNestedManyWithoutUserInput
+    reCommentLike?: ReCommentLikeCreateNestedManyWithoutUserInput
+    reComment?: ReCommentCreateNestedManyWithoutUserInput
+    socialLogin?: SocialLoginCreateNestedOneWithoutUserInput
+    userSchool?: UserSchoolCreateNestedOneWithoutUserInput
+    userSchoolVerify?: UserSchoolVerifyCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutFightRankingUserInput = {
+    id?: string
+    email?: string | null
+    password?: string | null
+    name: string
+    profile?: string | null
+    isVerified?: boolean
+    phone?: string | null
+    createdAt?: Date | string
+    provider: UserLoginProviderType
+    userSchoolId?: string | null
+    agreement?: AgreementUncheckedCreateNestedOneWithoutUserInput
+    article?: ArticleUncheckedCreateNestedManyWithoutUserInput
+    asked?: AskedUncheckedCreateNestedManyWithoutQuestionUserInput
+    askedUser?: AskedUserUncheckedCreateNestedOneWithoutUserInput
+    boardOrganizations?: BoardManagerUncheckedCreateNestedManyWithoutUserInput
+    comment?: CommentUncheckedCreateNestedManyWithoutUserInput
+    image?: ImageUncheckedCreateNestedManyWithoutUserInput
+    articleLike?: ArticleLikeUncheckedCreateNestedManyWithoutUserInput
+    commentLike?: CommentLikeUncheckedCreateNestedManyWithoutUserInput
+    reCommentLike?: ReCommentLikeUncheckedCreateNestedManyWithoutUserInput
+    reComment?: ReCommentUncheckedCreateNestedManyWithoutUserInput
+    socialLogin?: SocialLoginUncheckedCreateNestedOneWithoutUserInput
+    userSchool?: UserSchoolUncheckedCreateNestedOneWithoutUserInput
+    userSchoolVerify?: UserSchoolVerifyUncheckedCreateNestedManyWithoutUserInput
+    pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
+    reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
+    reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutFightRankingUserInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFightRankingUserInput, UserUncheckedCreateWithoutFightRankingUserInput>
+  }
+
+  export type FightCreateWithoutFightRankingUserInput = {
+    id?: string
+    startAt?: Date | string
+    endAt?: Date | string | null
+    needTo?: FightCreateneedToInput | Enumerable<string>
+    title: string
+    description?: string | null
+    prize?: string | null
+    isVerified?: boolean
+    fightAreaType: FightAreaType
+    fightRanking?: FightRankingCreateNestedManyWithoutFightInput
+  }
+
+  export type FightUncheckedCreateWithoutFightRankingUserInput = {
+    id?: string
+    startAt?: Date | string
+    endAt?: Date | string | null
+    needTo?: FightCreateneedToInput | Enumerable<string>
+    title: string
+    description?: string | null
+    prize?: string | null
+    isVerified?: boolean
+    fightAreaType: FightAreaType
+    fightRanking?: FightRankingUncheckedCreateNestedManyWithoutFightInput
+  }
+
+  export type FightCreateOrConnectWithoutFightRankingUserInput = {
+    where: FightWhereUniqueInput
+    create: XOR<FightCreateWithoutFightRankingUserInput, FightUncheckedCreateWithoutFightRankingUserInput>
+  }
+
+  export type FightRankingCreateWithoutFightRankingUserInput = {
+    id?: string
+    userId: string
+    createdAt?: Date | string
+    school: SchoolCreateNestedOneWithoutFightRankingInput
+    fight: FightCreateNestedOneWithoutFightRankingInput
+  }
+
+  export type FightRankingUncheckedCreateWithoutFightRankingUserInput = {
+    id?: string
+    userId: string
+    fightId: string
+    createdAt?: Date | string
+    schoolId: string
+  }
+
+  export type FightRankingCreateOrConnectWithoutFightRankingUserInput = {
+    where: FightRankingWhereUniqueInput
+    create: XOR<FightRankingCreateWithoutFightRankingUserInput, FightRankingUncheckedCreateWithoutFightRankingUserInput>
+  }
+
+  export type SchoolUpsertWithoutFightRankingUserInput = {
+    update: XOR<SchoolUpdateWithoutFightRankingUserInput, SchoolUncheckedUpdateWithoutFightRankingUserInput>
+    create: XOR<SchoolCreateWithoutFightRankingUserInput, SchoolUncheckedCreateWithoutFightRankingUserInput>
+  }
+
+  export type SchoolUpdateWithoutFightRankingUserInput = {
+    schoolId?: StringFieldUpdateOperationsInput | string
+    org?: StringFieldUpdateOperationsInput | string
+    x?: FloatFieldUpdateOperationsInput | number
+    y?: FloatFieldUpdateOperationsInput | number
+    atptCode?: StringFieldUpdateOperationsInput | string
+    defaultName?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    userSchool?: UserSchoolUpdateManyWithoutSchoolNestedInput
+    article?: ArticleUpdateManyWithoutSchoolNestedInput
+    fightRanking?: FightRankingUpdateManyWithoutSchoolNestedInput
+  }
+
+  export type SchoolUncheckedUpdateWithoutFightRankingUserInput = {
+    schoolId?: StringFieldUpdateOperationsInput | string
+    org?: StringFieldUpdateOperationsInput | string
+    x?: FloatFieldUpdateOperationsInput | number
+    y?: FloatFieldUpdateOperationsInput | number
+    atptCode?: StringFieldUpdateOperationsInput | string
+    defaultName?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    userSchool?: UserSchoolUncheckedUpdateManyWithoutSchoolNestedInput
+    article?: ArticleUncheckedUpdateManyWithoutSchoolNestedInput
+    fightRanking?: FightRankingUncheckedUpdateManyWithoutSchoolNestedInput
+  }
+
+  export type UserUpsertWithoutFightRankingUserInput = {
+    update: XOR<UserUpdateWithoutFightRankingUserInput, UserUncheckedUpdateWithoutFightRankingUserInput>
+    create: XOR<UserCreateWithoutFightRankingUserInput, UserUncheckedCreateWithoutFightRankingUserInput>
+  }
+
+  export type UserUpdateWithoutFightRankingUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    provider?: EnumUserLoginProviderTypeFieldUpdateOperationsInput | UserLoginProviderType
+    userSchoolId?: NullableStringFieldUpdateOperationsInput | string | null
+    agreement?: AgreementUpdateOneWithoutUserNestedInput
+    article?: ArticleUpdateManyWithoutUserNestedInput
+    asked?: AskedUpdateManyWithoutQuestionUserNestedInput
+    askedUser?: AskedUserUpdateOneWithoutUserNestedInput
+    boardOrganizations?: BoardManagerUpdateManyWithoutUserNestedInput
+    comment?: CommentUpdateManyWithoutUserNestedInput
+    image?: ImageUpdateManyWithoutUserNestedInput
+    articleLike?: ArticleLikeUpdateManyWithoutUserNestedInput
+    commentLike?: CommentLikeUpdateManyWithoutUserNestedInput
+    reCommentLike?: ReCommentLikeUpdateManyWithoutUserNestedInput
+    reComment?: ReCommentUpdateManyWithoutUserNestedInput
+    socialLogin?: SocialLoginUpdateOneWithoutUserNestedInput
+    userSchool?: UserSchoolUpdateOneWithoutUserNestedInput
+    userSchoolVerify?: UserSchoolVerifyUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFightRankingUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    profile?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    provider?: EnumUserLoginProviderTypeFieldUpdateOperationsInput | UserLoginProviderType
+    userSchoolId?: NullableStringFieldUpdateOperationsInput | string | null
+    agreement?: AgreementUncheckedUpdateOneWithoutUserNestedInput
+    article?: ArticleUncheckedUpdateManyWithoutUserNestedInput
+    asked?: AskedUncheckedUpdateManyWithoutQuestionUserNestedInput
+    askedUser?: AskedUserUncheckedUpdateOneWithoutUserNestedInput
+    boardOrganizations?: BoardManagerUncheckedUpdateManyWithoutUserNestedInput
+    comment?: CommentUncheckedUpdateManyWithoutUserNestedInput
+    image?: ImageUncheckedUpdateManyWithoutUserNestedInput
+    articleLike?: ArticleLikeUncheckedUpdateManyWithoutUserNestedInput
+    commentLike?: CommentLikeUncheckedUpdateManyWithoutUserNestedInput
+    reCommentLike?: ReCommentLikeUncheckedUpdateManyWithoutUserNestedInput
+    reComment?: ReCommentUncheckedUpdateManyWithoutUserNestedInput
+    socialLogin?: SocialLoginUncheckedUpdateOneWithoutUserNestedInput
+    userSchool?: UserSchoolUncheckedUpdateOneWithoutUserNestedInput
+    userSchoolVerify?: UserSchoolVerifyUncheckedUpdateManyWithoutUserNestedInput
+    pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
+    reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type FightUpsertWithoutFightRankingUserInput = {
+    update: XOR<FightUpdateWithoutFightRankingUserInput, FightUncheckedUpdateWithoutFightRankingUserInput>
+    create: XOR<FightCreateWithoutFightRankingUserInput, FightUncheckedCreateWithoutFightRankingUserInput>
+  }
+
+  export type FightUpdateWithoutFightRankingUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    needTo?: FightUpdateneedToInput | Enumerable<string>
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    prize?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    fightAreaType?: EnumFightAreaTypeFieldUpdateOperationsInput | FightAreaType
+    fightRanking?: FightRankingUpdateManyWithoutFightNestedInput
+  }
+
+  export type FightUncheckedUpdateWithoutFightRankingUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    needTo?: FightUpdateneedToInput | Enumerable<string>
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    prize?: NullableStringFieldUpdateOperationsInput | string | null
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    fightAreaType?: EnumFightAreaTypeFieldUpdateOperationsInput | FightAreaType
+    fightRanking?: FightRankingUncheckedUpdateManyWithoutFightNestedInput
+  }
+
+  export type FightRankingUpsertWithoutFightRankingUserInput = {
+    update: XOR<FightRankingUpdateWithoutFightRankingUserInput, FightRankingUncheckedUpdateWithoutFightRankingUserInput>
+    create: XOR<FightRankingCreateWithoutFightRankingUserInput, FightRankingUncheckedCreateWithoutFightRankingUserInput>
+  }
+
+  export type FightRankingUpdateWithoutFightRankingUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    school?: SchoolUpdateOneRequiredWithoutFightRankingNestedInput
+    fight?: FightUpdateOneRequiredWithoutFightRankingNestedInput
+  }
+
+  export type FightRankingUncheckedUpdateWithoutFightRankingUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fightId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type UserCreateWithoutImageInput = {
     id?: string
     email?: string | null
@@ -49099,6 +55893,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutImageInput = {
@@ -49129,6 +55925,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutImageInput = {
@@ -49207,6 +56005,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutImageInput = {
@@ -49237,6 +56037,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserSchoolVerifyUpsertWithWhereUniqueWithoutImageInput = {
@@ -49283,6 +56085,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSocialLoginInput = {
@@ -49313,6 +56117,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSocialLoginInput = {
@@ -49353,6 +56159,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSocialLoginInput = {
@@ -49383,6 +56191,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAgreementInput = {
@@ -49413,6 +56223,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAgreementInput = {
@@ -49443,6 +56255,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAgreementInput = {
@@ -49483,6 +56297,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAgreementInput = {
@@ -49513,6 +56329,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ImageCreateWithoutUserSchoolVerifyInput = {
@@ -49562,6 +56380,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserSchoolVerifyInput = {
@@ -49592,6 +56412,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserSchoolVerifyInput = {
@@ -49651,6 +56473,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserSchoolVerifyInput = {
@@ -49681,6 +56505,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SchoolCreateWithoutUserSchoolInput = {
@@ -49693,6 +56519,8 @@ export namespace Prisma {
     name?: string | null
     type: string
     article?: ArticleCreateNestedManyWithoutSchoolInput
+    fightRanking?: FightRankingCreateNestedManyWithoutSchoolInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutSchoolInput
   }
 
   export type SchoolUncheckedCreateWithoutUserSchoolInput = {
@@ -49705,6 +56533,8 @@ export namespace Prisma {
     name?: string | null
     type: string
     article?: ArticleUncheckedCreateNestedManyWithoutSchoolInput
+    fightRanking?: FightRankingUncheckedCreateNestedManyWithoutSchoolInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutSchoolInput
   }
 
   export type SchoolCreateOrConnectWithoutUserSchoolInput = {
@@ -49740,6 +56570,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserSchoolInput = {
@@ -49770,6 +56602,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserSchoolInput = {
@@ -49792,6 +56626,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
     article?: ArticleUpdateManyWithoutSchoolNestedInput
+    fightRanking?: FightRankingUpdateManyWithoutSchoolNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutSchoolNestedInput
   }
 
   export type SchoolUncheckedUpdateWithoutUserSchoolInput = {
@@ -49804,6 +56640,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
     article?: ArticleUncheckedUpdateManyWithoutSchoolNestedInput
+    fightRanking?: FightRankingUncheckedUpdateManyWithoutSchoolNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutSchoolNestedInput
   }
 
   export type UserUpsertWithoutUserSchoolInput = {
@@ -49839,6 +56677,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserSchoolInput = {
@@ -49869,6 +56709,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AskedCreateWithoutAskedUserInput = {
@@ -49931,6 +56773,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAskedUserInput = {
@@ -49961,6 +56805,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAskedUserInput = {
@@ -50017,6 +56863,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAskedUserInput = {
@@ -50047,6 +56895,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AskedUserCreateWithoutAskedInput = {
@@ -50104,6 +56954,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAskedInput = {
@@ -50134,6 +56986,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAskedInput = {
@@ -50201,6 +57055,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAskedInput = {
@@ -50231,6 +57087,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserBlockCreateWithoutTransactionAdminInput = {
@@ -50434,6 +57292,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBoardOrganizationsInput = {
@@ -50464,6 +57324,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBoardOrganizationsInput = {
@@ -50532,6 +57394,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBoardOrganizationsInput = {
@@ -50562,6 +57426,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type BoardCreateWithoutArticleInput = {
@@ -50620,6 +57486,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutArticleInput = {
@@ -50650,6 +57518,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutArticleInput = {
@@ -50667,6 +57537,8 @@ export namespace Prisma {
     name?: string | null
     type: string
     userSchool?: UserSchoolCreateNestedManyWithoutSchoolInput
+    fightRanking?: FightRankingCreateNestedManyWithoutSchoolInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutSchoolInput
   }
 
   export type SchoolUncheckedCreateWithoutArticleInput = {
@@ -50679,6 +57551,8 @@ export namespace Prisma {
     name?: string | null
     type: string
     userSchool?: UserSchoolUncheckedCreateNestedManyWithoutSchoolInput
+    fightRanking?: FightRankingUncheckedCreateNestedManyWithoutSchoolInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutSchoolInput
   }
 
   export type SchoolCreateOrConnectWithoutArticleInput = {
@@ -50875,6 +57749,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticleInput = {
@@ -50905,6 +57781,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SchoolUpsertWithoutArticleInput = {
@@ -50922,6 +57800,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
     userSchool?: UserSchoolUpdateManyWithoutSchoolNestedInput
+    fightRanking?: FightRankingUpdateManyWithoutSchoolNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutSchoolNestedInput
   }
 
   export type SchoolUncheckedUpdateWithoutArticleInput = {
@@ -50934,6 +57814,8 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     type?: StringFieldUpdateOperationsInput | string
     userSchool?: UserSchoolUncheckedUpdateManyWithoutSchoolNestedInput
+    fightRanking?: FightRankingUncheckedUpdateManyWithoutSchoolNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutSchoolNestedInput
   }
 
   export type CommentUpsertWithWhereUniqueWithoutArticleInput = {
@@ -51072,6 +57954,8 @@ export namespace Prisma {
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserBlockInput = {
@@ -51102,6 +57986,8 @@ export namespace Prisma {
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserBlockInput = {
@@ -51161,6 +58047,8 @@ export namespace Prisma {
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserBlockInput = {
@@ -51191,6 +58079,8 @@ export namespace Prisma {
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleCreateWithoutCommentInput = {
@@ -51259,6 +58149,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentInput = {
@@ -51289,6 +58181,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentInput = {
@@ -51422,6 +58316,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentInput = {
@@ -51452,6 +58348,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CommentLikeUpsertWithWhereUniqueWithoutCommentInput = {
@@ -51580,6 +58478,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReCommentInput = {
@@ -51610,6 +58510,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReCommentInput = {
@@ -51738,6 +58640,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReCommentInput = {
@@ -51768,6 +58672,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ReCommentLikeUpsertWithWhereUniqueWithoutRecommentInput = {
@@ -51814,6 +58720,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutArticleLikeInput = {
@@ -51844,6 +58752,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutArticleLikeInput = {
@@ -51922,6 +58832,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticleLikeInput = {
@@ -51952,6 +58864,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleUpsertWithoutArticleLikeInput = {
@@ -52020,6 +58934,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentLikeInput = {
@@ -52050,6 +58966,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentLikeInput = {
@@ -52118,6 +59036,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentLikeInput = {
@@ -52148,6 +59068,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CommentUpsertWithoutCommentLikeInput = {
@@ -52206,6 +59128,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReCommentLikeInput = {
@@ -52236,6 +59160,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReCommentLikeInput = {
@@ -52304,6 +59230,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReCommentLikeInput = {
@@ -52334,6 +59262,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ReCommentUpsertWithoutReCommentLikeInput = {
@@ -52468,6 +59398,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPushDeviceInput = {
@@ -52498,6 +59430,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPushDeviceInput = {
@@ -52538,6 +59472,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPushDeviceInput = {
@@ -52568,6 +59504,8 @@ export namespace Prisma {
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleCreateWithoutReportBlindArticleInput = {
@@ -52636,6 +59574,8 @@ export namespace Prisma {
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReportBlindArticleInput = {
@@ -52666,6 +59606,8 @@ export namespace Prisma {
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
     reportBlindUser?: ReportBlindUserUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReportBlindArticleInput = {
@@ -52744,6 +59686,8 @@ export namespace Prisma {
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportBlindArticleInput = {
@@ -52774,6 +59718,8 @@ export namespace Prisma {
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
     reportBlindUser?: ReportBlindUserUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutReportBlindUserInput = {
@@ -52804,6 +59750,8 @@ export namespace Prisma {
     pushDevice?: PushDeviceCreateNestedManyWithoutUserInput
     reportBlindArticle?: ReportBlindArticleCreateNestedManyWithoutUserInput
     userBlock?: UserBlockCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReportBlindUserInput = {
@@ -52834,6 +59782,8 @@ export namespace Prisma {
     pushDevice?: PushDeviceUncheckedCreateNestedManyWithoutUserInput
     reportBlindArticle?: ReportBlindArticleUncheckedCreateNestedManyWithoutUserInput
     userBlock?: UserBlockUncheckedCreateNestedManyWithoutUserInput
+    connectionAccount?: ConnectionAccountUncheckedCreateNestedManyWithoutUserInput
+    fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReportBlindUserInput = {
@@ -52874,6 +59824,8 @@ export namespace Prisma {
     pushDevice?: PushDeviceUpdateManyWithoutUserNestedInput
     reportBlindArticle?: ReportBlindArticleUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportBlindUserInput = {
@@ -52904,6 +59856,8 @@ export namespace Prisma {
     pushDevice?: PushDeviceUncheckedUpdateManyWithoutUserNestedInput
     reportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutUserNestedInput
     userBlock?: UserBlockUncheckedUpdateManyWithoutUserNestedInput
+    connectionAccount?: ConnectionAccountUncheckedUpdateManyWithoutUserNestedInput
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleCreateManyUserInput = {
@@ -53021,6 +59975,26 @@ export namespace Prisma {
     endDate: Date | string
     createdAt?: Date | string
     transactionAdminId: string
+  }
+
+  export type ConnectionAccountCreateManyUserInput = {
+    id?: string
+    accountId: string
+    name?: string | null
+    accessToken: string
+    refreshToken?: string | null
+    provider: string
+    followerCount?: number
+    articleCount?: number
+  }
+
+  export type FightRankingUserCreateManyUserInput = {
+    id?: string
+    fightId: string
+    fightRankingId: string
+    schoolId: string
+    score?: number
+    createdAt?: Date | string
   }
 
   export type ArticleUpdateWithoutUserInput = {
@@ -53387,6 +60361,66 @@ export namespace Prisma {
     transactionAdminId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type ConnectionAccountUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    accountId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: StringFieldUpdateOperationsInput | string
+    followerCount?: IntFieldUpdateOperationsInput | number
+    articleCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ConnectionAccountUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    accountId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: StringFieldUpdateOperationsInput | string
+    followerCount?: IntFieldUpdateOperationsInput | number
+    articleCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ConnectionAccountUncheckedUpdateManyWithoutConnectionAccountInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    accountId?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: StringFieldUpdateOperationsInput | string
+    followerCount?: IntFieldUpdateOperationsInput | number
+    articleCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type FightRankingUserUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    school?: SchoolUpdateOneRequiredWithoutFightRankingUserNestedInput
+    fight?: FightUpdateOneRequiredWithoutFightRankingUserNestedInput
+    fightRanking?: FightRankingUpdateOneRequiredWithoutFightRankingUserNestedInput
+  }
+
+  export type FightRankingUserUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fightId?: StringFieldUpdateOperationsInput | string
+    fightRankingId?: StringFieldUpdateOperationsInput | string
+    schoolId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FightRankingUserUncheckedUpdateManyWithoutFightRankingUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fightId?: StringFieldUpdateOperationsInput | string
+    fightRankingId?: StringFieldUpdateOperationsInput | string
+    schoolId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserSchoolCreateManySchoolInput = {
     userId: string
     dept?: string | null
@@ -53404,6 +60438,22 @@ export namespace Prisma {
     userId: string
     createdAt?: Date | string
     boardId: number
+  }
+
+  export type FightRankingCreateManySchoolInput = {
+    id?: string
+    userId: string
+    fightId: string
+    createdAt?: Date | string
+  }
+
+  export type FightRankingUserCreateManySchoolInput = {
+    id?: string
+    userId: string
+    fightId: string
+    fightRankingId: string
+    score?: number
+    createdAt?: Date | string
   }
 
   export type UserSchoolUpdateWithoutSchoolInput = {
@@ -53458,6 +60508,124 @@ export namespace Prisma {
     articleLike?: ArticleLikeUncheckedUpdateManyWithoutArticleNestedInput
     hotArticle?: HotArticleUncheckedUpdateManyWithoutArticleNestedInput
     ReportBlindArticle?: ReportBlindArticleUncheckedUpdateManyWithoutArticleNestedInput
+  }
+
+  export type FightRankingUpdateWithoutSchoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fightRankingUser?: FightRankingUserUpdateManyWithoutFightRankingNestedInput
+    fight?: FightUpdateOneRequiredWithoutFightRankingNestedInput
+  }
+
+  export type FightRankingUncheckedUpdateWithoutSchoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fightId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutFightRankingNestedInput
+  }
+
+  export type FightRankingUncheckedUpdateManyWithoutFightRankingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fightId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FightRankingUserUpdateWithoutSchoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutFightRankingUserNestedInput
+    fight?: FightUpdateOneRequiredWithoutFightRankingUserNestedInput
+    fightRanking?: FightRankingUpdateOneRequiredWithoutFightRankingUserNestedInput
+  }
+
+  export type FightRankingUserUncheckedUpdateWithoutSchoolInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fightId?: StringFieldUpdateOperationsInput | string
+    fightRankingId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FightRankingCreateManyFightInput = {
+    id?: string
+    userId: string
+    createdAt?: Date | string
+    schoolId: string
+  }
+
+  export type FightRankingUserCreateManyFightInput = {
+    id?: string
+    userId: string
+    fightRankingId: string
+    schoolId: string
+    score?: number
+    createdAt?: Date | string
+  }
+
+  export type FightRankingUpdateWithoutFightInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fightRankingUser?: FightRankingUserUpdateManyWithoutFightRankingNestedInput
+    school?: SchoolUpdateOneRequiredWithoutFightRankingNestedInput
+  }
+
+  export type FightRankingUncheckedUpdateWithoutFightInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    schoolId?: StringFieldUpdateOperationsInput | string
+    fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutFightRankingNestedInput
+  }
+
+  export type FightRankingUserUpdateWithoutFightInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    school?: SchoolUpdateOneRequiredWithoutFightRankingUserNestedInput
+    user?: UserUpdateOneRequiredWithoutFightRankingUserNestedInput
+    fightRanking?: FightRankingUpdateOneRequiredWithoutFightRankingUserNestedInput
+  }
+
+  export type FightRankingUserUncheckedUpdateWithoutFightInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fightRankingId?: StringFieldUpdateOperationsInput | string
+    schoolId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FightRankingUserCreateManyFightRankingInput = {
+    id?: string
+    userId: string
+    fightId: string
+    schoolId: string
+    score?: number
+    createdAt?: Date | string
+  }
+
+  export type FightRankingUserUpdateWithoutFightRankingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    school?: SchoolUpdateOneRequiredWithoutFightRankingUserNestedInput
+    user?: UserUpdateOneRequiredWithoutFightRankingUserNestedInput
+    fight?: FightUpdateOneRequiredWithoutFightRankingUserNestedInput
+  }
+
+  export type FightRankingUserUncheckedUpdateWithoutFightRankingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    fightId?: StringFieldUpdateOperationsInput | string
+    schoolId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserSchoolVerifyCreateManyImageInput = {

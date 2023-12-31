@@ -129,6 +129,48 @@ exports.Prisma.SchoolScalarFieldEnum = {
   type: 'type'
 };
 
+exports.Prisma.ConnectionAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  accountId: 'accountId',
+  name: 'name',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  provider: 'provider',
+  followerCount: 'followerCount',
+  articleCount: 'articleCount'
+};
+
+exports.Prisma.FightScalarFieldEnum = {
+  id: 'id',
+  startAt: 'startAt',
+  endAt: 'endAt',
+  needTo: 'needTo',
+  title: 'title',
+  description: 'description',
+  prize: 'prize',
+  isVerified: 'isVerified',
+  fightAreaType: 'fightAreaType'
+};
+
+exports.Prisma.FightRankingScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  fightId: 'fightId',
+  createdAt: 'createdAt',
+  schoolId: 'schoolId'
+};
+
+exports.Prisma.FightRankingUserScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  fightId: 'fightId',
+  fightRankingId: 'fightRankingId',
+  schoolId: 'schoolId',
+  score: 'score',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.ImageScalarFieldEnum = {
   id: 'id',
   key: 'key',
@@ -460,6 +502,13 @@ exports.UserLoginProviderType = {
   social: 'social'
 };
 
+exports.FightAreaType = {
+  school: 'school',
+  all: 'all',
+  city: 'city',
+  district: 'district'
+};
+
 exports.SocialLoginProviderType = {
   google: 'google',
   kakao: 'kakao'
@@ -498,6 +547,10 @@ exports.LikeType = {
 exports.Prisma.ModelName = {
   User: 'User',
   School: 'School',
+  ConnectionAccount: 'ConnectionAccount',
+  Fight: 'Fight',
+  FightRanking: 'FightRanking',
+  FightRankingUser: 'FightRankingUser',
   Image: 'Image',
   PhoneVerifyRequest: 'PhoneVerifyRequest',
   SocialLogin: 'SocialLogin',
