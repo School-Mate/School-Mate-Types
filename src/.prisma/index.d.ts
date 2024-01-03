@@ -117,6 +117,7 @@ export type FightPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultA
     description: string | null
     prize: string | null
     isVerified: boolean
+    icon: string | null
     fightAreaType: FightAreaType
   }, ExtArgs["result"]["fight"]>
   composites: {}
@@ -135,7 +136,6 @@ export type FightRankingPayload<ExtArgs extends $Extensions.Args = $Extensions.D
   }
   scalars: $Extensions.GetResult<{
     id: string
-    userId: string
     fightId: string
     createdAt: Date
     schoolId: string
@@ -9366,6 +9366,7 @@ export namespace Prisma {
     description: string | null
     prize: string | null
     isVerified: boolean | null
+    icon: string | null
     fightAreaType: FightAreaType | null
   }
 
@@ -9377,6 +9378,7 @@ export namespace Prisma {
     description: string | null
     prize: string | null
     isVerified: boolean | null
+    icon: string | null
     fightAreaType: FightAreaType | null
   }
 
@@ -9389,6 +9391,7 @@ export namespace Prisma {
     description: number
     prize: number
     isVerified: number
+    icon: number
     fightAreaType: number
     _all: number
   }
@@ -9402,6 +9405,7 @@ export namespace Prisma {
     description?: true
     prize?: true
     isVerified?: true
+    icon?: true
     fightAreaType?: true
   }
 
@@ -9413,6 +9417,7 @@ export namespace Prisma {
     description?: true
     prize?: true
     isVerified?: true
+    icon?: true
     fightAreaType?: true
   }
 
@@ -9425,6 +9430,7 @@ export namespace Prisma {
     description?: true
     prize?: true
     isVerified?: true
+    icon?: true
     fightAreaType?: true
     _all?: true
   }
@@ -9511,6 +9517,7 @@ export namespace Prisma {
     description: string | null
     prize: string | null
     isVerified: boolean
+    icon: string | null
     fightAreaType: FightAreaType
     _count: FightCountAggregateOutputType | null
     _min: FightMinAggregateOutputType | null
@@ -9540,6 +9547,7 @@ export namespace Prisma {
     description?: boolean
     prize?: boolean
     isVerified?: boolean
+    icon?: boolean
     fightAreaType?: boolean
     fightRanking?: boolean | Fight$fightRankingArgs<ExtArgs>
     fightRankingUser?: boolean | Fight$fightRankingUserArgs<ExtArgs>
@@ -9555,6 +9563,7 @@ export namespace Prisma {
     description?: boolean
     prize?: boolean
     isVerified?: boolean
+    icon?: boolean
     fightAreaType?: boolean
   }
 
@@ -10364,7 +10373,6 @@ export namespace Prisma {
 
   export type FightRankingMinAggregateOutputType = {
     id: string | null
-    userId: string | null
     fightId: string | null
     createdAt: Date | null
     schoolId: string | null
@@ -10372,7 +10380,6 @@ export namespace Prisma {
 
   export type FightRankingMaxAggregateOutputType = {
     id: string | null
-    userId: string | null
     fightId: string | null
     createdAt: Date | null
     schoolId: string | null
@@ -10380,7 +10387,6 @@ export namespace Prisma {
 
   export type FightRankingCountAggregateOutputType = {
     id: number
-    userId: number
     fightId: number
     createdAt: number
     schoolId: number
@@ -10390,7 +10396,6 @@ export namespace Prisma {
 
   export type FightRankingMinAggregateInputType = {
     id?: true
-    userId?: true
     fightId?: true
     createdAt?: true
     schoolId?: true
@@ -10398,7 +10403,6 @@ export namespace Prisma {
 
   export type FightRankingMaxAggregateInputType = {
     id?: true
-    userId?: true
     fightId?: true
     createdAt?: true
     schoolId?: true
@@ -10406,7 +10410,6 @@ export namespace Prisma {
 
   export type FightRankingCountAggregateInputType = {
     id?: true
-    userId?: true
     fightId?: true
     createdAt?: true
     schoolId?: true
@@ -10488,7 +10491,6 @@ export namespace Prisma {
 
   export type FightRankingGroupByOutputType = {
     id: string
-    userId: string
     fightId: string
     createdAt: Date
     schoolId: string
@@ -10513,7 +10515,6 @@ export namespace Prisma {
 
   export type FightRankingSelect<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
     fightId?: boolean
     createdAt?: boolean
     schoolId?: boolean
@@ -10525,7 +10526,6 @@ export namespace Prisma {
 
   export type FightRankingSelectScalar = {
     id?: boolean
-    userId?: boolean
     fightId?: boolean
     createdAt?: boolean
     schoolId?: boolean
@@ -43815,6 +43815,7 @@ export namespace Prisma {
     description: 'description',
     prize: 'prize',
     isVerified: 'isVerified',
+    icon: 'icon',
     fightAreaType: 'fightAreaType'
   };
 
@@ -43823,7 +43824,6 @@ export namespace Prisma {
 
   export const FightRankingScalarFieldEnum: {
     id: 'id',
-    userId: 'userId',
     fightId: 'fightId',
     createdAt: 'createdAt',
     schoolId: 'schoolId'
@@ -44535,6 +44535,7 @@ export namespace Prisma {
     description?: StringNullableFilter | string | null
     prize?: StringNullableFilter | string | null
     isVerified?: BoolFilter | boolean
+    icon?: StringNullableFilter | string | null
     fightAreaType?: EnumFightAreaTypeFilter | FightAreaType
     fightRanking?: FightRankingListRelationFilter
     fightRankingUser?: FightRankingUserListRelationFilter
@@ -44549,6 +44550,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     prize?: SortOrderInput | SortOrder
     isVerified?: SortOrder
+    icon?: SortOrderInput | SortOrder
     fightAreaType?: SortOrder
     fightRanking?: FightRankingOrderByRelationAggregateInput
     fightRankingUser?: FightRankingUserOrderByRelationAggregateInput
@@ -44567,6 +44569,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     prize?: SortOrderInput | SortOrder
     isVerified?: SortOrder
+    icon?: SortOrderInput | SortOrder
     fightAreaType?: SortOrder
     _count?: FightCountOrderByAggregateInput
     _max?: FightMaxOrderByAggregateInput
@@ -44585,6 +44588,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter | string | null
     prize?: StringNullableWithAggregatesFilter | string | null
     isVerified?: BoolWithAggregatesFilter | boolean
+    icon?: StringNullableWithAggregatesFilter | string | null
     fightAreaType?: EnumFightAreaTypeWithAggregatesFilter | FightAreaType
   }
 
@@ -44593,7 +44597,6 @@ export namespace Prisma {
     OR?: Enumerable<FightRankingWhereInput>
     NOT?: Enumerable<FightRankingWhereInput>
     id?: StringFilter | string
-    userId?: StringFilter | string
     fightId?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
     schoolId?: StringFilter | string
@@ -44604,7 +44607,6 @@ export namespace Prisma {
 
   export type FightRankingOrderByWithRelationInput = {
     id?: SortOrder
-    userId?: SortOrder
     fightId?: SortOrder
     createdAt?: SortOrder
     schoolId?: SortOrder
@@ -44619,7 +44621,6 @@ export namespace Prisma {
 
   export type FightRankingOrderByWithAggregationInput = {
     id?: SortOrder
-    userId?: SortOrder
     fightId?: SortOrder
     createdAt?: SortOrder
     schoolId?: SortOrder
@@ -44633,7 +44634,6 @@ export namespace Prisma {
     OR?: Enumerable<FightRankingScalarWhereWithAggregatesInput>
     NOT?: Enumerable<FightRankingScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
-    userId?: StringWithAggregatesFilter | string
     fightId?: StringWithAggregatesFilter | string
     createdAt?: DateTimeWithAggregatesFilter | Date | string
     schoolId?: StringWithAggregatesFilter | string
@@ -46868,6 +46868,7 @@ export namespace Prisma {
     description?: string | null
     prize?: string | null
     isVerified?: boolean
+    icon?: string | null
     fightAreaType: FightAreaType
     fightRanking?: FightRankingCreateNestedManyWithoutFightInput
     fightRankingUser?: FightRankingUserCreateNestedManyWithoutFightInput
@@ -46882,6 +46883,7 @@ export namespace Prisma {
     description?: string | null
     prize?: string | null
     isVerified?: boolean
+    icon?: string | null
     fightAreaType: FightAreaType
     fightRanking?: FightRankingUncheckedCreateNestedManyWithoutFightInput
     fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutFightInput
@@ -46896,6 +46898,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     prize?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
     fightAreaType?: EnumFightAreaTypeFieldUpdateOperationsInput | FightAreaType
     fightRanking?: FightRankingUpdateManyWithoutFightNestedInput
     fightRankingUser?: FightRankingUserUpdateManyWithoutFightNestedInput
@@ -46910,6 +46913,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     prize?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
     fightAreaType?: EnumFightAreaTypeFieldUpdateOperationsInput | FightAreaType
     fightRanking?: FightRankingUncheckedUpdateManyWithoutFightNestedInput
     fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutFightNestedInput
@@ -46924,6 +46928,7 @@ export namespace Prisma {
     description?: string | null
     prize?: string | null
     isVerified?: boolean
+    icon?: string | null
     fightAreaType: FightAreaType
   }
 
@@ -46936,6 +46941,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     prize?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
     fightAreaType?: EnumFightAreaTypeFieldUpdateOperationsInput | FightAreaType
   }
 
@@ -46948,12 +46954,12 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     prize?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
     fightAreaType?: EnumFightAreaTypeFieldUpdateOperationsInput | FightAreaType
   }
 
   export type FightRankingCreateInput = {
     id?: string
-    userId: string
     createdAt?: Date | string
     fightRankingUser?: FightRankingUserCreateNestedManyWithoutFightRankingInput
     school: SchoolCreateNestedOneWithoutFightRankingInput
@@ -46962,7 +46968,6 @@ export namespace Prisma {
 
   export type FightRankingUncheckedCreateInput = {
     id?: string
-    userId: string
     fightId: string
     createdAt?: Date | string
     schoolId: string
@@ -46971,7 +46976,6 @@ export namespace Prisma {
 
   export type FightRankingUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fightRankingUser?: FightRankingUserUpdateManyWithoutFightRankingNestedInput
     school?: SchoolUpdateOneRequiredWithoutFightRankingNestedInput
@@ -46980,7 +46984,6 @@ export namespace Prisma {
 
   export type FightRankingUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
     fightId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolId?: StringFieldUpdateOperationsInput | string
@@ -46989,7 +46992,6 @@ export namespace Prisma {
 
   export type FightRankingCreateManyInput = {
     id?: string
-    userId: string
     fightId: string
     createdAt?: Date | string
     schoolId: string
@@ -46997,13 +46999,11 @@ export namespace Prisma {
 
   export type FightRankingUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type FightRankingUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
     fightId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolId?: StringFieldUpdateOperationsInput | string
@@ -49799,6 +49799,7 @@ export namespace Prisma {
     description?: SortOrder
     prize?: SortOrder
     isVerified?: SortOrder
+    icon?: SortOrder
     fightAreaType?: SortOrder
   }
 
@@ -49810,6 +49811,7 @@ export namespace Prisma {
     description?: SortOrder
     prize?: SortOrder
     isVerified?: SortOrder
+    icon?: SortOrder
     fightAreaType?: SortOrder
   }
 
@@ -49821,6 +49823,7 @@ export namespace Prisma {
     description?: SortOrder
     prize?: SortOrder
     isVerified?: SortOrder
+    icon?: SortOrder
     fightAreaType?: SortOrder
   }
 
@@ -49860,7 +49863,6 @@ export namespace Prisma {
 
   export type FightRankingCountOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
     fightId?: SortOrder
     createdAt?: SortOrder
     schoolId?: SortOrder
@@ -49868,7 +49870,6 @@ export namespace Prisma {
 
   export type FightRankingMaxOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
     fightId?: SortOrder
     createdAt?: SortOrder
     schoolId?: SortOrder
@@ -49876,7 +49877,6 @@ export namespace Prisma {
 
   export type FightRankingMinOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
     fightId?: SortOrder
     createdAt?: SortOrder
     schoolId?: SortOrder
@@ -55023,7 +55023,6 @@ export namespace Prisma {
 
   export type FightRankingCreateWithoutSchoolInput = {
     id?: string
-    userId: string
     createdAt?: Date | string
     fightRankingUser?: FightRankingUserCreateNestedManyWithoutFightRankingInput
     fight: FightCreateNestedOneWithoutFightRankingInput
@@ -55031,7 +55030,6 @@ export namespace Prisma {
 
   export type FightRankingUncheckedCreateWithoutSchoolInput = {
     id?: string
-    userId: string
     fightId: string
     createdAt?: Date | string
     fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutFightRankingInput
@@ -55139,7 +55137,6 @@ export namespace Prisma {
     OR?: Enumerable<FightRankingScalarWhereInput>
     NOT?: Enumerable<FightRankingScalarWhereInput>
     id?: StringFilter | string
-    userId?: StringFilter | string
     fightId?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
     schoolId?: StringFilter | string
@@ -55301,7 +55298,6 @@ export namespace Prisma {
 
   export type FightRankingCreateWithoutFightInput = {
     id?: string
-    userId: string
     createdAt?: Date | string
     fightRankingUser?: FightRankingUserCreateNestedManyWithoutFightRankingInput
     school: SchoolCreateNestedOneWithoutFightRankingInput
@@ -55309,7 +55305,6 @@ export namespace Prisma {
 
   export type FightRankingUncheckedCreateWithoutFightInput = {
     id?: string
-    userId: string
     createdAt?: Date | string
     schoolId: string
     fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutFightRankingInput
@@ -55455,6 +55450,7 @@ export namespace Prisma {
     description?: string | null
     prize?: string | null
     isVerified?: boolean
+    icon?: string | null
     fightAreaType: FightAreaType
     fightRankingUser?: FightRankingUserCreateNestedManyWithoutFightInput
   }
@@ -55468,6 +55464,7 @@ export namespace Prisma {
     description?: string | null
     prize?: string | null
     isVerified?: boolean
+    icon?: string | null
     fightAreaType: FightAreaType
     fightRankingUser?: FightRankingUserUncheckedCreateNestedManyWithoutFightInput
   }
@@ -55540,6 +55537,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     prize?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
     fightAreaType?: EnumFightAreaTypeFieldUpdateOperationsInput | FightAreaType
     fightRankingUser?: FightRankingUserUpdateManyWithoutFightNestedInput
   }
@@ -55553,6 +55551,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     prize?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
     fightAreaType?: EnumFightAreaTypeFieldUpdateOperationsInput | FightAreaType
     fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutFightNestedInput
   }
@@ -55668,6 +55667,7 @@ export namespace Prisma {
     description?: string | null
     prize?: string | null
     isVerified?: boolean
+    icon?: string | null
     fightAreaType: FightAreaType
     fightRanking?: FightRankingCreateNestedManyWithoutFightInput
   }
@@ -55681,6 +55681,7 @@ export namespace Prisma {
     description?: string | null
     prize?: string | null
     isVerified?: boolean
+    icon?: string | null
     fightAreaType: FightAreaType
     fightRanking?: FightRankingUncheckedCreateNestedManyWithoutFightInput
   }
@@ -55692,7 +55693,6 @@ export namespace Prisma {
 
   export type FightRankingCreateWithoutFightRankingUserInput = {
     id?: string
-    userId: string
     createdAt?: Date | string
     school: SchoolCreateNestedOneWithoutFightRankingInput
     fight: FightCreateNestedOneWithoutFightRankingInput
@@ -55700,7 +55700,6 @@ export namespace Prisma {
 
   export type FightRankingUncheckedCreateWithoutFightRankingUserInput = {
     id?: string
-    userId: string
     fightId: string
     createdAt?: Date | string
     schoolId: string
@@ -55827,6 +55826,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     prize?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
     fightAreaType?: EnumFightAreaTypeFieldUpdateOperationsInput | FightAreaType
     fightRanking?: FightRankingUpdateManyWithoutFightNestedInput
   }
@@ -55840,6 +55840,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     prize?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
     fightAreaType?: EnumFightAreaTypeFieldUpdateOperationsInput | FightAreaType
     fightRanking?: FightRankingUncheckedUpdateManyWithoutFightNestedInput
   }
@@ -55851,7 +55852,6 @@ export namespace Prisma {
 
   export type FightRankingUpdateWithoutFightRankingUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     school?: SchoolUpdateOneRequiredWithoutFightRankingNestedInput
     fight?: FightUpdateOneRequiredWithoutFightRankingNestedInput
@@ -55859,7 +55859,6 @@ export namespace Prisma {
 
   export type FightRankingUncheckedUpdateWithoutFightRankingUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
     fightId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolId?: StringFieldUpdateOperationsInput | string
@@ -60442,7 +60441,6 @@ export namespace Prisma {
 
   export type FightRankingCreateManySchoolInput = {
     id?: string
-    userId: string
     fightId: string
     createdAt?: Date | string
   }
@@ -60512,7 +60510,6 @@ export namespace Prisma {
 
   export type FightRankingUpdateWithoutSchoolInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fightRankingUser?: FightRankingUserUpdateManyWithoutFightRankingNestedInput
     fight?: FightUpdateOneRequiredWithoutFightRankingNestedInput
@@ -60520,7 +60517,6 @@ export namespace Prisma {
 
   export type FightRankingUncheckedUpdateWithoutSchoolInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
     fightId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutFightRankingNestedInput
@@ -60528,7 +60524,6 @@ export namespace Prisma {
 
   export type FightRankingUncheckedUpdateManyWithoutFightRankingInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
     fightId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -60553,7 +60548,6 @@ export namespace Prisma {
 
   export type FightRankingCreateManyFightInput = {
     id?: string
-    userId: string
     createdAt?: Date | string
     schoolId: string
   }
@@ -60569,7 +60563,6 @@ export namespace Prisma {
 
   export type FightRankingUpdateWithoutFightInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fightRankingUser?: FightRankingUserUpdateManyWithoutFightRankingNestedInput
     school?: SchoolUpdateOneRequiredWithoutFightRankingNestedInput
@@ -60577,7 +60570,6 @@ export namespace Prisma {
 
   export type FightRankingUncheckedUpdateWithoutFightInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     schoolId?: StringFieldUpdateOperationsInput | string
     fightRankingUser?: FightRankingUserUncheckedUpdateManyWithoutFightRankingNestedInput

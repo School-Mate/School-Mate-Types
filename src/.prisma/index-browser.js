@@ -150,12 +150,12 @@ exports.Prisma.FightScalarFieldEnum = {
   description: 'description',
   prize: 'prize',
   isVerified: 'isVerified',
+  icon: 'icon',
   fightAreaType: 'fightAreaType'
 };
 
 exports.Prisma.FightRankingScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
   fightId: 'fightId',
   createdAt: 'createdAt',
   schoolId: 'schoolId'
