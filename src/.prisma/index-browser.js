@@ -289,6 +289,7 @@ exports.Prisma.BoardScalarFieldEnum = {
   name: 'name',
   description: 'description',
   icon: 'icon',
+  boardType: 'boardType',
   default: 'default',
   defaultBoardId: 'defaultBoardId',
   noticeId: 'noticeId'
@@ -518,6 +519,11 @@ exports.Process = {
   pending: 'pending',
   denied: 'denied',
   success: 'success'
+};
+
+exports.BoardType = {
+  share: 'share',
+  school: 'school'
 };
 
 exports.ReportTargetType = {

@@ -424,6 +424,7 @@ export type BoardPayload<ExtArgs extends $Extensions.Args = $Extensions.DefaultA
     name: string
     description: string
     icon: string | null
+    boardType: BoardType
     default: boolean
     defaultBoardId: number | null
     noticeId: number[]
@@ -886,6 +887,14 @@ export const Process: {
 };
 
 export type Process = (typeof Process)[keyof typeof Process]
+
+
+export const BoardType: {
+  share: 'share',
+  school: 'school'
+};
+
+export type BoardType = (typeof BoardType)[keyof typeof BoardType]
 
 
 export const ReportTargetType: {
@@ -23530,6 +23539,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     icon: string | null
+    boardType: BoardType | null
     default: boolean | null
     defaultBoardId: number | null
   }
@@ -23540,6 +23550,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     icon: string | null
+    boardType: BoardType | null
     default: boolean | null
     defaultBoardId: number | null
   }
@@ -23550,6 +23561,7 @@ export namespace Prisma {
     name: number
     description: number
     icon: number
+    boardType: number
     default: number
     defaultBoardId: number
     noticeId: number
@@ -23575,6 +23587,7 @@ export namespace Prisma {
     name?: true
     description?: true
     icon?: true
+    boardType?: true
     default?: true
     defaultBoardId?: true
   }
@@ -23585,6 +23598,7 @@ export namespace Prisma {
     name?: true
     description?: true
     icon?: true
+    boardType?: true
     default?: true
     defaultBoardId?: true
   }
@@ -23595,6 +23609,7 @@ export namespace Prisma {
     name?: true
     description?: true
     icon?: true
+    boardType?: true
     default?: true
     defaultBoardId?: true
     noticeId?: true
@@ -23694,6 +23709,7 @@ export namespace Prisma {
     name: string
     description: string
     icon: string | null
+    boardType: BoardType
     default: boolean
     defaultBoardId: number | null
     noticeId: number[]
@@ -23724,6 +23740,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     icon?: boolean
+    boardType?: boolean
     default?: boolean
     defaultBoardId?: boolean
     noticeId?: boolean
@@ -23738,6 +23755,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     icon?: boolean
+    boardType?: boolean
     default?: boolean
     defaultBoardId?: boolean
     noticeId?: boolean
@@ -43999,6 +44017,7 @@ export namespace Prisma {
     name: 'name',
     description: 'description',
     icon: 'icon',
+    boardType: 'boardType',
     default: 'default',
     defaultBoardId: 'defaultBoardId',
     noticeId: 'noticeId'
@@ -45347,6 +45366,7 @@ export namespace Prisma {
     name?: StringFilter | string
     description?: StringFilter | string
     icon?: StringNullableFilter | string | null
+    boardType?: EnumBoardTypeFilter | BoardType
     default?: BoolFilter | boolean
     defaultBoardId?: IntNullableFilter | number | null
     noticeId?: IntNullableListFilter
@@ -45360,6 +45380,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     icon?: SortOrderInput | SortOrder
+    boardType?: SortOrder
     default?: SortOrder
     defaultBoardId?: SortOrderInput | SortOrder
     noticeId?: SortOrder
@@ -45377,6 +45398,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     icon?: SortOrderInput | SortOrder
+    boardType?: SortOrder
     default?: SortOrder
     defaultBoardId?: SortOrderInput | SortOrder
     noticeId?: SortOrder
@@ -45396,6 +45418,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter | string
     description?: StringWithAggregatesFilter | string
     icon?: StringNullableWithAggregatesFilter | string | null
+    boardType?: EnumBoardTypeWithAggregatesFilter | BoardType
     default?: BoolWithAggregatesFilter | boolean
     defaultBoardId?: IntNullableWithAggregatesFilter | number | null
     noticeId?: IntNullableListFilter
@@ -47866,6 +47889,7 @@ export namespace Prisma {
     name: string
     description: string
     icon?: string | null
+    boardType?: BoardType
     default?: boolean
     defaultBoardId?: number | null
     noticeId?: BoardCreatenoticeIdInput | Enumerable<number>
@@ -47879,6 +47903,7 @@ export namespace Prisma {
     name: string
     description: string
     icon?: string | null
+    boardType?: BoardType
     default?: boolean
     defaultBoardId?: number | null
     noticeId?: BoardCreatenoticeIdInput | Enumerable<number>
@@ -47891,6 +47916,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
+    boardType?: EnumBoardTypeFieldUpdateOperationsInput | BoardType
     default?: BoolFieldUpdateOperationsInput | boolean
     defaultBoardId?: NullableIntFieldUpdateOperationsInput | number | null
     noticeId?: BoardUpdatenoticeIdInput | Enumerable<number>
@@ -47904,6 +47930,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
+    boardType?: EnumBoardTypeFieldUpdateOperationsInput | BoardType
     default?: BoolFieldUpdateOperationsInput | boolean
     defaultBoardId?: NullableIntFieldUpdateOperationsInput | number | null
     noticeId?: BoardUpdatenoticeIdInput | Enumerable<number>
@@ -47917,6 +47944,7 @@ export namespace Prisma {
     name: string
     description: string
     icon?: string | null
+    boardType?: BoardType
     default?: boolean
     defaultBoardId?: number | null
     noticeId?: BoardCreatenoticeIdInput | Enumerable<number>
@@ -47927,6 +47955,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
+    boardType?: EnumBoardTypeFieldUpdateOperationsInput | BoardType
     default?: BoolFieldUpdateOperationsInput | boolean
     defaultBoardId?: NullableIntFieldUpdateOperationsInput | number | null
     noticeId?: BoardUpdatenoticeIdInput | Enumerable<number>
@@ -47938,6 +47967,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
+    boardType?: EnumBoardTypeFieldUpdateOperationsInput | BoardType
     default?: BoolFieldUpdateOperationsInput | boolean
     defaultBoardId?: NullableIntFieldUpdateOperationsInput | number | null
     noticeId?: BoardUpdatenoticeIdInput | Enumerable<number>
@@ -50316,6 +50346,13 @@ export namespace Prisma {
     flags?: SortOrder
   }
 
+  export type EnumBoardTypeFilter = {
+    equals?: BoardType
+    in?: Enumerable<BoardType>
+    notIn?: Enumerable<BoardType>
+    not?: NestedEnumBoardTypeFilter | BoardType
+  }
+
   export type IntNullableFilter = {
     equals?: number | null
     in?: Enumerable<number> | number | null
@@ -50341,6 +50378,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     icon?: SortOrder
+    boardType?: SortOrder
     default?: SortOrder
     defaultBoardId?: SortOrder
     noticeId?: SortOrder
@@ -50358,6 +50396,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     icon?: SortOrder
+    boardType?: SortOrder
     default?: SortOrder
     defaultBoardId?: SortOrder
   }
@@ -50368,6 +50407,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     icon?: SortOrder
+    boardType?: SortOrder
     default?: SortOrder
     defaultBoardId?: SortOrder
   }
@@ -50376,6 +50416,16 @@ export namespace Prisma {
     id?: SortOrder
     defaultBoardId?: SortOrder
     noticeId?: SortOrder
+  }
+
+  export type EnumBoardTypeWithAggregatesFilter = {
+    equals?: BoardType
+    in?: Enumerable<BoardType>
+    notIn?: Enumerable<BoardType>
+    not?: NestedEnumBoardTypeWithAggregatesFilter | BoardType
+    _count?: NestedIntFilter
+    _min?: NestedEnumBoardTypeFilter
+    _max?: NestedEnumBoardTypeFilter
   }
 
   export type IntNullableWithAggregatesFilter = {
@@ -52774,6 +52824,10 @@ export namespace Prisma {
     connect?: Enumerable<BoardManagerWhereUniqueInput>
   }
 
+  export type EnumBoardTypeFieldUpdateOperationsInput = {
+    set?: BoardType
+  }
+
   export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -53793,6 +53847,23 @@ export namespace Prisma {
     _count?: NestedIntFilter
     _min?: NestedEnumProcessFilter
     _max?: NestedEnumProcessFilter
+  }
+
+  export type NestedEnumBoardTypeFilter = {
+    equals?: BoardType
+    in?: Enumerable<BoardType>
+    notIn?: Enumerable<BoardType>
+    not?: NestedEnumBoardTypeFilter | BoardType
+  }
+
+  export type NestedEnumBoardTypeWithAggregatesFilter = {
+    equals?: BoardType
+    in?: Enumerable<BoardType>
+    notIn?: Enumerable<BoardType>
+    not?: NestedEnumBoardTypeWithAggregatesFilter | BoardType
+    _count?: NestedIntFilter
+    _min?: NestedEnumBoardTypeFilter
+    _max?: NestedEnumBoardTypeFilter
   }
 
   export type NestedIntNullableWithAggregatesFilter = {
@@ -57240,6 +57311,7 @@ export namespace Prisma {
     name: string
     description: string
     icon?: string | null
+    boardType?: BoardType
     default?: boolean
     defaultBoardId?: number | null
     noticeId?: BoardCreatenoticeIdInput | Enumerable<number>
@@ -57252,6 +57324,7 @@ export namespace Prisma {
     name: string
     description: string
     icon?: string | null
+    boardType?: BoardType
     default?: boolean
     defaultBoardId?: number | null
     noticeId?: BoardCreatenoticeIdInput | Enumerable<number>
@@ -57342,6 +57415,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
+    boardType?: EnumBoardTypeFieldUpdateOperationsInput | BoardType
     default?: BoolFieldUpdateOperationsInput | boolean
     defaultBoardId?: NullableIntFieldUpdateOperationsInput | number | null
     noticeId?: BoardUpdatenoticeIdInput | Enumerable<number>
@@ -57354,6 +57428,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
+    boardType?: EnumBoardTypeFieldUpdateOperationsInput | BoardType
     default?: BoolFieldUpdateOperationsInput | boolean
     defaultBoardId?: NullableIntFieldUpdateOperationsInput | number | null
     noticeId?: BoardUpdatenoticeIdInput | Enumerable<number>
@@ -57434,6 +57509,7 @@ export namespace Prisma {
     name: string
     description: string
     icon?: string | null
+    boardType?: BoardType
     default?: boolean
     defaultBoardId?: number | null
     noticeId?: BoardCreatenoticeIdInput | Enumerable<number>
@@ -57446,6 +57522,7 @@ export namespace Prisma {
     name: string
     description: string
     icon?: string | null
+    boardType?: BoardType
     default?: boolean
     defaultBoardId?: number | null
     noticeId?: BoardCreatenoticeIdInput | Enumerable<number>
@@ -57697,6 +57774,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
+    boardType?: EnumBoardTypeFieldUpdateOperationsInput | BoardType
     default?: BoolFieldUpdateOperationsInput | boolean
     defaultBoardId?: NullableIntFieldUpdateOperationsInput | number | null
     noticeId?: BoardUpdatenoticeIdInput | Enumerable<number>
@@ -57709,6 +57787,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
+    boardType?: EnumBoardTypeFieldUpdateOperationsInput | BoardType
     default?: BoolFieldUpdateOperationsInput | boolean
     defaultBoardId?: NullableIntFieldUpdateOperationsInput | number | null
     noticeId?: BoardUpdatenoticeIdInput | Enumerable<number>
