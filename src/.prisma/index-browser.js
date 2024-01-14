@@ -218,7 +218,8 @@ exports.Prisma.UserSchoolScalarFieldEnum = {
   schoolId: 'schoolId',
   dept: 'dept',
   grade: 'grade',
-  class: 'class'
+  class: 'class',
+  verified: 'verified'
 };
 
 exports.Prisma.BusStationScalarFieldEnum = {

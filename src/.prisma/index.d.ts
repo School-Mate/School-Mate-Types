@@ -280,6 +280,7 @@ export type UserSchoolPayload<ExtArgs extends $Extensions.Args = $Extensions.Def
     dept: string | null
     grade: string
     class: string
+    verified: boolean
   }, ExtArgs["result"]["userSchool"]>
   composites: {}
 }
@@ -16943,6 +16944,7 @@ export namespace Prisma {
     dept: string | null
     grade: string | null
     class: string | null
+    verified: boolean | null
   }
 
   export type UserSchoolMaxAggregateOutputType = {
@@ -16951,6 +16953,7 @@ export namespace Prisma {
     dept: string | null
     grade: string | null
     class: string | null
+    verified: boolean | null
   }
 
   export type UserSchoolCountAggregateOutputType = {
@@ -16959,6 +16962,7 @@ export namespace Prisma {
     dept: number
     grade: number
     class: number
+    verified: number
     _all: number
   }
 
@@ -16969,6 +16973,7 @@ export namespace Prisma {
     dept?: true
     grade?: true
     class?: true
+    verified?: true
   }
 
   export type UserSchoolMaxAggregateInputType = {
@@ -16977,6 +16982,7 @@ export namespace Prisma {
     dept?: true
     grade?: true
     class?: true
+    verified?: true
   }
 
   export type UserSchoolCountAggregateInputType = {
@@ -16985,6 +16991,7 @@ export namespace Prisma {
     dept?: true
     grade?: true
     class?: true
+    verified?: true
     _all?: true
   }
 
@@ -17067,6 +17074,7 @@ export namespace Prisma {
     dept: string | null
     grade: string
     class: string
+    verified: boolean
     _count: UserSchoolCountAggregateOutputType | null
     _min: UserSchoolMinAggregateOutputType | null
     _max: UserSchoolMaxAggregateOutputType | null
@@ -17092,6 +17100,7 @@ export namespace Prisma {
     dept?: boolean
     grade?: boolean
     class?: boolean
+    verified?: boolean
     school?: boolean | SchoolArgs<ExtArgs>
     user?: boolean | UserArgs<ExtArgs>
   }, ExtArgs["result"]["userSchool"]>
@@ -17102,6 +17111,7 @@ export namespace Prisma {
     dept?: boolean
     grade?: boolean
     class?: boolean
+    verified?: boolean
   }
 
   export type UserSchoolInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
@@ -43925,7 +43935,8 @@ export namespace Prisma {
     schoolId: 'schoolId',
     dept: 'dept',
     grade: 'grade',
-    class: 'class'
+    class: 'class',
+    verified: 'verified'
   };
 
   export type UserSchoolScalarFieldEnum = (typeof UserSchoolScalarFieldEnum)[keyof typeof UserSchoolScalarFieldEnum]
@@ -44976,6 +44987,7 @@ export namespace Prisma {
     dept?: StringNullableFilter | string | null
     grade?: StringFilter | string
     class?: StringFilter | string
+    verified?: BoolFilter | boolean
     school?: XOR<SchoolRelationFilter, SchoolWhereInput>
     user?: XOR<UserRelationFilter, UserWhereInput>
   }
@@ -44986,6 +44998,7 @@ export namespace Prisma {
     dept?: SortOrderInput | SortOrder
     grade?: SortOrder
     class?: SortOrder
+    verified?: SortOrder
     school?: SchoolOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
   }
@@ -45000,6 +45013,7 @@ export namespace Prisma {
     dept?: SortOrderInput | SortOrder
     grade?: SortOrder
     class?: SortOrder
+    verified?: SortOrder
     _count?: UserSchoolCountOrderByAggregateInput
     _max?: UserSchoolMaxOrderByAggregateInput
     _min?: UserSchoolMinOrderByAggregateInput
@@ -45014,6 +45028,7 @@ export namespace Prisma {
     dept?: StringNullableWithAggregatesFilter | string | null
     grade?: StringWithAggregatesFilter | string
     class?: StringWithAggregatesFilter | string
+    verified?: BoolWithAggregatesFilter | boolean
   }
 
   export type BusStationWhereInput = {
@@ -47395,6 +47410,7 @@ export namespace Prisma {
     dept?: string | null
     grade: string
     class: string
+    verified?: boolean
     school: SchoolCreateNestedOneWithoutUserSchoolInput
     user: UserCreateNestedOneWithoutUserSchoolInput
   }
@@ -47405,12 +47421,14 @@ export namespace Prisma {
     dept?: string | null
     grade: string
     class: string
+    verified?: boolean
   }
 
   export type UserSchoolUpdateInput = {
     dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
     school?: SchoolUpdateOneRequiredWithoutUserSchoolNestedInput
     user?: UserUpdateOneRequiredWithoutUserSchoolNestedInput
   }
@@ -47421,6 +47439,7 @@ export namespace Prisma {
     dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserSchoolCreateManyInput = {
@@ -47429,12 +47448,14 @@ export namespace Prisma {
     dept?: string | null
     grade: string
     class: string
+    verified?: boolean
   }
 
   export type UserSchoolUpdateManyMutationInput = {
     dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserSchoolUncheckedUpdateManyInput = {
@@ -47443,6 +47464,7 @@ export namespace Prisma {
     dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type BusStationCreateInput = {
@@ -50126,6 +50148,7 @@ export namespace Prisma {
     dept?: SortOrder
     grade?: SortOrder
     class?: SortOrder
+    verified?: SortOrder
   }
 
   export type UserSchoolMaxOrderByAggregateInput = {
@@ -50134,6 +50157,7 @@ export namespace Prisma {
     dept?: SortOrder
     grade?: SortOrder
     class?: SortOrder
+    verified?: SortOrder
   }
 
   export type UserSchoolMinOrderByAggregateInput = {
@@ -50142,6 +50166,7 @@ export namespace Prisma {
     dept?: SortOrder
     grade?: SortOrder
     class?: SortOrder
+    verified?: SortOrder
   }
 
   export type BusStationCountOrderByAggregateInput = {
@@ -54279,6 +54304,7 @@ export namespace Prisma {
     dept?: string | null
     grade: string
     class: string
+    verified?: boolean
     school: SchoolCreateNestedOneWithoutUserSchoolInput
   }
 
@@ -54287,6 +54313,7 @@ export namespace Prisma {
     dept?: string | null
     grade: string
     class: string
+    verified?: boolean
   }
 
   export type UserSchoolCreateOrConnectWithoutUserInput = {
@@ -54812,6 +54839,7 @@ export namespace Prisma {
     dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
     school?: SchoolUpdateOneRequiredWithoutUserSchoolNestedInput
   }
 
@@ -54820,6 +54848,7 @@ export namespace Prisma {
     dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserSchoolVerifyUpsertWithWhereUniqueWithoutUserInput = {
@@ -55029,6 +55058,7 @@ export namespace Prisma {
     dept?: string | null
     grade: string
     class: string
+    verified?: boolean
     user: UserCreateNestedOneWithoutUserSchoolInput
   }
 
@@ -55037,6 +55067,7 @@ export namespace Prisma {
     dept?: string | null
     grade: string
     class: string
+    verified?: boolean
   }
 
   export type UserSchoolCreateOrConnectWithoutSchoolInput = {
@@ -55169,6 +55200,7 @@ export namespace Prisma {
     dept?: StringNullableFilter | string | null
     grade?: StringFilter | string
     class?: StringFilter | string
+    verified?: BoolFilter | boolean
   }
 
   export type ArticleUpsertWithWhereUniqueWithoutSchoolInput = {
@@ -60504,6 +60536,7 @@ export namespace Prisma {
     dept?: string | null
     grade: string
     class: string
+    verified?: boolean
   }
 
   export type ArticleCreateManySchoolInput = {
@@ -60537,6 +60570,7 @@ export namespace Prisma {
     dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneRequiredWithoutUserSchoolNestedInput
   }
 
@@ -60545,6 +60579,7 @@ export namespace Prisma {
     dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserSchoolUncheckedUpdateManyWithoutUserSchoolInput = {
@@ -60552,6 +60587,7 @@ export namespace Prisma {
     dept?: NullableStringFieldUpdateOperationsInput | string | null
     grade?: StringFieldUpdateOperationsInput | string
     class?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ArticleUpdateWithoutSchoolInput = {
