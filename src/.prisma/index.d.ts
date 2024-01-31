@@ -94,6 +94,7 @@ export type ConnectionAccountPayload<ExtArgs extends $Extensions.Args = $Extensi
     provider: string
     followerCount: number
     articleCount: number
+    additonalInfo: string | null
   }, ExtArgs["result"]["connectionAccount"]>
   composites: {}
 }
@@ -163,6 +164,7 @@ export type FightRankingUserPayload<ExtArgs extends $Extensions.Args = $Extensio
     schoolId: string
     score: number
     createdAt: Date
+    additonalInfo: string | null
   }, ExtArgs["result"]["fightRankingUser"]>
   composites: {}
 }
@@ -8392,6 +8394,7 @@ export namespace Prisma {
     provider: string | null
     followerCount: number | null
     articleCount: number | null
+    additonalInfo: string | null
   }
 
   export type ConnectionAccountMaxAggregateOutputType = {
@@ -8404,6 +8407,7 @@ export namespace Prisma {
     provider: string | null
     followerCount: number | null
     articleCount: number | null
+    additonalInfo: string | null
   }
 
   export type ConnectionAccountCountAggregateOutputType = {
@@ -8416,6 +8420,7 @@ export namespace Prisma {
     provider: number
     followerCount: number
     articleCount: number
+    additonalInfo: number
     _all: number
   }
 
@@ -8440,6 +8445,7 @@ export namespace Prisma {
     provider?: true
     followerCount?: true
     articleCount?: true
+    additonalInfo?: true
   }
 
   export type ConnectionAccountMaxAggregateInputType = {
@@ -8452,6 +8458,7 @@ export namespace Prisma {
     provider?: true
     followerCount?: true
     articleCount?: true
+    additonalInfo?: true
   }
 
   export type ConnectionAccountCountAggregateInputType = {
@@ -8464,6 +8471,7 @@ export namespace Prisma {
     provider?: true
     followerCount?: true
     articleCount?: true
+    additonalInfo?: true
     _all?: true
   }
 
@@ -8564,6 +8572,7 @@ export namespace Prisma {
     provider: string
     followerCount: number
     articleCount: number
+    additonalInfo: string | null
     _count: ConnectionAccountCountAggregateOutputType | null
     _avg: ConnectionAccountAvgAggregateOutputType | null
     _sum: ConnectionAccountSumAggregateOutputType | null
@@ -8595,6 +8604,7 @@ export namespace Prisma {
     provider?: boolean
     followerCount?: boolean
     articleCount?: boolean
+    additonalInfo?: boolean
     user?: boolean | UserArgs<ExtArgs>
   }, ExtArgs["result"]["connectionAccount"]>
 
@@ -8608,6 +8618,7 @@ export namespace Prisma {
     provider?: boolean
     followerCount?: boolean
     articleCount?: boolean
+    additonalInfo?: boolean
   }
 
   export type ConnectionAccountInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
@@ -11345,6 +11356,7 @@ export namespace Prisma {
     schoolId: string | null
     score: number | null
     createdAt: Date | null
+    additonalInfo: string | null
   }
 
   export type FightRankingUserMaxAggregateOutputType = {
@@ -11355,6 +11367,7 @@ export namespace Prisma {
     schoolId: string | null
     score: number | null
     createdAt: Date | null
+    additonalInfo: string | null
   }
 
   export type FightRankingUserCountAggregateOutputType = {
@@ -11365,6 +11378,7 @@ export namespace Prisma {
     schoolId: number
     score: number
     createdAt: number
+    additonalInfo: number
     _all: number
   }
 
@@ -11385,6 +11399,7 @@ export namespace Prisma {
     schoolId?: true
     score?: true
     createdAt?: true
+    additonalInfo?: true
   }
 
   export type FightRankingUserMaxAggregateInputType = {
@@ -11395,6 +11410,7 @@ export namespace Prisma {
     schoolId?: true
     score?: true
     createdAt?: true
+    additonalInfo?: true
   }
 
   export type FightRankingUserCountAggregateInputType = {
@@ -11405,6 +11421,7 @@ export namespace Prisma {
     schoolId?: true
     score?: true
     createdAt?: true
+    additonalInfo?: true
     _all?: true
   }
 
@@ -11503,6 +11520,7 @@ export namespace Prisma {
     schoolId: string
     score: number
     createdAt: Date
+    additonalInfo: string | null
     _count: FightRankingUserCountAggregateOutputType | null
     _avg: FightRankingUserAvgAggregateOutputType | null
     _sum: FightRankingUserSumAggregateOutputType | null
@@ -11532,6 +11550,7 @@ export namespace Prisma {
     schoolId?: boolean
     score?: boolean
     createdAt?: boolean
+    additonalInfo?: boolean
     school?: boolean | SchoolArgs<ExtArgs>
     user?: boolean | UserArgs<ExtArgs>
     fight?: boolean | FightArgs<ExtArgs>
@@ -11546,6 +11565,7 @@ export namespace Prisma {
     schoolId?: boolean
     score?: boolean
     createdAt?: boolean
+    additonalInfo?: boolean
   }
 
   export type FightRankingUserInclude<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
@@ -43828,7 +43848,8 @@ export namespace Prisma {
     refreshToken: 'refreshToken',
     provider: 'provider',
     followerCount: 'followerCount',
-    articleCount: 'articleCount'
+    articleCount: 'articleCount',
+    additonalInfo: 'additonalInfo'
   };
 
   export type ConnectionAccountScalarFieldEnum = (typeof ConnectionAccountScalarFieldEnum)[keyof typeof ConnectionAccountScalarFieldEnum]
@@ -43867,7 +43888,8 @@ export namespace Prisma {
     fightRankingId: 'fightRankingId',
     schoolId: 'schoolId',
     score: 'score',
-    createdAt: 'createdAt'
+    createdAt: 'createdAt',
+    additonalInfo: 'additonalInfo'
   };
 
   export type FightRankingUserScalarFieldEnum = (typeof FightRankingUserScalarFieldEnum)[keyof typeof FightRankingUserScalarFieldEnum]
@@ -44501,6 +44523,7 @@ export namespace Prisma {
     provider?: StringFilter | string
     followerCount?: IntFilter | number
     articleCount?: IntFilter | number
+    additonalInfo?: StringNullableFilter | string | null
     user?: XOR<UserRelationFilter, UserWhereInput>
   }
 
@@ -44514,6 +44537,7 @@ export namespace Prisma {
     provider?: SortOrder
     followerCount?: SortOrder
     articleCount?: SortOrder
+    additonalInfo?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
   }
 
@@ -44531,6 +44555,7 @@ export namespace Prisma {
     provider?: SortOrder
     followerCount?: SortOrder
     articleCount?: SortOrder
+    additonalInfo?: SortOrderInput | SortOrder
     _count?: ConnectionAccountCountOrderByAggregateInput
     _avg?: ConnectionAccountAvgOrderByAggregateInput
     _max?: ConnectionAccountMaxOrderByAggregateInput
@@ -44551,6 +44576,7 @@ export namespace Prisma {
     provider?: StringWithAggregatesFilter | string
     followerCount?: IntWithAggregatesFilter | number
     articleCount?: IntWithAggregatesFilter | number
+    additonalInfo?: StringNullableWithAggregatesFilter | string | null
   }
 
   export type FightWhereInput = {
@@ -44680,6 +44706,7 @@ export namespace Prisma {
     schoolId?: StringFilter | string
     score?: IntFilter | number
     createdAt?: DateTimeFilter | Date | string
+    additonalInfo?: StringNullableFilter | string | null
     school?: XOR<SchoolRelationFilter, SchoolWhereInput>
     user?: XOR<UserRelationFilter, UserWhereInput>
     fight?: XOR<FightRelationFilter, FightWhereInput>
@@ -44694,6 +44721,7 @@ export namespace Prisma {
     schoolId?: SortOrder
     score?: SortOrder
     createdAt?: SortOrder
+    additonalInfo?: SortOrderInput | SortOrder
     school?: SchoolOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
     fight?: FightOrderByWithRelationInput
@@ -44712,6 +44740,7 @@ export namespace Prisma {
     schoolId?: SortOrder
     score?: SortOrder
     createdAt?: SortOrder
+    additonalInfo?: SortOrderInput | SortOrder
     _count?: FightRankingUserCountOrderByAggregateInput
     _avg?: FightRankingUserAvgOrderByAggregateInput
     _max?: FightRankingUserMaxOrderByAggregateInput
@@ -44730,6 +44759,7 @@ export namespace Prisma {
     schoolId?: StringWithAggregatesFilter | string
     score?: IntWithAggregatesFilter | number
     createdAt?: DateTimeWithAggregatesFilter | Date | string
+    additonalInfo?: StringNullableWithAggregatesFilter | string | null
   }
 
   export type ImageWhereInput = {
@@ -46823,6 +46853,7 @@ export namespace Prisma {
     provider: string
     followerCount?: number
     articleCount?: number
+    additonalInfo?: string | null
     user: UserCreateNestedOneWithoutConnectionAccountInput
   }
 
@@ -46836,6 +46867,7 @@ export namespace Prisma {
     provider: string
     followerCount?: number
     articleCount?: number
+    additonalInfo?: string | null
   }
 
   export type ConnectionAccountUpdateInput = {
@@ -46847,6 +46879,7 @@ export namespace Prisma {
     provider?: StringFieldUpdateOperationsInput | string
     followerCount?: IntFieldUpdateOperationsInput | number
     articleCount?: IntFieldUpdateOperationsInput | number
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutConnectionAccountNestedInput
   }
 
@@ -46860,6 +46893,7 @@ export namespace Prisma {
     provider?: StringFieldUpdateOperationsInput | string
     followerCount?: IntFieldUpdateOperationsInput | number
     articleCount?: IntFieldUpdateOperationsInput | number
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConnectionAccountCreateManyInput = {
@@ -46872,6 +46906,7 @@ export namespace Prisma {
     provider: string
     followerCount?: number
     articleCount?: number
+    additonalInfo?: string | null
   }
 
   export type ConnectionAccountUpdateManyMutationInput = {
@@ -46883,6 +46918,7 @@ export namespace Prisma {
     provider?: StringFieldUpdateOperationsInput | string
     followerCount?: IntFieldUpdateOperationsInput | number
     articleCount?: IntFieldUpdateOperationsInput | number
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConnectionAccountUncheckedUpdateManyInput = {
@@ -46895,6 +46931,7 @@ export namespace Prisma {
     provider?: StringFieldUpdateOperationsInput | string
     followerCount?: IntFieldUpdateOperationsInput | number
     articleCount?: IntFieldUpdateOperationsInput | number
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type FightCreateInput = {
@@ -47051,6 +47088,7 @@ export namespace Prisma {
     id?: string
     score?: number
     createdAt?: Date | string
+    additonalInfo?: string | null
     school: SchoolCreateNestedOneWithoutFightRankingUserInput
     user: UserCreateNestedOneWithoutFightRankingUserInput
     fight: FightCreateNestedOneWithoutFightRankingUserInput
@@ -47065,12 +47103,14 @@ export namespace Prisma {
     schoolId: string
     score?: number
     createdAt?: Date | string
+    additonalInfo?: string | null
   }
 
   export type FightRankingUserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
     school?: SchoolUpdateOneRequiredWithoutFightRankingUserNestedInput
     user?: UserUpdateOneRequiredWithoutFightRankingUserNestedInput
     fight?: FightUpdateOneRequiredWithoutFightRankingUserNestedInput
@@ -47085,6 +47125,7 @@ export namespace Prisma {
     schoolId?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type FightRankingUserCreateManyInput = {
@@ -47095,12 +47136,14 @@ export namespace Prisma {
     schoolId: string
     score?: number
     createdAt?: Date | string
+    additonalInfo?: string | null
   }
 
   export type FightRankingUserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type FightRankingUserUncheckedUpdateManyInput = {
@@ -47111,6 +47154,7 @@ export namespace Prisma {
     schoolId?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ImageCreateInput = {
@@ -49764,6 +49808,7 @@ export namespace Prisma {
     provider?: SortOrder
     followerCount?: SortOrder
     articleCount?: SortOrder
+    additonalInfo?: SortOrder
   }
 
   export type ConnectionAccountAvgOrderByAggregateInput = {
@@ -49781,6 +49826,7 @@ export namespace Prisma {
     provider?: SortOrder
     followerCount?: SortOrder
     articleCount?: SortOrder
+    additonalInfo?: SortOrder
   }
 
   export type ConnectionAccountMinOrderByAggregateInput = {
@@ -49793,6 +49839,7 @@ export namespace Prisma {
     provider?: SortOrder
     followerCount?: SortOrder
     articleCount?: SortOrder
+    additonalInfo?: SortOrder
   }
 
   export type ConnectionAccountSumOrderByAggregateInput = {
@@ -49947,6 +49994,7 @@ export namespace Prisma {
     schoolId?: SortOrder
     score?: SortOrder
     createdAt?: SortOrder
+    additonalInfo?: SortOrder
   }
 
   export type FightRankingUserAvgOrderByAggregateInput = {
@@ -49961,6 +50009,7 @@ export namespace Prisma {
     schoolId?: SortOrder
     score?: SortOrder
     createdAt?: SortOrder
+    additonalInfo?: SortOrder
   }
 
   export type FightRankingUserMinOrderByAggregateInput = {
@@ -49971,6 +50020,7 @@ export namespace Prisma {
     schoolId?: SortOrder
     score?: SortOrder
     createdAt?: SortOrder
+    additonalInfo?: SortOrder
   }
 
   export type FightRankingUserSumOrderByAggregateInput = {
@@ -54464,6 +54514,7 @@ export namespace Prisma {
     provider: string
     followerCount?: number
     articleCount?: number
+    additonalInfo?: string | null
   }
 
   export type ConnectionAccountUncheckedCreateWithoutUserInput = {
@@ -54475,6 +54526,7 @@ export namespace Prisma {
     provider: string
     followerCount?: number
     articleCount?: number
+    additonalInfo?: string | null
   }
 
   export type ConnectionAccountCreateOrConnectWithoutUserInput = {
@@ -54491,6 +54543,7 @@ export namespace Prisma {
     id?: string
     score?: number
     createdAt?: Date | string
+    additonalInfo?: string | null
     school: SchoolCreateNestedOneWithoutFightRankingUserInput
     fight: FightCreateNestedOneWithoutFightRankingUserInput
     fightRanking: FightRankingCreateNestedOneWithoutFightRankingUserInput
@@ -54503,6 +54556,7 @@ export namespace Prisma {
     schoolId: string
     score?: number
     createdAt?: Date | string
+    additonalInfo?: string | null
   }
 
   export type FightRankingUserCreateOrConnectWithoutUserInput = {
@@ -55023,6 +55077,7 @@ export namespace Prisma {
     provider?: StringFilter | string
     followerCount?: IntFilter | number
     articleCount?: IntFilter | number
+    additonalInfo?: StringNullableFilter | string | null
   }
 
   export type FightRankingUserUpsertWithWhereUniqueWithoutUserInput = {
@@ -55052,6 +55107,7 @@ export namespace Prisma {
     schoolId?: StringFilter | string
     score?: IntFilter | number
     createdAt?: DateTimeFilter | Date | string
+    additonalInfo?: StringNullableFilter | string | null
   }
 
   export type UserSchoolCreateWithoutSchoolInput = {
@@ -55151,6 +55207,7 @@ export namespace Prisma {
     id?: string
     score?: number
     createdAt?: Date | string
+    additonalInfo?: string | null
     user: UserCreateNestedOneWithoutFightRankingUserInput
     fight: FightCreateNestedOneWithoutFightRankingUserInput
     fightRanking: FightRankingCreateNestedOneWithoutFightRankingUserInput
@@ -55163,6 +55220,7 @@ export namespace Prisma {
     fightRankingId: string
     score?: number
     createdAt?: Date | string
+    additonalInfo?: string | null
   }
 
   export type FightRankingUserCreateOrConnectWithoutSchoolInput = {
@@ -55427,6 +55485,7 @@ export namespace Prisma {
     id?: string
     score?: number
     createdAt?: Date | string
+    additonalInfo?: string | null
     school: SchoolCreateNestedOneWithoutFightRankingUserInput
     user: UserCreateNestedOneWithoutFightRankingUserInput
     fightRanking: FightRankingCreateNestedOneWithoutFightRankingUserInput
@@ -55439,6 +55498,7 @@ export namespace Prisma {
     schoolId: string
     score?: number
     createdAt?: Date | string
+    additonalInfo?: string | null
   }
 
   export type FightRankingUserCreateOrConnectWithoutFightInput = {
@@ -55487,6 +55547,7 @@ export namespace Prisma {
     id?: string
     score?: number
     createdAt?: Date | string
+    additonalInfo?: string | null
     school: SchoolCreateNestedOneWithoutFightRankingUserInput
     user: UserCreateNestedOneWithoutFightRankingUserInput
     fight: FightCreateNestedOneWithoutFightRankingUserInput
@@ -55499,6 +55560,7 @@ export namespace Prisma {
     schoolId: string
     score?: number
     createdAt?: Date | string
+    additonalInfo?: string | null
   }
 
   export type FightRankingUserCreateOrConnectWithoutFightRankingInput = {
@@ -60096,6 +60158,7 @@ export namespace Prisma {
     provider: string
     followerCount?: number
     articleCount?: number
+    additonalInfo?: string | null
   }
 
   export type FightRankingUserCreateManyUserInput = {
@@ -60105,6 +60168,7 @@ export namespace Prisma {
     schoolId: string
     score?: number
     createdAt?: Date | string
+    additonalInfo?: string | null
   }
 
   export type ArticleUpdateWithoutUserInput = {
@@ -60480,6 +60544,7 @@ export namespace Prisma {
     provider?: StringFieldUpdateOperationsInput | string
     followerCount?: IntFieldUpdateOperationsInput | number
     articleCount?: IntFieldUpdateOperationsInput | number
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConnectionAccountUncheckedUpdateWithoutUserInput = {
@@ -60491,6 +60556,7 @@ export namespace Prisma {
     provider?: StringFieldUpdateOperationsInput | string
     followerCount?: IntFieldUpdateOperationsInput | number
     articleCount?: IntFieldUpdateOperationsInput | number
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConnectionAccountUncheckedUpdateManyWithoutConnectionAccountInput = {
@@ -60502,12 +60568,14 @@ export namespace Prisma {
     provider?: StringFieldUpdateOperationsInput | string
     followerCount?: IntFieldUpdateOperationsInput | number
     articleCount?: IntFieldUpdateOperationsInput | number
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type FightRankingUserUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
     school?: SchoolUpdateOneRequiredWithoutFightRankingUserNestedInput
     fight?: FightUpdateOneRequiredWithoutFightRankingUserNestedInput
     fightRanking?: FightRankingUpdateOneRequiredWithoutFightRankingUserNestedInput
@@ -60520,6 +60588,7 @@ export namespace Prisma {
     schoolId?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type FightRankingUserUncheckedUpdateManyWithoutFightRankingUserInput = {
@@ -60529,6 +60598,7 @@ export namespace Prisma {
     schoolId?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserSchoolCreateManySchoolInput = {
@@ -60564,6 +60634,7 @@ export namespace Prisma {
     fightRankingId: string
     score?: number
     createdAt?: Date | string
+    additonalInfo?: string | null
   }
 
   export type UserSchoolUpdateWithoutSchoolInput = {
@@ -60647,6 +60718,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutFightRankingUserNestedInput
     fight?: FightUpdateOneRequiredWithoutFightRankingUserNestedInput
     fightRanking?: FightRankingUpdateOneRequiredWithoutFightRankingUserNestedInput
@@ -60659,6 +60731,7 @@ export namespace Prisma {
     fightRankingId?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type FightRankingCreateManyFightInput = {
@@ -60674,6 +60747,7 @@ export namespace Prisma {
     schoolId: string
     score?: number
     createdAt?: Date | string
+    additonalInfo?: string | null
   }
 
   export type FightRankingUpdateWithoutFightInput = {
@@ -60694,6 +60768,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
     school?: SchoolUpdateOneRequiredWithoutFightRankingUserNestedInput
     user?: UserUpdateOneRequiredWithoutFightRankingUserNestedInput
     fightRanking?: FightRankingUpdateOneRequiredWithoutFightRankingUserNestedInput
@@ -60706,6 +60781,7 @@ export namespace Prisma {
     schoolId?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type FightRankingUserCreateManyFightRankingInput = {
@@ -60715,12 +60791,14 @@ export namespace Prisma {
     schoolId: string
     score?: number
     createdAt?: Date | string
+    additonalInfo?: string | null
   }
 
   export type FightRankingUserUpdateWithoutFightRankingInput = {
     id?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
     school?: SchoolUpdateOneRequiredWithoutFightRankingUserNestedInput
     user?: UserUpdateOneRequiredWithoutFightRankingUserNestedInput
     fight?: FightUpdateOneRequiredWithoutFightRankingUserNestedInput
@@ -60733,6 +60811,7 @@ export namespace Prisma {
     schoolId?: StringFieldUpdateOperationsInput | string
     score?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    additonalInfo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserSchoolVerifyCreateManyImageInput = {

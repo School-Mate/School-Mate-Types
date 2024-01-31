@@ -138,7 +138,8 @@ exports.Prisma.ConnectionAccountScalarFieldEnum = {
   refreshToken: 'refreshToken',
   provider: 'provider',
   followerCount: 'followerCount',
-  articleCount: 'articleCount'
+  articleCount: 'articleCount',
+  additonalInfo: 'additonalInfo'
 };
 
 exports.Prisma.FightScalarFieldEnum = {
@@ -168,7 +169,8 @@ exports.Prisma.FightRankingUserScalarFieldEnum = {
   fightRankingId: 'fightRankingId',
   schoolId: 'schoolId',
   score: 'score',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  additonalInfo: 'additonalInfo'
 };
 
 exports.Prisma.ImageScalarFieldEnum = {
