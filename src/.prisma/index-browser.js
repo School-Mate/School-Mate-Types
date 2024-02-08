@@ -515,7 +515,8 @@ exports.FightAreaType = {
 
 exports.SocialLoginProviderType = {
   google: 'google',
-  kakao: 'kakao'
+  kakao: 'kakao',
+  apple: 'apple'
 };
 
 exports.Process = {

@@ -877,7 +877,8 @@ export type FightAreaType = (typeof FightAreaType)[keyof typeof FightAreaType]
 
 export const SocialLoginProviderType: {
   google: 'google',
-  kakao: 'kakao'
+  kakao: 'kakao',
+  apple: 'apple'
 };
 
 export type SocialLoginProviderType = (typeof SocialLoginProviderType)[keyof typeof SocialLoginProviderType]
